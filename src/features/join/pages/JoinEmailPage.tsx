@@ -1,0 +1,90 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import TopBar from '@app/layouts/TopBar'
+import Button from '@shared/components/Button'
+import Input from '@shared/components/Input'
+import { ROUTES } from '@shared/constants'
+import { validateEmail, validatePassword } from '@shared/utils'
+
+export default function JoinEmailPage() {
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+
+  const isValid = !emailError && !passwordError && email !== '' && password !== ''
+
+  const handleEmailBlur = () => {
+    setEmailError(validateEmail(email))
+  }
+
+  const handlePasswordBlur = () => {
+    setPasswordError(validatePassword(password))
+  }
+
+  const handleNext = () => {
+    const eErr = validateEmail(email)
+    const pErr = validatePassword(password)
+    setEmailError(eErr)
+    setPasswordError(pErr)
+    if (eErr || pErr) return
+
+    navigate(ROUTES.JOIN_PROFILE, {
+      state: { email, password },
+    })
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <TopBar title="이메일로 회원가입" showBack />
+
+      <div className="flex flex-col flex-1 px-6 pt-10 gap-6">
+        <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">
+          이메일로 회원가입
+        </h2>
+
+        <Input
+          label="이메일"
+          type="email"
+          placeholder="이메일을 입력해주세요"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value)
+            if (emailError) setEmailError('')
+          }}
+          onBlur={handleEmailBlur}
+          error={emailError}
+          autoComplete="email"
+          underline
+        />
+
+        <Input
+          label="비밀번호"
+          type="password"
+          placeholder="비밀번호를 입력해주세요(6자 이상)"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value)
+            if (passwordError) setPasswordError('')
+          }}
+          onBlur={handlePasswordBlur}
+          error={passwordError}
+          autoComplete="new-password"
+          underline
+        />
+
+        <Button
+          fullWidth
+          size="lg"
+          disabled={!isValid}
+          onClick={handleNext}
+          className="mt-2"
+        >
+          다음
+        </Button>
+      </div>
+    </div>
+  )
+}
