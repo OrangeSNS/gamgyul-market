@@ -18,7 +18,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={[
               'w-full pb-2 text-sm bg-transparent border-b outline-none transition-colors duration-150',
-              'border-gray-300 focus:border-brand placeholder:text-gray-400',
+              'border-[#DBDBDB] focus:border-brand placeholder:text-gray-400',
               error ? 'border-red-400 focus:border-red-400' : '',
               className,
             ]
@@ -40,7 +40,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           className={[
             'w-full px-4 py-3 text-sm rounded-lg border outline-none transition-colors duration-150',
-            'border-gray-300 focus:border-brand placeholder:text-gray-400',
+            'border-[#DBDBDB] focus:border-brand placeholder:text-gray-400',
             error ? 'border-red-400 focus:border-red-400' : '',
             className,
           ]
