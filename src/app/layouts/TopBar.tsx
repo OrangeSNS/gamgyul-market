@@ -25,21 +25,24 @@ export default function TopBar({
     >
       {showBack && (
         <button
-          onClick={() => navigate(-1)}
-          className="mr-2 p-1 -ml-1 rounded-full hover:bg-gray-100"
-          aria-label="뒤로가기"
-        >
-          <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+  type="button"
+  onClick={() => navigate(-1)}
+  className="flex h-10 w-10 items-center justify-center"
+  aria-label="뒤로가기"
+>
+  <img
+    src="/icons/icon-arrow-left.svg"
+    alt=""
+    className="h-6 w-6 object-contain"
+  />
+</button>
       )}
 
       <h1 className="flex-1 text-base font-semibold text-gray-900 truncate">
         {title}
       </h1>
 
-      {rightSlot && <div className="flex items-center gap-2">{rightSlot}</div>}
+     {rightSlot && <div>{rightSlot}</div>}
     </header>
   )
 }
