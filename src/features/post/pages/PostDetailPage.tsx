@@ -84,21 +84,22 @@ export default function PostDetailPage() {
   return (
     <div className="flex flex-col">
 <TopBar
+  title=""
   showBack
-rightSlot={
-  <button
-    onClick={() => setShowPostSheet(true)}
-    className="flex h-8 w-8 items-center justify-center"
-    aria-label="더보기"
-    type="button"
-  >
-    <img
-      src="/icons/icon-more-vertical.svg"
-      alt=""
-      className="h-6 w-6 object-contain"
-    />
-  </button>
-}
+  rightSlot={
+    <button
+      onClick={() => setShowPostSheet(true)}
+      className="flex h-8 w-8 items-center justify-center"
+      aria-label="더보기"
+      type="button"
+    >
+      <img
+        src="/icons/icon-more-vertical.svg"
+        alt=""
+        className="h-6 w-6 object-contain"
+      />
+    </button>
+  }
 />
 
       <article className="px-4 py-4">
