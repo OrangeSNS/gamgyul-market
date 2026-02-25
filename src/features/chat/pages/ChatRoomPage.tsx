@@ -53,32 +53,35 @@ export default function ChatRoomPage() {
   return (
     <div className="flex flex-col min-h-screen">
      {/* TopBar */}
-<header className="sticky top-0 z-30 flex items-center h-14 px-4 bg-white border-b border-gray-100">
+<header className="sticky top-0 z-30 flex h-14 items-center border-b border-gray-100 bg-white px-4">
+  {/* 왼쪽 뒤로가기 */}
   <button
     type="button"
     onClick={() => navigate(-1)}
-    className="flex h-10 w-10 items-center justify-center -ml-1 mr-2"
+    className="flex h-8 w-8 items-center justify-center"
     aria-label="뒤로가기"
   >
     <img
       src="/icons/icon-arrow-left.svg"
       alt=""
-      className="h-6 w-6 object-contain"
+      className="h-5 w-5 object-contain"
     />
   </button>
 
-  <h1 className="flex-1 text-base font-semibold truncate">{chatName}</h1>
+  {/* 가운데 비우기 */}
+  <div className="flex-1" />
 
+  {/* 오른쪽 더보기 */}
   <button
     type="button"
     onClick={() => setShowSheet(true)}
-    className="flex h-10 w-10 items-center justify-center"
-    aria-label="더보기"
+    className="flex h-8 w-8 items-center justify-center"
+    aria-label="채팅방 옵션"
   >
     <img
       src="/icons/icon-more-vertical.svg"
       alt=""
-       className="h-6 w-6 object-contain"
+      className="h-5 w-5 object-contain"
     />
   </button>
 </header>

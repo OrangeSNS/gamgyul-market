@@ -23,26 +23,37 @@ export default function TopBar({
         transparent ? 'bg-transparent' : 'bg-white border-b border-gray-200',
       ].join(' ')}
     >
-      {showBack && (
-        <button
-  type="button"
-  onClick={() => navigate(-1)}
-  className="flex h-10 w-10 items-center justify-center"
-  aria-label="뒤로가기"
->
-  <img
-    src="/icons/icon-arrow-left.svg"
-    alt=""
-    className="h-6 w-6 object-contain"
-  />
-</button>
-      )}
+      {/* 왼쪽 */}
+      <div className="flex w-10 items-center justify-start">
+        {showBack && (
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="flex h-10 w-10 items-center justify-center -ml-2"
+            aria-label="뒤로가기"
+          >
+            <img
+              src="/icons/icon-arrow-left.svg"
+              alt=""
+              className="h-6 w-6 object-contain"
+            />
+          </button>
+        )}
+      </div>
 
-      <h1 className="flex-1 text-base font-semibold text-gray-900 truncate">
-        {title}
-      </h1>
+      {/* 가운데 (제목 없으면 비워둠) */}
+      <div className="flex-1 text-center">
+        {title ? (
+          <h1 className="truncate text-base font-semibold text-gray-900">
+            {title}
+          </h1>
+        ) : null}
+      </div>
 
-     {rightSlot && <div>{rightSlot}</div>}
+      {/* 오른쪽 */}
+      <div className="flex w-10 items-center justify-end">
+        {rightSlot}
+      </div>
     </header>
   )
 }
