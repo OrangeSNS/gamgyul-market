@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['SpokaHanSansNeo', 'sans-serif'],
+      },
       colors: {
         brand: {
           DEFAULT: '#F26A2A',
