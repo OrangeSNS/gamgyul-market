@@ -5,6 +5,7 @@ import Button from '@shared/components/Button'
 import Input from '@shared/components/Input'
 import { ROUTES } from '@shared/constants'
 import { validateEmail, validatePassword } from '@shared/utils'
+import { checkEmail } from '@features/join/api'
 
 export default function JoinEmailPage() {
   const navigate = useNavigate()
@@ -13,11 +14,25 @@ export default function JoinEmailPage() {
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [isCheckingEmail, setIsCheckingEmail] = useState(false)
 
-  const isValid = !emailError && !passwordError && email !== '' && password !== ''
+  const isValid = !emailError && !passwordError && email !== '' && password !== '' && !isCheckingEmail
 
-  const handleEmailBlur = () => {
-    setEmailError(validateEmail(email))
+  const handleEmailBlur = async () => {
+    const localErr = validateEmail(email)
+    if (localErr) {
+      setEmailError(localErr)
+      return
+    }
+    setIsCheckingEmail(true)
+    try {
+      const res = await checkEmail(email)
+      setEmailError(res.message.includes('이미') ? '이미 가입된 이메일입니다.' : '')
+    } catch {
+      setEmailError('이메일 확인에 실패했습니다.')
+    } finally {
+      setIsCheckingEmail(false)
+    }
   }
 
   const handlePasswordBlur = () => {
@@ -25,6 +40,7 @@ export default function JoinEmailPage() {
   }
 
   const handleNext = () => {
+    if (isCheckingEmail) return
     const eErr = validateEmail(email)
     const pErr = validatePassword(password)
     setEmailError(eErr)
