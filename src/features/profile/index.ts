@@ -1,5 +1,0 @@
-export { default as ProfilePage } from './pages/ProfilePage'
-export { default as ProfileEditPage } from './pages/ProfileEditPage'
-export { default as FollowersPage } from './pages/FollowersPage'
-export { default as FollowingPage } from './pages/FollowingPage'
-export * from './api'
