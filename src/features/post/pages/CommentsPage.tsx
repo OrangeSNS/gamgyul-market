@@ -95,19 +95,21 @@ export default function CommentsPage() {
                 </div>
                 <p className="text-sm text-gray-700 leading-relaxed">{comment.content}</p>
               </div>
-              <button
-                onClick={() => {
-                  setSelectedComment(comment)
-                  setShowSheet(true)
-                }}
-                className="p-1 self-start"
-              >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 text-gray-400" fill="currentColor">
-                  <circle cx="5" cy="12" r="1.5" />
-                  <circle cx="12" cy="12" r="1.5" />
-                  <circle cx="19" cy="12" r="1.5" />
-                </svg>
-              </button>
+         <button
+  onClick={() => {
+    setSelectedComment(comment)
+    setShowSheet(true)
+  }}
+  className="self-start flex h-6 w-6 items-center justify-center"
+  aria-label="댓글 옵션"
+  type="button"
+>
+  <img
+    src="/icons/icon-more-vertical.svg"
+    alt=""
+     className="h-6 w-6 object-contain"
+  />
+</button>
             </div>
           ))
         )}
