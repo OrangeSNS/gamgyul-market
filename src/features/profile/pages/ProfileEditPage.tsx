@@ -106,7 +106,7 @@ export default function ProfileEditPage() {
         {/* Avatar */}
         <button type="button" onClick={() => fileInputRef.current?.click()} className="relative">
           <img
-            src={imagePreview}
+            src={imagePreview || '/icons/basic-profile-img-.svg'}
             alt="프로필 이미지"
             className="w-24 h-24 rounded-full object-cover bg-gray-100"
           />
