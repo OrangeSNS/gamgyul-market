@@ -31,7 +31,7 @@ export default function HomeFeedPage() {
 
   return (
     <div className="min-h-screen bg-white max-w-[390px] mx-auto shadow-lg">
-      <header className="sticky top-0 bg-white z-10 flex justify-between items-center px-4 h-12 border-b">
+      <header className="sticky top-0 bg-white z-10 flex justify-between items-center px-4 h-12">
         <h1 className="text-lg font-bold">감귤마켓 피드</h1>
         {/* 팀원이 정한 검색 경로로 이동 */}
         <button onClick={() => navigate('/search')} className="p-1" aria-label="검색">
