@@ -9,8 +9,13 @@ export default function PostCard({ post }: { post: any }) {
 
   const author = post?.author;
   const content = post?.content;
-  const image = post?.image;
   const IMG_URL = "https://dev.wenivops.co.kr/services/mandarin/";
+  const imageList = post?.image 
+    ? post.image.split(',')
+        .map((img: string) => img.trim())
+        .filter((img: string) => img && img !== "undefined" && img !== "null")
+    : [];
+  const getImageUrl = (img: string) => img.startsWith('http') ? img : `${IMG_URL}${img}`;
 
   // ❤️ 좋아요 클릭 핸들러
   const handleLike = () => {
@@ -57,14 +62,27 @@ export default function PostCard({ post }: { post: any }) {
           {content}
         </p>
 
-        {/* ✨ 2. 이미지 조건부 렌더링: 데이터가 있을 때만 렌더링합니다. */}
-        {image && image !== "" && image !== "undefined" && (
-          <div className="w-[304px] h-[228px] rounded-[10px] overflow-hidden border border-[#DBDBDB] mb-[12px] flex-shrink-0">
+        {/* ✨ 이미지 컨텐츠 영역 ✨ */}
+        {/* 1. 이미지가 아예 없으면 이 영역을 렌더링하지 않습니다. (빈 칸 문제 해결!) */}
+       {imageList.length > 0 && (
+          <div className="w-[304px] h-[228px] rounded-[10px] overflow-hidden border border-[#DBDBDB] mb-[12px] flex-shrink-0 relative bg-gray-50">
+            {/* 여러 장이어도 일단 첫 번째 이미지만 보여줍니다. */}
             <img 
-              src={image.startsWith('http') ? image : `${IMG_URL}${image}`} 
+              src={imageList[0].startsWith('http') ? imageList[0] : `${IMG_URL}${imageList[0]}`} 
               alt="게시글 이미지" 
-              className="w-full h-full object-cover" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // 이미지 로드 실패 시 해당 영역 숨김
+                (e.target as HTMLImageElement).closest('div')!.style.display = 'none';
+              }}
             />
+            
+            {/* 이미지가 여러 장이라는 표시 (우측 상단 작은 아이콘이나 숫자로 표시 가능) */}
+            {imageList.length > 1 && (
+              <div className="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full">
+                +{imageList.length - 1}
+              </div>
+            )}
           </div>
         )}
 
