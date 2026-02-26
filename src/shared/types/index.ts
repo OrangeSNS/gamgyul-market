@@ -4,14 +4,19 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  _id: string
-  username: string
-  email: string
-  accountname: string
-  intro: string
-  image: string
-  refreshToken: string
-  token: string
+  // 성공 시 데이터 (성공할 때만 있으므로 ?를 붙여줍니다)
+  _id?: string
+  username?: string
+  email?: string
+  accountname?: string
+  intro?: string
+  image?: string
+  refreshToken?: string
+  token?: string
+
+  // 실패 시 데이터 (명세서 2.2 반영)
+  message?: string 
+  status?: number
 }
 
 export interface SignupRequest {
