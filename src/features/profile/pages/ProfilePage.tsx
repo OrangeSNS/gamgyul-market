@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useBottomSheet } from '@shared/hooks/useBottomSheet'
 import { useModal } from '@shared/hooks/useModal'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import Button from '@shared/components/Button'
 import PostCard from '@shared/components/PostCard'
@@ -28,9 +28,11 @@ type ViewMode = 'list' | 'grid'
 export default function ProfilePage() {
   const { accountName } = useParams<{ accountName: string }>()
   const navigate = useNavigate()
+  const location = useLocation()
   const { user: me, logout } = useAuth()
 
   const isMe = me?.accountname === accountName
+  const canGoBack = location.key !== 'default'
 
   const [profile, setProfile] = useState<User | null>(null)
   const [posts, setPosts] = useState<Post[]>([])
@@ -77,6 +79,19 @@ export default function ProfilePage() {
     }
   }
 
+  const handleShare = async () => {
+    const url = window.location.href
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: profile?.username, url })
+      } else {
+        await navigator.clipboard.writeText(url)
+      }
+    } catch {
+      // 사용자 취소 또는 미지원
+    }
+  }
+
   const handleProductClick = (product: Product) => {
     if (!isMe) {
       window.open(product.link, '_blank')
@@ -120,7 +135,7 @@ export default function ProfilePage() {
     <div className="flex flex-col">
       {/* ── 상단 바 ──────────────────────────────────────────── */}
       <TopBar
-        showBack={!isMe}
+        showBack={canGoBack}
         title=""
         rightSlot={
           <button
@@ -187,7 +202,7 @@ export default function ProfilePage() {
         </div>
 
         {/* 액션 버튼 */}
-        <div className="flex gap-3 justify-center">
+        <div className="flex gap-3 justify-center items-center">
           {isMe ? (
             <>
               <Button
@@ -207,20 +222,57 @@ export default function ProfilePage() {
             </>
           ) : (
             <>
+              {/* 채팅 아이콘 버튼 */}
+              <button
+                onClick={() => navigate(ROUTES.CHAT_ROOM(profile.accountname))}
+                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                aria-label="채팅하기"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.8}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+              </button>
+
+              {/* 팔로우/언팔로우 버튼 */}
               <Button
                 variant={profile.isfollow ? 'outline' : 'primary'}
                 size="sm"
                 onClick={handleFollowToggle}
+                className="px-10"
               >
                 {profile.isfollow ? '언팔로우' : '팔로우'}
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate(ROUTES.CHAT_ROOM(profile.accountname))}
+
+              {/* 공유 아이콘 버튼 */}
+              <button
+                onClick={handleShare}
+                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                aria-label="공유하기"
               >
-                채팅하기
-              </Button>
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.8}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                  />
+                </svg>
+              </button>
             </>
           )}
         </div>
