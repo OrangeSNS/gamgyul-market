@@ -83,18 +83,24 @@ export default function PostDetailPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar
-        showBack
-        rightSlot={
-          <button onClick={() => setShowPostSheet(true)} className="p-1">
-            <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
-              <circle cx="5" cy="12" r="2" />
-              <circle cx="12" cy="12" r="2" />
-              <circle cx="19" cy="12" r="2" />
-            </svg>
-          </button>
-        }
+<TopBar
+  title=""
+  showBack
+  rightSlot={
+    <button
+      onClick={() => setShowPostSheet(true)}
+      className="flex h-8 w-8 items-center justify-center"
+      aria-label="더보기"
+      type="button"
+    >
+      <img
+        src="/icons/icon-more-vertical.svg"
+        alt=""
+        className="h-6 w-6 object-contain"
       />
+    </button>
+  }
+/>
 
       <article className="px-4 py-4">
         {/* Author */}

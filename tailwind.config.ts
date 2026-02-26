@@ -7,15 +7,18 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['SpokaHanSansNeo', 'sans-serif'],
+      },
       colors: {
         brand: {
-          DEFAULT: '#F26A2A',
+          DEFAULT: '#F26E22',
           50: '#FEF0E9',
           100: '#FDE0D3',
-          200: '#FBC1A7',
+          200: '#FFC7A7',
           300: '#F8A17A',
           400: '#F5824E',
-          500: '#F26A2A',
+          500: '#F26E22',
           600: '#D45820',
           700: '#A84418',
           800: '#7C3211',

@@ -52,22 +52,39 @@ export default function ChatRoomPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* TopBar */}
-      <header className="sticky top-0 z-30 flex items-center h-14 px-4 bg-white border-b border-gray-100">
-        <button onClick={() => navigate(-1)} className="p-1 -ml-1 mr-2">
-          <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <h1 className="flex-1 text-base font-semibold truncate">{chatName}</h1>
-        <button onClick={() => setShowSheet(true)} className="p-1">
-          <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
-            <circle cx="5" cy="12" r="2" />
-            <circle cx="12" cy="12" r="2" />
-            <circle cx="19" cy="12" r="2" />
-          </svg>
-        </button>
-      </header>
+     {/* TopBar */}
+<header className="sticky top-0 z-30 flex h-14 items-center border-b border-gray-100 bg-white px-4">
+  {/* 왼쪽 뒤로가기 */}
+  <button
+    type="button"
+    onClick={() => navigate(-1)}
+    className="flex h-8 w-8 items-center justify-center"
+    aria-label="뒤로가기"
+  >
+    <img
+      src="/icons/icon-arrow-left.svg"
+      alt=""
+      className="h-5 w-5 object-contain"
+    />
+  </button>
+
+  {/* 가운데 비우기 */}
+  <div className="flex-1" />
+
+  {/* 오른쪽 더보기 */}
+  <button
+    type="button"
+    onClick={() => setShowSheet(true)}
+    className="flex h-8 w-8 items-center justify-center"
+    aria-label="채팅방 옵션"
+  >
+    <img
+      src="/icons/icon-more-vertical.svg"
+      alt=""
+      className="h-5 w-5 object-contain"
+    />
+  </button>
+</header>
 
       {/* Messages */}
       <div className="flex-1 px-4 py-4 pb-20 flex flex-col gap-4">
