@@ -23,95 +23,6 @@ import {
   deleteProduct,
 } from '../api'
 
-// ── 더미 데이터 (USE_DUMMY = false 로 변경하면 실 API 사용) ──────────
-const USE_DUMMY = true
-
-const _dummyAuthor: User = {
-  _id: 'dummy_u1',
-  username: '애월읍 위니브 감귤농장',
-  accountname: 'weniv_Mandarin',
-  intro: '애월읍 감귤 전국 배송, 귤따기 체험, 감귤 농장',
-  image: '',
-  followerCount: 2950,
-  followingCount: 128,
-  isfollow: false,
-}
-
-const DUMMY_PRODUCTS: Product[] = [
-  {
-    id: 'dp1',
-    itemName: '애월읍 노지 감귤',
-    price: 35000,
-    link: 'https://example.com',
-    itemImage:
-      'https://images.unsplash.com/photo-1547514701-42782101795e?w=300&h=300&fit=crop',
-    createdAt: '2020-10-01T00:00:00.000Z',
-    updatedAt: '2020-10-01T00:00:00.000Z',
-    author: _dummyAuthor,
-  },
-  {
-    id: 'dp2',
-    itemName: '애월읍 한라봉 10kg',
-    price: 45000,
-    link: 'https://example.com',
-    itemImage:
-      'https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=300&h=300&fit=crop',
-    createdAt: '2020-10-01T00:00:00.000Z',
-    updatedAt: '2020-10-01T00:00:00.000Z',
-    author: _dummyAuthor,
-  },
-  {
-    id: 'dp3',
-    itemName: '감귤 파치',
-    price: 25000,
-    link: 'https://example.com',
-    itemImage:
-      'https://images.unsplash.com/photo-1587486936739-78e6a3a2af4b?w=300&h=300&fit=crop',
-    createdAt: '2020-10-01T00:00:00.000Z',
-    updatedAt: '2020-10-01T00:00:00.000Z',
-    author: _dummyAuthor,
-  },
-  {
-    id: 'dp4',
-    itemName: '천혜향 5kg',
-    price: 38000,
-    link: 'https://example.com',
-    itemImage:
-      'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?w=300&h=300&fit=crop',
-    createdAt: '2020-10-01T00:00:00.000Z',
-    updatedAt: '2020-10-01T00:00:00.000Z',
-    author: _dummyAuthor,
-  },
-  {
-    id: 'dp5',
-    itemName: '레드향 선물세트',
-    price: 55000,
-    link: 'https://example.com',
-    itemImage:
-      'https://images.unsplash.com/photo-1553279768-865429fa0078?w=300&h=300&fit=crop',
-    createdAt: '2020-10-01T00:00:00.000Z',
-    updatedAt: '2020-10-01T00:00:00.000Z',
-    author: _dummyAuthor,
-  },
-]
-
-const DUMMY_POSTS: Post[] = [
-  {
-    id: 'dpost1',
-    content:
-      '옷을 인생을 그러므로 없으면 것은 이상은 것은 우리의 위하여, 뿐이다. 이상의 청춘의 뼈 따뜻한 그들의 그와 약동하다. 대고, 못할 넣는 풍부하게 뛰노는 인생의 힘있다.',
-    image:
-      'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&h=400&fit=crop',
-    createdAt: '2020-10-21T00:00:00.000Z',
-    updatedAt: '2020-10-21T00:00:00.000Z',
-    hearted: false,
-    heartCount: 58,
-    commentCount: 12,
-    author: _dummyAuthor,
-  },
-]
-// ─────────────────────────────────────────────────────────────────────
-
 type ViewMode = 'list' | 'grid'
 
 export default function ProfilePage() {
@@ -119,16 +30,12 @@ export default function ProfilePage() {
   const navigate = useNavigate()
   const { user: me, logout } = useAuth()
 
-  const isMe = USE_DUMMY ? true : me?.accountname === accountName
+  const isMe = me?.accountname === accountName
 
-  const [profile, setProfile] = useState<User | null>(
-    USE_DUMMY ? _dummyAuthor : null,
-  )
-  const [posts, setPosts] = useState<Post[]>(USE_DUMMY ? DUMMY_POSTS : [])
-  const [products, setProducts] = useState<Product[]>(
-    USE_DUMMY ? DUMMY_PRODUCTS : [],
-  )
-  const [loading, setLoading] = useState(!USE_DUMMY)
+  const [profile, setProfile] = useState<User | null>(null)
+  const [posts, setPosts] = useState<Post[]>([])
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<ViewMode>('list')
 
   const profileSheet = useBottomSheet()
@@ -139,7 +46,7 @@ export default function ProfilePage() {
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
 
   useEffect(() => {
-    if (USE_DUMMY || !accountName) return
+    if (!accountName) return
     setLoading(true)
     Promise.all([
       getProfile(accountName),
@@ -156,7 +63,7 @@ export default function ProfilePage() {
   }, [accountName])
 
   const handleFollowToggle = async () => {
-    if (!profile || USE_DUMMY) return
+    if (!profile) return
     try {
       if (profile.isfollow) {
         const { profile: updated } = await unfollowUser(profile.accountname)
@@ -181,12 +88,10 @@ export default function ProfilePage() {
 
   const handleDeleteProduct = async () => {
     if (!deleteTarget) return
-    if (!USE_DUMMY) {
-      try {
-        await deleteProduct(deleteTarget)
-      } catch (err) {
-        console.error(err)
-      }
+    try {
+      await deleteProduct(deleteTarget)
+    } catch (err) {
+      console.error(err)
     }
     setProducts((prev) => prev.filter((p) => p.id !== deleteTarget))
     setDeleteTarget(null)
