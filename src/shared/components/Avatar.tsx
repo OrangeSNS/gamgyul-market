@@ -13,15 +13,17 @@ const sizeMap = {
   xl: 'w-24 h-24',
 }
 
-const DEFAULT_AVATAR = 'https://dev.wenivops.co.kr/services/mandarin/Ellipse.png'
+const DEFAULT_AVATAR_SMALL = '/icons/basic-profile.svg'
+const DEFAULT_AVATAR_LARGE = '/icons/basic-profile-img-.svg'
 
 export default function Avatar({ src, alt = '', size = 'md', className = '' }: AvatarProps) {
+  const defaultAvatar = (size === 'lg' || size === 'xl') ? DEFAULT_AVATAR_LARGE : DEFAULT_AVATAR_SMALL
   return (
     <img
-      src={src || DEFAULT_AVATAR}
+      src={src || defaultAvatar}
       alt={alt}
       onError={(e) => {
-        ;(e.target as HTMLImageElement).src = DEFAULT_AVATAR
+        ;(e.target as HTMLImageElement).src = defaultAvatar
       }}
       className={['rounded-full object-cover bg-gray-100', sizeMap[size], className]
         .filter(Boolean)
