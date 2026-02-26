@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useBottomSheet } from '@shared/hooks/useBottomSheet'
+import { useModal } from '@shared/hooks/useModal'
 import { useParams, useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import Button from '@shared/components/Button'
@@ -129,11 +131,11 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(!USE_DUMMY)
   const [viewMode, setViewMode] = useState<ViewMode>('list')
 
-  const [showBottomSheet, setShowBottomSheet] = useState(false)
-  const [showProductSheet, setShowProductSheet] = useState(false)
+  const profileSheet = useBottomSheet()
+  const productSheet = useBottomSheet()
+  const logoutModal = useModal()
+  const deleteModal = useModal()
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [showLogoutModal, setShowLogoutModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
 
   useEffect(() => {
@@ -174,7 +176,7 @@ export default function ProfilePage() {
       return
     }
     setSelectedProduct(product)
-    setShowProductSheet(true)
+    productSheet.open()
   }
 
   const handleDeleteProduct = async () => {
@@ -188,7 +190,7 @@ export default function ProfilePage() {
     }
     setProducts((prev) => prev.filter((p) => p.id !== deleteTarget))
     setDeleteTarget(null)
-    setShowDeleteModal(false)
+    deleteModal.close()
   }
 
   const albumPosts = posts.filter((p) => parsePostImages(p.image).length > 0)
@@ -217,7 +219,7 @@ export default function ProfilePage() {
         title=""
         rightSlot={
           <button
-            onClick={() => setShowBottomSheet(true)}
+            onClick={profileSheet.open}
             className="p-1 rounded-full hover:bg-gray-100"
             aria-label="더보기"
           >
@@ -439,8 +441,8 @@ export default function ProfilePage() {
 
       {/* ── 프로필 바텀시트 ──────────────────────────────────── */}
       <BottomSheet
-        open={showBottomSheet}
-        onClose={() => setShowBottomSheet(false)}
+        open={profileSheet.isOpen}
+        onClose={profileSheet.close}
         items={
           isMe
             ? [
@@ -450,7 +452,7 @@ export default function ProfilePage() {
                 },
                 {
                   label: '로그아웃',
-                  onClick: () => setShowLogoutModal(true),
+                  onClick: logoutModal.open,
                   danger: true,
                 },
               ]
@@ -460,15 +462,15 @@ export default function ProfilePage() {
 
       {/* ── 상품 바텀시트 ────────────────────────────────────── */}
       <BottomSheet
-        open={showProductSheet}
-        onClose={() => setShowProductSheet(false)}
+        open={productSheet.isOpen}
+        onClose={productSheet.close}
         items={[
           {
             label: '삭제',
             danger: true,
             onClick: () => {
               setDeleteTarget(selectedProduct?.id ?? null)
-              setShowDeleteModal(true)
+              deleteModal.open()
             },
           },
           {
@@ -490,25 +492,25 @@ export default function ProfilePage() {
 
       {/* ── 로그아웃 모달 ────────────────────────────────────── */}
       <Modal
-        open={showLogoutModal}
+        open={logoutModal.isOpen}
         message="로그아웃 하시겠어요?"
         confirmLabel="로그아웃"
         onConfirm={() => {
           logout()
           navigate(ROUTES.LOGIN, { replace: true })
         }}
-        onCancel={() => setShowLogoutModal(false)}
+        onCancel={logoutModal.close}
         destructive
       />
 
       {/* ── 상품 삭제 모달 ───────────────────────────────────── */}
       <Modal
-        open={showDeleteModal}
+        open={deleteModal.isOpen}
         message="상품을 삭제하시겠어요?"
         confirmLabel="삭제"
         onConfirm={handleDeleteProduct}
         onCancel={() => {
-          setShowDeleteModal(false)
+          deleteModal.close()
           setDeleteTarget(null)
         }}
         destructive

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PostCard from '../components/PostCard'; // 우리가 만든 것
-import NoFollowView from '../components/NoFollowView'; // 우리가 만든 것
+import PostCard from '@shared/components/PostCard';
+import NoFollowView from '../components/NoFollowView';
 import { getFeed } from '../api';
 import { Post } from '@shared/types';
+import { useAuth } from '@app/providers/AuthProvider';
 
 export default function HomeFeedPage() {
   const navigate = useNavigate();
+  const { user: me } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,8 +40,13 @@ export default function HomeFeedPage() {
       <main className="pb-16">
         {posts.length > 0 ? (
           <div className="flex flex-col divide-y">
-            {posts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
+            {posts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                isMyPost={post.author._id === me?._id}
+                onDelete={(id) => setPosts((prev) => prev.filter((p) => p.id !== id))}
+              />
             ))}
           </div>
         ) : (

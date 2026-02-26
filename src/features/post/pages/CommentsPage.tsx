@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import { useBottomSheet } from '@shared/hooks/useBottomSheet'
+import { useModal } from '@shared/hooks/useModal'
 import { useParams } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import Spinner from '@shared/components/Spinner'
@@ -22,9 +24,9 @@ export default function CommentsPage() {
 
   // Bottom sheet
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
-  const [showSheet, setShowSheet] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [showReportModal, setShowReportModal] = useState(false)
+  const commentSheet = useBottomSheet()
+  const deleteModal = useModal()
+  const reportModal = useModal()
 
   useEffect(() => {
     if (!postId) return
@@ -62,8 +64,8 @@ export default function CommentsPage() {
     }
 
     setSelectedComment(null)
-    setShowDeleteModal(false)
-    setShowSheet(false)
+    deleteModal.close()
+    commentSheet.close()
   }
 
   const handleReport = async () => {
@@ -75,8 +77,8 @@ export default function CommentsPage() {
       console.error(err)
     }
 
-    setShowReportModal(false)
-    setShowSheet(false)
+    reportModal.close()
+    commentSheet.close()
   }
 
   return (
@@ -139,7 +141,7 @@ export default function CommentsPage() {
                   <button
                     onClick={() => {
                       setSelectedComment(comment)
-                      setShowSheet(true)
+                      commentSheet.open()
                     }}
                     className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center"
                     aria-label="댓글 옵션"
@@ -188,8 +190,8 @@ export default function CommentsPage() {
 
       {/* Comment bottom sheet */}
       <BottomSheet
-        open={showSheet}
-        onClose={() => setShowSheet(false)}
+        open={commentSheet.isOpen}
+        onClose={commentSheet.close}
         items={
           selectedComment?.author._id === me?._id
             ? [
@@ -197,8 +199,8 @@ export default function CommentsPage() {
                   label: '삭제',
                   danger: true,
                   onClick: () => {
-                    setShowSheet(false)
-                    setShowDeleteModal(true)
+                    commentSheet.close()
+                    deleteModal.open()
                   },
                 },
               ]
@@ -207,8 +209,8 @@ export default function CommentsPage() {
                   label: '신고',
                   danger: true,
                   onClick: () => {
-                    setShowSheet(false)
-                    setShowReportModal(true)
+                    commentSheet.close()
+                    reportModal.open()
                   },
                 },
               ]
@@ -216,20 +218,20 @@ export default function CommentsPage() {
       />
 
       <Modal
-        open={showDeleteModal}
+        open={deleteModal.isOpen}
         message="댓글을 삭제하시겠어요?"
         confirmLabel="삭제"
         onConfirm={handleDelete}
-        onCancel={() => setShowDeleteModal(false)}
+        onCancel={deleteModal.close}
         destructive
       />
 
       <Modal
-        open={showReportModal}
+        open={reportModal.isOpen}
         message="이 댓글을 신고하시겠어요?"
         confirmLabel="신고"
         onConfirm={handleReport}
-        onCancel={() => setShowReportModal(false)}
+        onCancel={reportModal.close}
         destructive
       />
     </div>
