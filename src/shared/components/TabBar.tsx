@@ -37,18 +37,26 @@ export default function TabBar() {
     },
   ]
 
+  const myProfilePath = user ? ROUTES.PROFILE(user.accountname) : null
+  const isOnMyProfile = myProfilePath
+    ? location.pathname.startsWith(myProfilePath) ||
+      location.pathname === ROUTES.PROFILE_EDIT
+    : false
+  const isOnOtherProfile =
+    location.pathname.startsWith('/profile') && !isOnMyProfile
+
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-200 z-40">
       <div className="flex">
         {tabs.map((tab) => {
           const isActive =
             tab.to === ROUTES.HOME
-              ? location.pathname === ROUTES.HOME
+              ? location.pathname === ROUTES.HOME || isOnOtherProfile
               : tab.to === ROUTES.POST_NEW
               ? location.pathname === ROUTES.POST_NEW
               : tab.to === ROUTES.CHAT
               ? location.pathname.startsWith('/chat')
-              : location.pathname.startsWith('/profile')
+              : isOnMyProfile
 
           return (
             <NavLink
