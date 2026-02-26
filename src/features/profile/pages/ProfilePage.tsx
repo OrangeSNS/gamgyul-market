@@ -30,16 +30,12 @@ export default function ProfilePage() {
   const navigate = useNavigate()
   const { user: me, logout } = useAuth()
 
-  const isMe = USE_DUMMY ? true : me?.accountname === accountName
+  const isMe = me?.accountname === accountName
 
-  const [profile, setProfile] = useState<User | null>(
-    USE_DUMMY ? _dummyAuthor : null,
-  )
-  const [posts, setPosts] = useState<Post[]>(USE_DUMMY ? DUMMY_POSTS : [])
-  const [products, setProducts] = useState<Product[]>(
-    USE_DUMMY ? DUMMY_PRODUCTS : [],
-  )
-  const [loading, setLoading] = useState(!USE_DUMMY)
+  const [profile, setProfile] = useState<User | null>(null)
+  const [posts, setPosts] = useState<Post[]>([])
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<ViewMode>('list')
 
   const profileSheet = useBottomSheet()
@@ -50,7 +46,7 @@ export default function ProfilePage() {
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
 
   useEffect(() => {
-    if (USE_DUMMY || !accountName) return
+    if (!accountName) return
     setLoading(true)
     Promise.all([
       getProfile(accountName),
@@ -67,7 +63,7 @@ export default function ProfilePage() {
   }, [accountName])
 
   const handleFollowToggle = async () => {
-    if (!profile || USE_DUMMY) return
+    if (!profile) return
     try {
       if (profile.isfollow) {
         const { profile: updated } = await unfollowUser(profile.accountname)
@@ -92,12 +88,10 @@ export default function ProfilePage() {
 
   const handleDeleteProduct = async () => {
     if (!deleteTarget) return
-    if (!USE_DUMMY) {
-      try {
-        await deleteProduct(deleteTarget)
-      } catch (err) {
-        console.error(err)
-      }
+    try {
+      await deleteProduct(deleteTarget)
+    } catch (err) {
+      console.error(err)
     }
     setProducts((prev) => prev.filter((p) => p.id !== deleteTarget))
     setDeleteTarget(null)
