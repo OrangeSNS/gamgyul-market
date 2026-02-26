@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import Avatar from './Avatar'
 import BottomSheet from './BottomSheet'
 import Modal from './Modal'
+import { useBottomSheet } from '@shared/hooks/useBottomSheet'
+import { useModal } from '@shared/hooks/useModal'
 import { Post } from '@shared/types'
 import { formatRelativeTime, parsePostImages } from '@shared/utils'
 import { ROUTES } from '@shared/constants'
@@ -20,8 +22,8 @@ export default function PostCard({ post, onDelete, onEdit, isMyPost = false }: P
   const navigate = useNavigate()
   const [hearted, setHearted] = useState(post.hearted)
   const [heartCount, setHeartCount] = useState(post.heartCount)
-  const [showMenu, setShowMenu] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const menuSheet = useBottomSheet()
+  const deleteModal = useModal()
 
   const images = parsePostImages(post.image)
 
@@ -49,7 +51,7 @@ export default function PostCard({ post, onDelete, onEdit, isMyPost = false }: P
     } catch (err) {
       console.error(err)
     }
-    setShowDeleteModal(false)
+    deleteModal.close()
   }
 
   const handleReport = async () => {
@@ -77,7 +79,7 @@ export default function PostCard({ post, onDelete, onEdit, isMyPost = false }: P
           </div>
         </button>
         <button
-          onClick={() => setShowMenu(true)}
+          onClick={menuSheet.open}
           className="p-1 rounded-full hover:bg-gray-100"
           aria-label="더보기"
         >
@@ -155,12 +157,12 @@ export default function PostCard({ post, onDelete, onEdit, isMyPost = false }: P
 
       {/* Post menu bottom sheet */}
       <BottomSheet
-        open={showMenu}
-        onClose={() => setShowMenu(false)}
+        open={menuSheet.isOpen}
+        onClose={menuSheet.close}
         items={
           isMyPost
             ? [
-                { label: '삭제', onClick: () => setShowDeleteModal(true) },
+                { label: '삭제', onClick: deleteModal.open },
                 { label: '수정', onClick: () => onEdit?.(post.id) },
               ]
             : [{ label: '신고하기', danger: true, onClick: handleReport }]
@@ -169,11 +171,11 @@ export default function PostCard({ post, onDelete, onEdit, isMyPost = false }: P
 
       {/* Delete confirm modal */}
       <Modal
-        open={showDeleteModal}
+        open={deleteModal.isOpen}
         message="게시글을 삭제할까요?"
         confirmLabel="삭제"
         onConfirm={handleDelete}
-        onCancel={() => setShowDeleteModal(false)}
+        onCancel={deleteModal.close}
       />
     </article>
   )

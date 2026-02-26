@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useBottomSheet } from '@shared/hooks/useBottomSheet'
+import { useModal } from '@shared/hooks/useModal'
 import { useParams, useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import Spinner from '@shared/components/Spinner'
@@ -23,9 +25,9 @@ export default function PostDetailPage() {
   const [hearted, setHearted] = useState(false)
   const [heartCount, setHeartCount] = useState(0)
 
-  const [showPostSheet, setShowPostSheet] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [showReportModal, setShowReportModal] = useState(false)
+  const postSheet = useBottomSheet()
+  const deleteModal = useModal()
+  const reportModal = useModal()
 
   const isMyPost = post?.author._id === me?._id
 
@@ -88,7 +90,7 @@ export default function PostDetailPage() {
   showBack
   rightSlot={
     <button
-      onClick={() => setShowPostSheet(true)}
+      onClick={postSheet.open}
       className="flex h-8 w-8 items-center justify-center"
       aria-label="더보기"
       type="button"
@@ -180,43 +182,43 @@ export default function PostDetailPage() {
 
       {/* Post bottom sheet */}
       <BottomSheet
-        open={showPostSheet}
-        onClose={() => setShowPostSheet(false)}
+        open={postSheet.isOpen}
+        onClose={postSheet.close}
         items={
           isMyPost
             ? [
                 {
                   label: '삭제',
                   danger: true,
-                  onClick: () => setShowDeleteModal(true),
+                  onClick: deleteModal.open,
                 },
                 {
                   label: '수정',
                   onClick: () => navigate(ROUTES.POST_NEW),
                 },
               ]
-            : [{ label: '신고', danger: true, onClick: () => setShowReportModal(true) }]
+            : [{ label: '신고', danger: true, onClick: reportModal.open }]
         }
       />
 
       <Modal
-        open={showDeleteModal}
+        open={deleteModal.isOpen}
         message="게시글을 삭제하시겠어요?"
         confirmLabel="삭제"
         onConfirm={handleDelete}
-        onCancel={() => setShowDeleteModal(false)}
+        onCancel={deleteModal.close}
         destructive
       />
 
       <Modal
-        open={showReportModal}
+        open={reportModal.isOpen}
         message="이 게시글을 신고하시겠어요?"
         confirmLabel="신고"
         onConfirm={() => {
           handleReport()
-          setShowReportModal(false)
+          reportModal.close()
         }}
-        onCancel={() => setShowReportModal(false)}
+        onCancel={reportModal.close}
         destructive
       />
     </div>

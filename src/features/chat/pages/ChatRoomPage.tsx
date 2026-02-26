@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import BottomSheet from '@shared/components/BottomSheet'
 import Modal from '@shared/components/Modal'
+import { useBottomSheet } from '@shared/hooks/useBottomSheet'
+import { useModal } from '@shared/hooks/useModal'
 
 // 채팅방 - 마크업 전용 (서버 기능 없음)
 const MOCK_MESSAGES = [
@@ -40,8 +42,8 @@ export default function ChatRoomPage() {
   const { chatId } = useParams()
   const navigate = useNavigate()
   const [message, setMessage] = useState('')
-  const [showSheet, setShowSheet] = useState(false)
-  const [showLeaveModal, setShowLeaveModal] = useState(false)
+  const chatSheet = useBottomSheet()
+  const leaveModal = useModal()
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -74,7 +76,7 @@ export default function ChatRoomPage() {
   {/* 오른쪽 더보기 */}
   <button
     type="button"
-    onClick={() => setShowSheet(true)}
+    onClick={chatSheet.open}
     className="flex h-8 w-8 items-center justify-center"
     aria-label="채팅방 옵션"
   >
@@ -146,23 +148,23 @@ export default function ChatRoomPage() {
       </div>
 
       <BottomSheet
-        open={showSheet}
-        onClose={() => setShowSheet(false)}
+        open={chatSheet.isOpen}
+        onClose={chatSheet.close}
         items={[
           {
             label: '채팅방 나가기',
             danger: true,
-            onClick: () => setShowLeaveModal(true),
+            onClick: leaveModal.open,
           },
         ]}
       />
 
       <Modal
-        open={showLeaveModal}
+        open={leaveModal.isOpen}
         message="채팅방을 나가시겠어요?"
         confirmLabel="나가기"
         onConfirm={() => navigate(-1)}
-        onCancel={() => setShowLeaveModal(false)}
+        onCancel={leaveModal.close}
         destructive
       />
     </div>
