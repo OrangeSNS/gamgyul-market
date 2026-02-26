@@ -34,7 +34,9 @@ export default function HomeFeedPage() {
       <header className="sticky top-0 bg-white z-10 flex justify-between items-center px-4 h-12 border-b">
         <h1 className="text-lg font-bold">감귤마켓 피드</h1>
         {/* 팀원이 정한 검색 경로로 이동 */}
-        <button onClick={() => navigate('/search')} className="p-1 text-xl">🔍</button>
+        <button onClick={() => navigate('/search')} className="p-1" aria-label="검색">
+          <img src="/icons/icon-search.svg" alt="" className="w-6 h-6" />
+        </button>
       </header>
 
       <main className="pb-16">
