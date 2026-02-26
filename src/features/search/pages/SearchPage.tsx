@@ -12,7 +12,20 @@ export default function SearchPage() {
   const [keyword, setKeyword] = useState('')
   const [results, setResults] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
+  
+  // 팀원이 만든 디바운스 훅 사용 (400ms 대기)
   const debouncedKeyword = useDebounce(keyword, 400)
+
+  // ✨ 우리가 만든 텍스트 하이라이트 함수 유지
+  const highlightText = (text: string, highlight: string) => {
+    if (!highlight.trim()) return text;
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return parts.map((part, i) => 
+      part.toLowerCase() === highlight.toLowerCase() ? (
+        <span key={i} className="text-[#F26E22]">{part}</span>
+      ) : part
+    );
+  };
 
   useEffect(() => {
     if (!debouncedKeyword.trim()) {
@@ -20,6 +33,7 @@ export default function SearchPage() {
       return
     }
     setLoading(true)
+    // 팀원의 request 도구 사용 (토큰 처리가 이미 되어있을 확률이 큼)
     request<User[]>(`/user/searchuser/?keyword=${encodeURIComponent(debouncedKeyword)}`)
       .then(setResults)
       .catch(() => setResults([]))
@@ -27,63 +41,56 @@ export default function SearchPage() {
   }, [debouncedKeyword])
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Search bar */}
-      <header className="sticky top-0 z-30 bg-white border-b border-gray-100 px-4 py-3">
-        <div className="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2.5">
-          <svg viewBox="0 0 24 24" className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+    <div className="flex flex-col min-h-screen bg-white max-w-[390px] mx-auto">
+      {/* 1. 상단 헤더: 우리가 만든 디자인으로 교체 (뒤로가기 추가) */}
+      <header className="sticky top-0 z-30 bg-white border-b border-[#DBDBDB] px-[16px] h-[48px] flex items-center gap-[8px]">
+        <button onClick={() => navigate(-1)} className="p-0 flex-shrink-0">
+          <img src="/icons/icon-arrow-left.svg" alt="뒤로가기" className="w-[24px] h-[24px]" />
+        </button>
+        <div className="flex-1">
           <input
             type="text"
-            placeholder="계정을 검색해보세요"
+            placeholder="계정 검색"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             autoFocus
-            className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
+            className="w-full bg-[#F2F2F2] px-[16px] py-[7px] rounded-full text-[14px] outline-none placeholder:text-[#C4C4C4]"
           />
-          {keyword && (
-            <button onClick={() => setKeyword('')} className="text-gray-400">
-              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
-                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-              </svg>
-            </button>
-          )}
         </div>
       </header>
 
-      {/* Results */}
-      <div className="flex-1">
+      {/* 2. 결과 리스트: 팀원의 컴포넌트 + 우리의 하이라이트 */}
+      <div className="flex-1 p-[16px]">
         {loading ? (
           <div className="flex justify-center py-10"><Spinner /></div>
         ) : results.length > 0 ? (
-          results.map((user) => (
-            <button
-              key={user._id}
-              onClick={() => navigate(ROUTES.PROFILE(user.accountname))}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-left"
-            >
-              <Avatar src={user.image} alt={user.username} size="sm" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">
-                  {user.username}
-                </p>
-                <p className="text-xs text-gray-400 truncate">@{user.accountname}</p>
-              </div>
-            </button>
-          ))
-        ) : keyword && !loading ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center px-8">
-            <p className="text-sm text-gray-500">
-              "<span className="font-medium">{keyword}</span>"에 대한 검색 결과가 없습니다.
-            </p>
+          <div className="flex flex-col gap-[16px]">
+            {results.map((user) => (
+              <button
+                key={user._id}
+                // 팀원이 정한 상수를 사용하여 프로필로 이동
+                onClick={() => navigate(ROUTES.PROFILE(user.accountname))}
+                className="w-full flex items-center gap-[12px] text-left"
+              >
+                {/* 팀원의 Avatar 컴포넌트 사용 (이미지 에러 처리가 내장됨) */}
+                <Avatar src={user.image} alt={user.username} size="sm" />
+                <div className="flex flex-col gap-[4px] min-w-0">
+                  <p className="text-[14px] font-medium text-black">
+                    {highlightText(user.username, keyword)}
+                  </p>
+                  <p className="text-[12px] text-[#767676]">
+                    @ {highlightText(user.accountname, keyword)}
+                  </p>
+                </div>
+              </button>
+            ))}
           </div>
+        ) : keyword && !loading ? (
+          <p className="text-center text-sm text-[#767676] mt-10">검색 결과가 없습니다. 🍊</p>
         ) : (
-          <div className="flex flex-col items-center justify-center py-16 text-center px-8">
-            <svg viewBox="0 0 24 24" className="w-12 h-12 text-gray-200 mb-3" fill="none" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <p className="text-sm text-gray-400">사용자 이름이나 계정 ID로 검색하세요</p>
+          <div className="flex flex-col items-center justify-center py-16 text-center text-[#767676]">
+             <img src="/icons/icon-search.svg" className="w-12 h-12 opacity-20 mb-4" alt="" />
+             <p className="text-sm">사용자 이름이나 계정 ID로 검색하세요</p>
           </div>
         )}
       </div>
