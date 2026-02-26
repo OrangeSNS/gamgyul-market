@@ -1,27 +1,34 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Avatar from './Avatar'
+import BottomSheet from './BottomSheet'
+import Modal from './Modal'
+import { useBottomSheet } from '@shared/hooks/useBottomSheet'
+import { useModal } from '@shared/hooks/useModal'
 import { Post } from '@shared/types'
 import { formatRelativeTime, parsePostImages } from '@shared/utils'
 import { ROUTES } from '@shared/constants'
 import { request } from '@shared/api/client'
+import { deletePost, reportPost } from '@features/post/api'
 
 interface PostCardProps {
   post: Post
   onDelete?: (postId: string) => void
+  onEdit?: (postId: string) => void
   isMyPost?: boolean
 }
 
-export default function PostCard({ post, onDelete, isMyPost = false }: PostCardProps) {
+export default function PostCard({ post, onDelete, onEdit, isMyPost = false }: PostCardProps) {
   const navigate = useNavigate()
   const [hearted, setHearted] = useState(post.hearted)
   const [heartCount, setHeartCount] = useState(post.heartCount)
+  const menuSheet = useBottomSheet()
+  const deleteModal = useModal()
 
   const images = parsePostImages(post.image)
 
   const handleHeart = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    // UI 토글만 (낙관적 업데이트)
     const nextHearted = !hearted
     setHearted(nextHearted)
     setHeartCount((c) => (nextHearted ? c + 1 : c - 1))
@@ -32,16 +39,33 @@ export default function PostCard({ post, onDelete, isMyPost = false }: PostCardP
         await request(`/post/${post.id}/unheart`, { method: 'DELETE' })
       }
     } catch {
-      // 롤백
       setHearted(!nextHearted)
       setHeartCount((c) => (nextHearted ? c - 1 : c + 1))
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      await deletePost(post.id)
+      onDelete?.(post.id)
+    } catch (err) {
+      console.error(err)
+    }
+    deleteModal.close()
+  }
+
+  const handleReport = async () => {
+    try {
+      await reportPost(post.id)
+    } catch (err) {
+      console.error(err)
     }
   }
 
   return (
     <article className="bg-white px-4 pt-4 pb-3 border-b border-gray-100">
       {/* Author */}
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center justify-between mb-3">
         <button
           onClick={() => navigate(ROUTES.PROFILE(post.author.accountname))}
           className="flex items-center gap-2"
@@ -51,8 +75,19 @@ export default function PostCard({ post, onDelete, isMyPost = false }: PostCardP
             <p className="text-sm font-semibold text-gray-900 leading-tight">
               {post.author.username}
             </p>
-            <p className="text-xs text-gray-400">@{post.author.accountname}</p>
+            <p className="text-xs text-gray-400">@ {post.author.accountname}</p>
           </div>
+        </button>
+        <button
+          onClick={menuSheet.open}
+          className="p-1 rounded-full hover:bg-gray-100"
+          aria-label="더보기"
+        >
+          <svg viewBox="0 0 24 24" className="w-5 h-5 text-gray-400" fill="currentColor">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
         </button>
       </div>
 
@@ -113,11 +148,35 @@ export default function PostCard({ post, onDelete, isMyPost = false }: PostCardP
           </svg>
           <span className="text-xs">{post.commentCount}</span>
         </button>
-
-        <span className="text-xs text-gray-400 ml-auto">
-          {formatRelativeTime(post.createdAt)}
-        </span>
       </div>
+
+      {/* Date */}
+      <p className="text-xs text-gray-400 mt-2">
+        {formatRelativeTime(post.createdAt)}
+      </p>
+
+      {/* Post menu bottom sheet */}
+      <BottomSheet
+        open={menuSheet.isOpen}
+        onClose={menuSheet.close}
+        items={
+          isMyPost
+            ? [
+                { label: '삭제', onClick: deleteModal.open },
+                { label: '수정', onClick: () => onEdit?.(post.id) },
+              ]
+            : [{ label: '신고하기', danger: true, onClick: handleReport }]
+        }
+      />
+
+      {/* Delete confirm modal */}
+      <Modal
+        open={deleteModal.isOpen}
+        message="게시글을 삭제할까요?"
+        confirmLabel="삭제"
+        onConfirm={handleDelete}
+        onCancel={deleteModal.close}
+      />
     </article>
   )
 }

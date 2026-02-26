@@ -10,7 +10,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
   return (
     <button
       onClick={onClick}
-      className="flex flex-col text-left"
+      className="flex flex-col text-left w-full"
     >
       <div className="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 mb-2">
         <img
@@ -22,7 +22,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
           }}
         />
       </div>
-      <p className="text-xs text-gray-800 font-medium line-clamp-1">{product.itemName}</p>
+      <p className="text-xs text-gray-900 font-medium line-clamp-1">{product.itemName}</p>
       <p className="text-xs font-bold text-brand mt-0.5">{formatPrice(product.price)}</p>
     </button>
   )
