@@ -30,8 +30,8 @@ export default function HomeFeedPage() {
   if (loading) return <div className="p-10 text-center">감귤 로딩 중... 🍊</div>;
 
   return (
-    <div className="min-h-screen bg-white max-w-[390px] mx-auto shadow-lg">
-      <header className="sticky top-0 bg-white z-10 flex justify-between items-center px-4 h-12">
+    <div className="min-h-screen bg-white">
+      <header className="sticky top-0 bg-white z-10 flex justify-between items-center px-4 h-12 border-b border-gray-200">
         <h1 className="text-lg font-bold">감귤마켓 피드</h1>
         {/* 팀원이 정한 검색 경로로 이동 */}
         <button onClick={() => navigate('/search')} className="p-1" aria-label="검색">
