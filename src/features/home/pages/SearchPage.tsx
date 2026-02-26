@@ -4,7 +4,7 @@ import { getTestToken, searchUser } from '../api';
 
 export default function SearchPage({ onBack }: { onBack: () => void }) {
   const [keyword, setKeyword] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any[]>([]);
   const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
 

@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import PostCard from '../components/PostCard'; // 우리가 만든 것
 import NoFollowView from '../components/NoFollowView'; // 우리가 만든 것
 import { getFeed } from '../api';
+import { Post } from '@shared/types';
 
 export default function HomeFeedPage() {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   const loadFeed = useCallback(async () => {

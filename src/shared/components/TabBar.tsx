@@ -27,7 +27,7 @@ export default function TabBar() {
     },
     {
       to: ROUTES.POST_NEW,
-      label: '게시물',
+      label: '게시물 작성',
       icon: (active: boolean) => (
         <svg viewBox="0 0 24 24" className={`w-6 h-6 ${active ? 'text-brand' : 'text-gray-400'}`} fill="none" stroke="currentColor" strokeWidth={1.8}>
           <rect x="3" y="3" width="18" height="18" rx="2" />
