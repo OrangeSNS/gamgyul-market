@@ -4,7 +4,6 @@ import TopBar from '@app/layouts/TopBar'
 import Button from '@shared/components/Button'
 import Input from '@shared/components/Input'
 import { ROUTES } from '@shared/constants'
-import { formatPrice } from '@shared/utils'
 import { uploadImage } from '@shared/api/client'
 import { createProduct } from '../api'
 
@@ -80,18 +79,16 @@ export default function ProductNewPage() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full h-48 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-2 hover:border-brand hover:bg-brand-50 transition-colors overflow-hidden"
+            className="relative w-full h-48 rounded-xl bg-gray-100 overflow-hidden"
           >
-            {imagePreview ? (
+            {imagePreview && (
               <img src={imagePreview} alt="상품 이미지" className="w-full h-full object-cover" />
-            ) : (
-              <>
-                <svg viewBox="0 0 24 24" className="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span className="text-sm text-gray-400">이미지를 등록해주세요</span>
-              </>
             )}
+            <div className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-gray-400/70 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
           </button>
           <input
             ref={fileInputRef}
@@ -117,20 +114,17 @@ export default function ProductNewPage() {
           <input
             type="text"
             inputMode="numeric"
-            placeholder="가격을 입력해주세요"
+            placeholder="숫자만 입력 가능합니다."
             value={price > 0 ? price.toLocaleString('ko-KR') : priceInput}
             onChange={handlePriceChange}
             className="w-full pb-2 text-sm bg-transparent border-b border-gray-300 focus:border-brand outline-none transition-colors placeholder:text-gray-400"
           />
-          {price > 0 && (
-            <p className="text-xs text-brand font-medium">{formatPrice(price)}</p>
-          )}
         </div>
 
         <Input
           label="판매 링크"
           type="url"
-          placeholder="https://"
+          placeholder="URL을 입력해 주세요."
           value={link}
           onChange={(e) => setLink(e.target.value)}
           underline
