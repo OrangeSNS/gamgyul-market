@@ -74,7 +74,7 @@ export default function EmailLoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <TopBar title="로그인" showBack />
+      <TopBar title="" showBack />
 
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 px-6 pt-10" noValidate>
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">로그인</h2>
@@ -94,7 +94,7 @@ export default function EmailLoginPage() {
             />
             {/* [핵심] 이메일 입력창 바로 밑 에러 표시 */}
             {emailError && (
-              <p className="text-xs text-[#EB5757] mt-1">*{emailError}</p>
+              <p className="text-[12px] leading-[14px] text-[#EB5757] mt-1">*{emailError}</p>
             )}
           </div>
 
@@ -112,9 +112,9 @@ export default function EmailLoginPage() {
         </div>
 
         {/* 로그인 결과(비번 틀림 등) 에러 표시 영역 */}
-        <div className="h-6 mt-2">
+        <div className="mt-2">
           {loginError && (
-            <p className="text-xs text-[#EB5757] text-left">*{loginError}</p>
+            <p className="text-[12px] leading-[14px] text-[#EB5757] text-left">*{loginError}</p>
           )}
         </div>
 
@@ -124,7 +124,7 @@ export default function EmailLoginPage() {
           size="lg"
           disabled={!isFormFilled || loading || !!emailError || !!loginError} 
           loading={loading}
-          className="mt-4 text-sm"
+          className="mt-[30px] text-sm"
         >
           {loading ? '처리 중...' : '로그인'}
         </Button>

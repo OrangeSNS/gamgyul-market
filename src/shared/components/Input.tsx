@@ -10,9 +10,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, underline = false, className = '', ...props }, ref) => {
     if (underline) {
       return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col ">
           {label && (
-            <label className="text-xs text-gray-500">{label}</label>
+            <label className="text-[12px] text-[#767676] leading-[14px] mb-[10px]">{label}</label>
           )}
           <input
             ref={ref}
@@ -32,9 +32,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col ">
         {label && (
-          <label className="text-xs text-gray-500">{label}</label>
+          <label className="text-[12px] text-[#767676] leading-[14px] mb-[10px]">{label}</label>
         )}
         <input
           ref={ref}
