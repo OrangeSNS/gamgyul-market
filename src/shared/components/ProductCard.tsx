@@ -12,7 +12,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
       onClick={onClick}
       className="flex flex-col text-left w-full"
     >
-      <div className="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 mb-2">
+      <div className="w-full h-[90px] rounded-xl overflow-hidden bg-gray-100 mb-2">
         <img
           src={product.itemImage}
           alt={product.itemName}

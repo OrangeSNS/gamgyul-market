@@ -58,13 +58,6 @@ export default function BottomSheet({ open, items, onClose }: BottomSheetProps) 
             {item.label}
           </button>
         ))}
-
-        <button
-          onClick={onClose}
-          className="w-full py-4 text-sm text-gray-500 hover:bg-gray-50 transition-colors"
-        >
-          취소
-        </button>
       </div>
     </div>
   )
