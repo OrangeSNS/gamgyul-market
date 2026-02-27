@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function PostCard({ post }: { post: any }) {
+  const navigate = useNavigate();
   const [isCommentOpen, setIsCommentOpen] = useState(false);
   
   // ❤️ 좋아요 상태 관리
@@ -34,6 +36,7 @@ export default function PostCard({ post }: { post: any }) {
       
       {/* 1. 프로필 이미지 */}
       <img 
+      onClick={() => navigate(`/profile/${author?.accountname}`)}
         src={author?.image?.startsWith('http') ? author.image : `${IMG_URL}${author?.image}`} 
         alt="" 
         className="w-[42px] h-[42px] rounded-full object-cover bg-gray-100 flex-shrink-0"
@@ -43,7 +46,9 @@ export default function PostCard({ post }: { post: any }) {
       <div className="w-[304px] flex flex-col">
         
         {/* 유저 정보 및 더보기 */}
-        <div className="flex justify-between items-start mb-[12px]">
+        <div 
+        onClick={() => navigate(`/profile/${author?.accountname}`)}
+        className="flex justify-between items-start mb-[12px]">
           <div className="flex flex-col">
             <strong className="text-[14px] font-medium text-black leading-[18px]">
               {author?.username}

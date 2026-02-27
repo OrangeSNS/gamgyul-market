@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PostCard from '@shared/components/PostCard';
+import PostCard from '../components/PostCard';
 import NoFollowView from '../components/NoFollowView';
 import { getFeed } from '../api';
 import { Post } from '@shared/types';
