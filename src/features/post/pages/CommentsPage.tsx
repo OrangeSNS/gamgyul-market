@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useBottomSheet } from '@shared/hooks/useBottomSheet'
 import { useModal } from '@shared/hooks/useModal'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import Spinner from '@shared/components/Spinner'
 import Modal from '@shared/components/Modal'
@@ -10,10 +10,12 @@ import TopBar from '@app/layouts/TopBar'
 import { useAuth } from '@app/providers/AuthProvider'
 import { Comment } from '@shared/types'
 import { formatRelativeTime } from '@shared/utils'
+import { ROUTES } from '@shared/constants'
 import { getComments, createComment, deleteComment, reportComment } from '../api'
 
 export default function CommentsPage() {
   const { postId } = useParams<{ postId: string }>()
+  const navigate = useNavigate()
   const { user: me } = useAuth()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -33,7 +35,7 @@ export default function CommentsPage() {
 
     setLoading(true)
     getComments(postId)
-      .then(({ comment }) => setComments(comment))
+      .then(({ comments }) => setComments(comments ?? []))
       .catch(console.error)
       .finally(() => setLoading(false))
   }, [postId])
@@ -103,7 +105,8 @@ export default function CommentsPage() {
 />
 
       {/* Comments list */}
-      <div className="flex-1 px-4 py-3 pb-24">
+      {/* pb-32: TabBar(60px) + 댓글입력창(56px) + 여유 */}
+      <div className="flex-1 px-4 py-3 pb-32">
         {loading ? (
           <div className="flex justify-center py-10">
             <Spinner />
@@ -115,23 +118,32 @@ export default function CommentsPage() {
         ) : (
           comments.map((comment) => (
             <div key={comment.id} className="mb-5 flex gap-3">
-              <Avatar
-                src={comment.author.image}
-                alt={comment.author.username}
-                size="xs"
-              />
+              <button
+                onClick={() => navigate(ROUTES.PROFILE(comment.author.accountname))}
+                className="shrink-0"
+              >
+                <Avatar
+                  src={comment.author.image}
+                  alt={comment.author.username}
+                  size="xs"
+                />
+              </button>
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
                     <div className="mb-1 flex items-baseline gap-1.5">
-                      <span className="truncate text-[14px] font-semibold text-gray-900">
+                      <button
+                        onClick={() => navigate(ROUTES.PROFILE(comment.author.accountname))}
+                        className="truncate text-[14px] font-semibold text-gray-900 hover:underline"
+                      >
                         {comment.author.username}
-                      </span>
+                      </button>
                       <span className="shrink-0 text-[12px] text-gray-400">
                         · {formatRelativeTime(comment.createdAt)}
                       </span>
                     </div>
+
 
                     <p className="break-words text-[14px] leading-6 text-gray-700">
                       {comment.content}
@@ -160,8 +172,8 @@ export default function CommentsPage() {
         )}
       </div>
 
-      {/* Input area */}
-      <div className="fixed bottom-0 left-1/2 z-20 flex w-full max-w-mobile -translate-x-1/2 items-center gap-2 border-t border-[#EAEAEA] bg-white px-4 py-3">
+      {/* Input area: TabBar(z-40, ~60px) 바로 위에 위치 */}
+      <div className="fixed bottom-[60px] left-1/2 z-50 flex w-full max-w-mobile -translate-x-1/2 items-center gap-3 border-t border-[#EAEAEA] bg-white px-4 py-3">
         <Avatar src={me?.image} alt={me?.username} size="xs" />
 
         <input
@@ -182,7 +194,7 @@ export default function CommentsPage() {
         <button
           onClick={handleSubmit}
           disabled={!content.trim() || submitting}
-          className="px-1 text-[14px] font-semibold text-[#C7C7C7] disabled:text-[#D9D9D9]"
+          className="shrink-0 text-[14px] font-semibold text-[#F28C45] disabled:text-[#D9D9D9]"
         >
           게시
         </button>
