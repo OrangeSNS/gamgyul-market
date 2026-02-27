@@ -18,7 +18,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center font-semibold rounded-full transition-all duration-150 focus:outline-none disabled:cursor-not-allowed'
+    'inline-flex items-center justify-center font-medium rounded-full transition-all duration-150 focus:outline-none disabled:cursor-not-allowed'
 
   const variants = {
     primary:
@@ -32,7 +32,7 @@ export default function Button({
   const sizes = {
     sm: 'px-4 py-1.5 text-sm',
     md: 'px-6 py-2.5 text-sm',
-    lg: 'px-8 py-3 text-base',
+    lg: 'h-[44px] py-[13px] px-8 text-[14px]',
   }
 
   return (

@@ -54,7 +54,7 @@ export default function JoinEmailPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <TopBar title="이메일로 회원가입" showBack />
+      <TopBar title="" showBack />
 
       <div className="flex flex-col flex-1 px-6 pt-10 gap-6">
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">
