@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react'
-import { useBottomSheet } from '@shared/hooks/useBottomSheet'
-import { useModal } from '@shared/hooks/useModal'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import Avatar from '@shared/components/Avatar'
-import Button from '@shared/components/Button'
-import PostCard from '@shared/components/PostCard'
-import ProductCard from '@shared/components/ProductCard'
-import Spinner from '@shared/components/Spinner'
-import Modal from '@shared/components/Modal'
-import BottomSheet from '@shared/components/BottomSheet'
-import TopBar from '@app/layouts/TopBar'
-import { useAuth } from '@app/providers/AuthProvider'
-import { User, Post, Product } from '@shared/types'
-import { ROUTES } from '@shared/constants'
-import { parsePostImages } from '@shared/utils'
+import { useState, useEffect } from "react";
+import { useBottomSheet } from "@shared/hooks/useBottomSheet";
+import { useModal } from "@shared/hooks/useModal";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import Avatar from "@shared/components/Avatar";
+import Button from "@shared/components/Button";
+import PostCard from "@shared/components/PostCard";
+import ProductCard from "@shared/components/ProductCard";
+import Spinner from "@shared/components/Spinner";
+import Modal from "@shared/components/Modal";
+import BottomSheet from "@shared/components/BottomSheet";
+import TopBar from "@app/layouts/TopBar";
+import { useAuth } from "@app/providers/AuthProvider";
+import { User, Post, Product } from "@shared/types";
+import { ROUTES } from "@shared/constants";
+import { parsePostImages } from "@shared/utils";
 import {
   getProfile,
   followUser,
@@ -21,106 +21,106 @@ import {
   getUserPosts,
   getProducts,
   deleteProduct,
-} from '../api'
+} from "../api";
 
-type ViewMode = 'list' | 'grid'
+type ViewMode = "list" | "grid";
 
 export default function ProfilePage() {
-  const { accountName } = useParams<{ accountName: string }>()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { user: me, logout } = useAuth()
+  const { accountName } = useParams<{ accountName: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user: me, logout } = useAuth();
 
-  const isMe = me?.accountname === accountName
-  const canGoBack = location.key !== 'default'
+  const isMe = me?.accountname === accountName;
+  const canGoBack = location.key !== "default";
 
-  const [profile, setProfile] = useState<User | null>(null)
-  const [posts, setPosts] = useState<Post[]>([])
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [viewMode, setViewMode] = useState<ViewMode>('list')
+  const [profile, setProfile] = useState<User | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
-  const profileSheet = useBottomSheet()
-  const productSheet = useBottomSheet()
-  const logoutModal = useModal()
-  const deleteModal = useModal()
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
+  const profileSheet = useBottomSheet();
+  const productSheet = useBottomSheet();
+  const logoutModal = useModal();
+  const deleteModal = useModal();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!accountName) return
-    setLoading(true)
+    if (!accountName) return;
+    setLoading(true);
     Promise.all([
       getProfile(accountName),
       getUserPosts(accountName),
       getProducts(accountName),
     ])
       .then(([{ profile }, { post }, { product }]) => {
-        setProfile(profile)
-        setPosts(post)
-        setProducts(product)
+        setProfile(profile);
+        setPosts(post);
+        setProducts(product);
       })
       .catch(console.error)
-      .finally(() => setLoading(false))
-  }, [accountName])
+      .finally(() => setLoading(false));
+  }, [accountName]);
 
   const handleFollowToggle = async () => {
-    if (!profile) return
+    if (!profile) return;
     try {
       if (profile.isfollow) {
-        const { profile: updated } = await unfollowUser(profile.accountname)
-        setProfile(updated)
+        const { profile: updated } = await unfollowUser(profile.accountname);
+        setProfile(updated);
       } else {
-        const { profile: updated } = await followUser(profile.accountname)
-        setProfile(updated)
+        const { profile: updated } = await followUser(profile.accountname);
+        setProfile(updated);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   const handleShare = async () => {
-    const url = window.location.href
+    const url = window.location.href;
     try {
       if (navigator.share) {
-        await navigator.share({ title: profile?.username, url })
+        await navigator.share({ title: profile?.username, url });
       } else {
-        await navigator.clipboard.writeText(url)
+        await navigator.clipboard.writeText(url);
       }
     } catch {
       // 사용자 취소 또는 미지원
     }
-  }
+  };
 
   const handleProductClick = (product: Product) => {
     if (!isMe) {
-      window.open(product.link, '_blank')
-      return
+      window.open(product.link, "_blank");
+      return;
     }
-    setSelectedProduct(product)
-    productSheet.open()
-  }
+    setSelectedProduct(product);
+    productSheet.open();
+  };
 
   const handleDeleteProduct = async () => {
-    if (!deleteTarget) return
+    if (!deleteTarget) return;
     try {
-      await deleteProduct(deleteTarget)
+      await deleteProduct(deleteTarget);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-    setProducts((prev) => prev.filter((p) => p.id !== deleteTarget))
-    setDeleteTarget(null)
-    deleteModal.close()
-  }
+    setProducts((prev) => prev.filter((p) => p.id !== deleteTarget));
+    setDeleteTarget(null);
+    deleteModal.close();
+  };
 
-  const albumPosts = posts.filter((p) => parsePostImages(p.image).length > 0)
+  const albumPosts = posts.filter((p) => parsePostImages(p.image).length > 0);
 
   if (loading) {
     return (
       <div className="flex justify-center py-20">
         <Spinner size="lg" />
       </div>
-    )
+    );
   }
 
   if (!profile) {
@@ -128,7 +128,7 @@ export default function ProfilePage() {
       <div className="flex justify-center py-20 text-sm text-gray-500">
         프로필을 찾을 수 없습니다.
       </div>
-    )
+    );
   }
 
   return (
@@ -158,9 +158,9 @@ export default function ProfilePage() {
       />
 
       {/* ── 프로필 헤더 ──────────────────────────────────────── */}
-      <section className="px-6 pt-4 pb-6">
+      <section className="px-6 pt-8 pb-6">
         {/* 팔로워 | 아바타 | 팔로잉 */}
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-center gap-12 mb-5">
           <button
             onClick={() =>
               navigate(ROUTES.PROFILE_FOLLOWERS(profile.accountname))
@@ -245,12 +245,12 @@ export default function ProfilePage() {
 
               {/* 팔로우/언팔로우 버튼 */}
               <Button
-                variant={profile.isfollow ? 'outline' : 'primary'}
+                variant={profile.isfollow ? "outline" : "primary"}
                 size="sm"
                 onClick={handleFollowToggle}
                 className="px-10"
               >
-                {profile.isfollow ? '언팔로우' : '팔로우'}
+                {profile.isfollow ? "언팔로우" : "팔로우"}
               </Button>
 
               {/* 공유 아이콘 버튼 */}
@@ -304,14 +304,14 @@ export default function ProfilePage() {
         {/* 뷰 토글 (우측 정렬) */}
         <div className="flex justify-end px-2 border-b border-gray-200">
           <button
-            onClick={() => setViewMode('list')}
+            onClick={() => setViewMode("list")}
             aria-label="리스트 보기"
             className={[
-              'flex items-center justify-center p-3 border-b-2 transition-colors',
-              viewMode === 'list'
-                ? 'border-brand text-brand'
-                : 'border-transparent text-gray-400',
-            ].join(' ')}
+              "flex items-center justify-center p-3 border-b-2 transition-colors",
+              viewMode === "list"
+                ? "border-brand text-brand"
+                : "border-transparent text-gray-400",
+            ].join(" ")}
           >
             <svg
               viewBox="0 0 24 24"
@@ -320,21 +320,18 @@ export default function ProfilePage() {
               stroke="currentColor"
               strokeWidth={2}
             >
-              <path
-                strokeLinecap="round"
-                d="M4 6h16M4 10h16M4 14h16M4 18h16"
-              />
+              <path strokeLinecap="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
           </button>
           <button
-            onClick={() => setViewMode('grid')}
+            onClick={() => setViewMode("grid")}
             aria-label="앨범 보기"
             className={[
-              'flex items-center justify-center p-3 border-b-2 transition-colors',
-              viewMode === 'grid'
-                ? 'border-brand text-brand'
-                : 'border-transparent text-gray-400',
-            ].join(' ')}
+              "flex items-center justify-center p-3 border-b-2 transition-colors",
+              viewMode === "grid"
+                ? "border-brand text-brand"
+                : "border-transparent text-gray-400",
+            ].join(" ")}
           >
             <svg
               viewBox="0 0 24 24"
@@ -352,7 +349,7 @@ export default function ProfilePage() {
         </div>
 
         {/* 리스트 뷰 */}
-        {viewMode === 'list' ? (
+        {viewMode === "list" ? (
           posts.length > 0 ? (
             posts.map((post) => (
               <PostCard
@@ -373,20 +370,27 @@ export default function ProfilePage() {
           /* 앨범 뷰 */
           <div className="grid grid-cols-3 gap-0.5">
             {albumPosts.map((post) => {
-              const images = parsePostImages(post.image)
+              const images = parsePostImages(post.image);
               return (
                 <button
                   key={post.id}
                   onClick={() => navigate(ROUTES.POST_DETAIL(post.id))}
-                  className="aspect-square overflow-hidden bg-gray-100"
+                  className="relative aspect-square overflow-hidden bg-gray-100"
                 >
                   <img
                     src={images[0]}
                     alt=""
                     className="w-full h-full object-cover"
                   />
+                  {images.length > 1 && (
+                    <img
+                      src="/icons/iccon-img-layers.svg"
+                      alt="여러 이미지"
+                      className="absolute top-1.5 right-1.5 w-5 h-5"
+                    />
+                  )}
                 </button>
-              )
+              );
             })}
           </div>
         ) : (
@@ -404,16 +408,16 @@ export default function ProfilePage() {
           isMe
             ? [
                 {
-                  label: '설정 및 개인정보',
+                  label: "설정 및 개인정보",
                   onClick: () => navigate(ROUTES.PROFILE_EDIT),
                 },
                 {
-                  label: '로그아웃',
+                  label: "로그아웃",
                   onClick: logoutModal.open,
                   danger: true,
                 },
               ]
-            : [{ label: '신고하기', onClick: () => {}, danger: true }]
+            : [{ label: "신고하기", onClick: () => {}, danger: true }]
         }
       />
 
@@ -423,25 +427,25 @@ export default function ProfilePage() {
         onClose={productSheet.close}
         items={[
           {
-            label: '삭제',
+            label: "삭제",
             danger: true,
             onClick: () => {
-              setDeleteTarget(selectedProduct?.id ?? null)
-              deleteModal.open()
+              setDeleteTarget(selectedProduct?.id ?? null);
+              deleteModal.open();
             },
           },
           {
-            label: '수정',
+            label: "수정",
             onClick: () => {
               if (selectedProduct)
-                navigate(ROUTES.PRODUCT_EDIT(selectedProduct.id))
+                navigate(ROUTES.PRODUCT_EDIT(selectedProduct.id));
             },
           },
           {
-            label: '웹사이트에서 보기',
+            label: "웹사이트에서 보기",
             onClick: () => {
               if (selectedProduct?.link)
-                window.open(selectedProduct.link, '_blank')
+                window.open(selectedProduct.link, "_blank");
             },
           },
         ]}
@@ -453,8 +457,8 @@ export default function ProfilePage() {
         message="로그아웃 하시겠어요?"
         confirmLabel="로그아웃"
         onConfirm={() => {
-          logout()
-          navigate(ROUTES.LOGIN, { replace: true })
+          logout();
+          navigate(ROUTES.LOGIN, { replace: true });
         }}
         onCancel={logoutModal.close}
         destructive
@@ -467,11 +471,11 @@ export default function ProfilePage() {
         confirmLabel="삭제"
         onConfirm={handleDeleteProduct}
         onCancel={() => {
-          deleteModal.close()
-          setDeleteTarget(null)
+          deleteModal.close();
+          setDeleteTarget(null);
         }}
         destructive
       />
     </div>
-  )
+  );
 }
