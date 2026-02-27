@@ -2,8 +2,10 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import Button from '@shared/components/Button'
+import Modal from '@shared/components/Modal'
 import { useAuth } from '@app/providers/AuthProvider'
 import { uploadImage } from '@shared/api/client'
+import { generateAIContent, type ChatMessage } from '@shared/api/ai'
 import { createPost } from '../api'
 import ImageCarousel from '@shared/components/ImageCarousel'
 
@@ -19,6 +21,10 @@ export default function PostNewPage() {
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiGenerated, setAiGenerated] = useState(false)
+  const [showOverwriteModal, setShowOverwriteModal] = useState(false)
+  const [pendingAiContent, setPendingAiContent] = useState('')
 
   const isValid = content.trim() !== '' || images.length > 0
 
@@ -50,6 +56,43 @@ export default function PostNewPage() {
 
   const handleRemoveImage = (idx: number) => {
     setImages((prev) => prev.filter((_, i) => i !== idx))
+  }
+
+  const handleAIGenerate = async () => {
+    setAiLoading(true)
+    setError('')
+    try {
+      const imageUrls = images.map((img) => img.url).join(', ')
+      const messages: ChatMessage[] = [
+        {
+          role: 'system',
+          content: '당신은 SNS 게시글 작성을 도와주는 AI입니다. 이미지를 보고 자연스러운 한국어 게시글 내용을 2~3문장으로 작성해주세요.',
+        },
+        {
+          role: 'user',
+          content: `이 이미지들을 보고 게시글 내용을 작성해주세요: ${imageUrls}`,
+        },
+      ]
+      const result = await generateAIContent(messages)
+      if (content.trim() !== '') {
+        setPendingAiContent(result)
+        setShowOverwriteModal(true)
+      } else {
+        setContent(result)
+        setAiGenerated(true)
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'AI 생성에 실패했습니다.')
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
+  const applyAIContent = () => {
+    setContent(pendingAiContent)
+    setAiGenerated(true)
+    setPendingAiContent('')
+    setShowOverwriteModal(false)
   }
 
   const handleSubmit = async () => {
@@ -169,6 +212,17 @@ export default function PostNewPage() {
       <span>{uploading ? '업로드 중...' : `사진 추가 (${images.length}/${MAX_IMAGES})`}</span>
     </button>
 
+    {images.length > 0 && (
+      <button
+        type="button"
+        onClick={handleAIGenerate}
+        disabled={aiLoading}
+        className="text-[15px] font-medium text-brand disabled:opacity-50"
+      >
+        {aiLoading ? 'AI 생성 중...' : aiGenerated ? '다시 생성' : 'AI 내용 생성'}
+      </button>
+    )}
+
     <button
       type="button"
       onClick={() => fileInputRef.current?.click()}
@@ -201,6 +255,14 @@ export default function PostNewPage() {
     onChange={handleImageAdd}
   />
 </div>
+
+      <Modal
+        open={showOverwriteModal}
+        message="기존 입력 내용이 있습니다. 덮어쓰시겠습니까?"
+        confirmLabel="덮어쓰기"
+        onConfirm={applyAIContent}
+        onCancel={() => setShowOverwriteModal(false)}
+      />
     </div>
   )
 }
