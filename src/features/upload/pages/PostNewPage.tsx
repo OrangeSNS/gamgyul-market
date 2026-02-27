@@ -70,9 +70,9 @@ export default function PostNewPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#F5F5F5]">
+   <div className="flex min-h-screen flex-col bg-white">
       {/* Top Bar (피그마 1번 화면 스타일) */}
-      <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[#EAEAEA] bg-[#F5F5F5] px-4">
+    <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[#EAEAEA] bg-white px-4">
         {/* 뒤로가기 아이콘 버튼 */}
 <button
   onClick={() => navigate(-1)}
@@ -109,7 +109,7 @@ export default function PostNewPage() {
         <div className="flex gap-3">
           {/* Avatar */}
           <div className="pt-1">
-            <Avatar src={user?.image} alt={user?.username} size="sm" />
+            <Avatar src={user?.image} alt={user?.username} size="md" />
           </div>
 
           {/* Text + previews */}
@@ -143,67 +143,64 @@ export default function PostNewPage() {
         </div>
       </main>
 
-      {/* 하단 사진 추가 바 (이미지 있을 때만 표시해도 되고, 항상 표시도 가능) */}
-      <div className="sticky bottom-0 z-20 border-t border-[#EAEAEA] bg-white">
-        <div className="flex items-center justify-between px-4 py-3">
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={images.length >= MAX_IMAGES || uploading}
-            className="flex items-center gap-2 text-[15px] font-medium text-[#F28C45] disabled:text-gray-300"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-
-            <span>
-              {uploading ? '업로드 중...' : `사진 추가 (${images.length}/${MAX_IMAGES})`}
-            </span>
-          </button>
-
-          {/* 첫 번째 화면의 주황 플로팅 아이콘 느낌 보조 버튼 (선택사항) */}
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={images.length >= MAX_IMAGES || uploading}
-            aria-label="사진 추가"
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F97316] text-white shadow-sm disabled:bg-gray-300"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          className="hidden"
-          onChange={handleImageAdd}
+  {/* 하단 사진 추가 바 (항상 고정) */}
+<div className="fixed bottom-0 left-1/2 z-50 w-full max-w-mobile -translate-x-1/2 border-t border-[#EAEAEA] bg-white">
+  <div className="flex items-center justify-between px-4 py-3">
+    <button
+      type="button"
+      onClick={() => fileInputRef.current?.click()}
+      disabled={images.length >= MAX_IMAGES || uploading}
+      className="flex items-center gap-2 text-[15px] font-medium text-[#F28C45] disabled:text-gray-300"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
         />
-      </div>
+      </svg>
+
+      <span>{uploading ? '업로드 중...' : `사진 추가 (${images.length}/${MAX_IMAGES})`}</span>
+    </button>
+
+    <button
+      type="button"
+      onClick={() => fileInputRef.current?.click()}
+      disabled={images.length >= MAX_IMAGES || uploading}
+      aria-label="사진 추가"
+      className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F97316] text-white shadow-sm disabled:bg-gray-300"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="h-6 w-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <input
+    ref={fileInputRef}
+    type="file"
+    accept="image/*"
+    multiple
+    className="hidden"
+    onChange={handleImageAdd}
+  />
+</div>
     </div>
   )
 }
