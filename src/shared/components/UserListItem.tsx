@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Avatar from './Avatar'
 import Button from './Button'
 import { User } from '@shared/types'
 import { ROUTES } from '@shared/constants'
 import { followUser, unfollowUser } from '@features/profile/api'
+import { useFollow } from '@app/providers/FollowProvider'
 
 interface UserListItemProps {
   user: User
@@ -13,18 +13,23 @@ interface UserListItemProps {
 
 export default function UserListItem({ user, onFollowToggle }: UserListItemProps) {
   const navigate = useNavigate()
-  const [isFollowing, setIsFollowing] = useState(user.isfollow ?? false)
+  const { isFollowing, syncFollowState, recordFollowAction } = useFollow()
+
+  // 전역 스토어에서 팔로우 상태를 읽음
+  const following = isFollowing(user.accountname)
 
   const handleFollow = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    const next = !isFollowing
+    const next = !following
     try {
       if (next) {
         await followUser(user.accountname)
       } else {
         await unfollowUser(user.accountname)
       }
-      setIsFollowing(next)
+      syncFollowState(user.accountname, next)
+      // 내 followingCount ±1, 상대방 followerCount ±1 동시 반영
+      recordFollowAction(user.accountname, next)
       onFollowToggle?.(user.accountname, next)
     } catch (err) {
       console.error(err)
@@ -42,11 +47,11 @@ export default function UserListItem({ user, onFollowToggle }: UserListItemProps
         <p className="text-xs text-gray-400 truncate">@{user.accountname}</p>
       </div>
       <Button
-        variant={isFollowing ? 'outline' : 'primary'}
+        variant={following ? 'outline' : 'primary'}
         size="sm"
         onClick={handleFollow}
       >
-        {isFollowing ? '취소' : '팔로우'}
+        {following ? '취소' : '팔로우'}
       </Button>
     </div>
   )

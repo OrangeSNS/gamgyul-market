@@ -1,4 +1,4 @@
-import { request } from '@shared/api/client'
+import { request, ApiError } from '@shared/api/client'
 import { User, Post, Product } from '@shared/types'
 
 export async function getProfile(accountname: string): Promise<{ profile: User }> {
@@ -14,11 +14,23 @@ export async function unfollowUser(accountname: string): Promise<{ profile: User
 }
 
 export async function getFollowers(accountname: string): Promise<User[]> {
-  return request<User[]>(`/profile/${accountname}/follower`)
+  try {
+    return await request<User[]>(`/profile/${accountname}/follower`)
+  } catch (err) {
+    // 팔로워가 없을 때 서버가 404를 반환 → 빈 배열로 처리
+    if (err instanceof ApiError && err.status === 404) return []
+    throw err
+  }
 }
 
 export async function getFollowing(accountname: string): Promise<User[]> {
-  return request<User[]>(`/profile/${accountname}/following`)
+  try {
+    return await request<User[]>(`/profile/${accountname}/following`)
+  } catch (err) {
+    // 팔로잉이 없을 때 서버가 404를 반환 → 빈 배열로 처리
+    if (err instanceof ApiError && err.status === 404) return []
+    throw err
+  }
 }
 
 export async function getUserPosts(accountname: string, limit = 10, skip = 0): Promise<{ post: Post[] }> {
