@@ -20,7 +20,7 @@ export default function PostDetailPage() {
   const { user: me } = useAuth()
 
   const [post, setPost] = useState<Post | null>(null)
-  const [comments, setComments] = useState<Comment[]>([])
+  const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true)
   const [hearted, setHearted] = useState(false)
   const [heartCount, setHeartCount] = useState(0)
@@ -158,7 +158,7 @@ export default function PostDetailPage() {
 
         {/* Comments preview */}
         <div className="mt-3">
-          {comments.slice(0, 3).map((comment) => (
+          {comments?.slice(0, 3).map((comment) => (
             <div key={comment.id} className="flex gap-2 mb-3">
               <Avatar src={comment.author.image} size="xs" />
               <div className="flex-1">
@@ -169,7 +169,7 @@ export default function PostDetailPage() {
               </div>
             </div>
           ))}
-          {comments.length > 3 && (
+          {(comments?.length ?? 0) > 3 &&(
             <button
               onClick={() => navigate(ROUTES.POST_COMMENTS(post.id))}
               className="text-xs text-gray-400 hover:text-gray-600"

@@ -108,7 +108,7 @@ export default function CommentsPage() {
           <div className="flex justify-center py-10">
             <Spinner />
           </div>
-        ) : comments.length === 0 ? (
+        ) : (comments?.length ?? 0) === 0 ? (
           <p className="py-10 text-center text-sm text-gray-400">
             첫 댓글을 작성해보세요!
           </p>
