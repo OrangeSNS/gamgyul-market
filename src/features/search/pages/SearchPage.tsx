@@ -60,7 +60,7 @@ export default function SearchPage() {
       </header>
 
       {/* 2. 결과 리스트: 팀원의 컴포넌트 + 우리의 하이라이트 */}
-      <div className="flex-1 p-[16px]">
+      <main className="flex-1 p-[16px]">
         {loading ? (
           <div className="flex justify-center py-10"><Spinner /></div>
         ) : results.length > 0 ? (
@@ -70,7 +70,7 @@ export default function SearchPage() {
                 key={user._id}
                 // 팀원이 정한 상수를 사용하여 프로필로 이동
                 onClick={() => navigate(ROUTES.PROFILE(user.accountname))}
-                className="w-full flex items-center gap-[12px] text-left"
+                className="w-full h-[50px] flex items-center gap-[12px] text-left"
               >
                 {/* 팀원의 Avatar 컴포넌트 사용 (이미지 에러 처리가 내장됨) */}
                 <Avatar src={user.image} alt={user.username} size="sm" />
@@ -93,7 +93,7 @@ export default function SearchPage() {
              <p className="text-sm">사용자 이름이나 계정 ID로 검색하세요</p>
           </div>
         )}
-      </div>
+      </main>
     </div>
   )
 }
