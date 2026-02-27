@@ -1,182 +1,139 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Avatar from './Avatar'
-import BottomSheet from './BottomSheet'
-import Modal from './Modal'
-import { useBottomSheet } from '@shared/hooks/useBottomSheet'
-import { useModal } from '@shared/hooks/useModal'
-import { Post } from '@shared/types'
-import { formatRelativeTime, parsePostImages } from '@shared/utils'
-import { ROUTES } from '@shared/constants'
-import { request } from '@shared/api/client'
-import { deletePost, reportPost } from '@features/post/api'
+// src/shared/components/PostCard.tsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '@shared/constants';
 
 interface PostCardProps {
-  post: Post
-  onDelete?: (postId: string) => void
-  onEdit?: (postId: string) => void
-  isMyPost?: boolean
+  post: any;
 }
 
-export default function PostCard({ post, onDelete, onEdit, isMyPost = false }: PostCardProps) {
-  const navigate = useNavigate()
-  const [hearted, setHearted] = useState(post.hearted)
-  const [heartCount, setHeartCount] = useState(post.heartCount)
-  const menuSheet = useBottomSheet()
-  const deleteModal = useModal()
+export default function PostCard({ post }: PostCardProps) {
+  const navigate = useNavigate();
+  const [isLiked, setIsLiked] = useState(post?.hearted || false);
+  const [heartCount, setHeartCount] = useState(post?.heartCount || 0);
 
-  const images = parsePostImages(post.image)
+  const author = post?.author;
+  // content 변수 선언 (기존 코드에서 누락된 부분 수정)
+  const content = post?.content;
 
-  const handleHeart = async (e: React.MouseEvent) => {
-    e.stopPropagation()
-    const nextHearted = !hearted
-    setHearted(nextHearted)
-    setHeartCount((c) => (nextHearted ? c + 1 : c - 1))
-    try {
-      if (nextHearted) {
-        await request(`/post/${post.id}/heart`, { method: 'POST' })
-      } else {
-        await request(`/post/${post.id}/unheart`, { method: 'DELETE' })
-      }
-    } catch {
-      setHearted(!nextHearted)
-      setHeartCount((c) => (nextHearted ? c - 1 : c + 1))
-    }
-  }
+  // 2. 이미지 처리 및 필터링 로직
+const imageList = post?.image 
+    ? post.image.split(',')
+        .map((img: string) => img.trim())
+        .filter((img: string) => {
+          if (!img) return false;
+          if (img === "undefined" || img === "null") return false;
+          // 주소 뒤에 아무 파일명도 붙어있지 않은 경우(기본 주소만 온 경우) 필터링
+          if (img === API_BASE_URL || img === `${API_BASE_URL}/`) return false;
+          return true;
+        })
+    : [];
 
-  const handleDelete = async () => {
-    try {
-      await deletePost(post.id)
-      onDelete?.(post.id)
-    } catch (err) {
-      console.error(err)
-    }
-    deleteModal.close()
-  }
+  const getImageUrl = (img: string) => {
+    if (!img) return `${API_BASE_URL}/1687141187512.png`;
+    return img.startsWith('http') ? img : `${API_BASE_URL}/${img}`;
+  };
 
-  const handleReport = async () => {
-    try {
-      await reportPost(post.id)
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked(!isLiked);
+    setHeartCount(prev => isLiked ? prev - 1 : prev + 1);
+  };
 
   return (
-    <article className="bg-white px-4 pt-4 pb-3 border-b border-gray-100">
-      {/* Author */}
-      <div className="flex items-center justify-between mb-3">
-        <button
-          onClick={() => navigate(ROUTES.PROFILE(post.author.accountname))}
-          className="flex items-center gap-2"
-        >
-          <Avatar src={post.author.image} alt={post.author.username} size="sm" />
-          <div className="text-left">
-            <p className="text-sm font-semibold text-gray-900 leading-tight">
-              {post.author.username}
-            </p>
-            <p className="text-xs text-gray-400">@ {post.author.accountname}</p>
-          </div>
-        </button>
-        <button
-          onClick={menuSheet.open}
-          className="p-1 rounded-full hover:bg-gray-100"
-          aria-label="더보기"
-        >
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-gray-400" fill="currentColor">
-            <circle cx="12" cy="5" r="1.5" />
-            <circle cx="12" cy="12" r="1.5" />
-            <circle cx="12" cy="19" r="1.5" />
-          </svg>
-        </button>
-      </div>
+    // 전체 가로 358px, 클릭 시 상세페이지 이동
+    <article 
+      onClick={() => navigate(`/post/${post.id}`)}
+      className="w-[358px] mx-auto py-4 flex gap-[12px] border-b border-[#DBDBDB] last:border-none cursor-pointer"
+    >
+      {/* 1. 프로필 이미지 (42x42) */}
+      <img 
+        onClick={(e) => {
+          e.stopPropagation(); // 상세페이지 이동 방지
+          navigate(`/profile/${author?.accountname}`);
+        }}
+        src={getImageUrl(author?.image)} 
+        alt={`${author?.username}님의 프로필`} 
+        className="w-[42px] h-[42px] rounded-full object-cover bg-gray-100 flex-shrink-0"
+        onError={(e) => { (e.target as HTMLImageElement).src = getImageUrl('1687141187512.png') }}
+      />
 
-      {/* Content */}
-      <button
-        className="w-full text-left"
-        onClick={() => navigate(ROUTES.POST_DETAIL(post.id))}
-      >
-        <p className="text-sm text-gray-800 leading-relaxed mb-3 whitespace-pre-line">
-          {post.content}
+      <div className="w-[304px] flex flex-col">
+        {/* 2. 유저 정보 및 더보기 버튼 */}
+        <div className="flex justify-between items-start mb-[12px]">
+          <div 
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/profile/${author?.accountname}`);
+            }}
+            className="flex flex-col"
+          >
+            <strong className="text-[14px] font-medium text-black leading-[18px]">
+              {author?.username}
+            </strong>
+            <span className="text-[12px] text-[#767676] leading-[14px]">
+              @ {author?.accountname}
+            </span>
+          </div>
+          <button 
+            onClick={(e) => e.stopPropagation()} 
+            className="p-1"
+          >
+            <img src="/icons/icon-more-vertical.svg" alt="더보기" className="w-[24px] h-[24px]" />
+          </button>
+        </div>
+
+        {/* 3. 게시글 본문 */}
+        <p className="text-[14px] text-[#333333] mb-[16px] leading-[18px] whitespace-pre-wrap">
+          {content}
         </p>
 
-        {/* Images */}
-        {images.length > 0 && (
-          <div
-            className={`mb-3 rounded-xl overflow-hidden ${
-              images.length > 1 ? 'grid grid-cols-2 gap-1' : ''
-            }`}
-          >
-            {images.slice(0, 3).map((url, idx) => (
-              <img
-                key={idx}
-                src={url}
-                alt={`게시글 이미지 ${idx + 1}`}
-                className={`w-full object-cover bg-gray-100 ${
-                  images.length === 1 ? 'max-h-60 rounded-xl' : 'h-32'
-                }`}
-              />
-            ))}
+        {/* 4. 이미지 컨텐츠 (304x228 고정) */}
+        {imageList.length > 0 && (
+          <div className="w-[304px] h-[228px] rounded-[10px] overflow-hidden border border-[#DBDBDB] mb-[12px] relative bg-gray-50">
+            <img 
+              src={getImageUrl(imageList[0])} 
+              alt="게시글 이미지" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // 로드 실패 시 해당 영역 숨김 처리 (최후의 보루)
+                (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
+              }}
+            />
+            {imageList.length > 1 && (
+              <div className="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full">
+                +{imageList.length - 1}
+              </div>
+            )}
           </div>
         )}
-      </button>
 
-      {/* Actions */}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={handleHeart}
-          className="flex items-center gap-1 text-gray-500"
-        >
-          {hearted ? (
-            <svg viewBox="0 0 24 24" className="w-5 h-5 text-red-500" fill="currentColor">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-          )}
-          <span className="text-xs">{heartCount}</span>
-        </button>
+        {/* 5. 인터랙션 영역 (좋아요, 댓글) */}
+        <div className="flex gap-[16px] items-center">
+          <button onClick={handleLike} className="flex items-center gap-[6px]">
+            <img 
+              src={isLiked ? "/icons/icon-heart-fill.svg" : "/icons/icon-heart.svg"} 
+              alt="좋아요" 
+              className="w-[20px] h-[20px]" 
+            />
+            <span className={`text-[12px] ${isLiked ? 'text-[#EB5757]' : 'text-[#767676]'}`}>
+              {heartCount}
+            </span>
+          </button>
+          
+          <div className="flex items-center gap-[6px]">
+            <img src="/icons/icon-message-circle.svg" alt="댓글" className="w-[20px] h-[20px]" />
+            <span className="text-[12px] text-[#767676]">{post?.commentCount || 0}</span>
+          </div>
+        </div>
 
-        <button
-          onClick={() => navigate(ROUTES.POST_COMMENTS(post.id))}
-          className="flex items-center gap-1 text-gray-500"
-        >
-          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          <span className="text-xs">{post.commentCount}</span>
-        </button>
+        {/* 6. 날짜 표시 */}
+        <time className="text-[10px] text-[#767676] mt-[16px]">
+          {post?.createdAt ? new Date(post.createdAt).toLocaleDateString('ko-KR', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          }) : '2026년 2월 27일'}
+        </time>
       </div>
-
-      {/* Date */}
-      <p className="text-xs text-gray-400 mt-2">
-        {formatRelativeTime(post.createdAt)}
-      </p>
-
-      {/* Post menu bottom sheet */}
-      <BottomSheet
-        open={menuSheet.isOpen}
-        onClose={menuSheet.close}
-        items={
-          isMyPost
-            ? [
-                { label: '삭제', onClick: deleteModal.open },
-                { label: '수정', onClick: () => onEdit?.(post.id) },
-              ]
-            : [{ label: '신고하기', danger: true, onClick: handleReport }]
-        }
-      />
-
-      {/* Delete confirm modal */}
-      <Modal
-        open={deleteModal.isOpen}
-        message="게시글을 삭제할까요?"
-        confirmLabel="삭제"
-        onConfirm={handleDelete}
-        onCancel={deleteModal.close}
-      />
     </article>
-  )
+  );
 }
