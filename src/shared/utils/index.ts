@@ -1,4 +1,4 @@
-import { ACCOUNT_NAME_REGEX, EMAIL_REGEX } from '@shared/constants'
+import { ACCOUNT_NAME_REGEX, API_BASE_URL, EMAIL_REGEX } from '@shared/constants'
 
 /** 가격을 한국 원 단위로 포맷 */
 export function formatPrice(price: number): string {
@@ -56,6 +56,20 @@ export function validateUsername(username: string): string {
 /** 이미지 URL이 유효한지 확인 */
 export function isValidImageUrl(url: string): boolean {
   return url.startsWith('http://') || url.startsWith('https://')
+}
+
+/**
+ * Weniv API 이미지 URL 정규화
+ * - "https://..." → 그대로 반환
+ * - "filename.jpg" (파일명만) → API_BASE_URL + "/" + filename
+ * - "/path" (루트 상대경로) → undefined (기본 아바타 사용)
+ * - null/undefined/"" → undefined (기본 아바타 사용)
+ */
+export function resolveImageUrl(url?: string | null): string | undefined {
+  if (!url || url.trim() === '') return undefined
+  if (url.startsWith('http://') || url.startsWith('https://')) return url
+  if (url.startsWith('/')) return undefined
+  return `${API_BASE_URL}/${url}`
 }
 
 /** post 이미지 배열로 파싱 (콤마 구분) */
