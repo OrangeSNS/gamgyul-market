@@ -13,8 +13,8 @@ export async function reportPost(postId: string): Promise<unknown> {
   return request(`/post/${postId}/report`, { method: 'POST' })
 }
 
-export async function getComments(postId: string, limit = 100, skip = 0): Promise<{ comment: Comment[] }> {
-  return request<{ comment: Comment[] }>(`/post/${postId}/comments/?limit=${limit}&skip=${skip}`)
+export async function getComments(postId: string, limit = 100, skip = 0): Promise<{ comments: Comment[] }> {
+  return request<{ comments: Comment[] }>(`/post/${postId}/comments?limit=${limit}&skip=${skip}`)
 }
 
 export async function createComment(postId: string, content: string): Promise<{ comment: Comment }> {

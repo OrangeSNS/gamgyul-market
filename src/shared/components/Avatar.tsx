@@ -1,3 +1,5 @@
+import { resolveImageUrl } from '@shared/utils'
+
 interface AvatarProps {
   src?: string
   alt?: string
@@ -17,10 +19,11 @@ const DEFAULT_AVATAR_SMALL = '/icons/basic-profile.svg'
 const DEFAULT_AVATAR_LARGE = '/icons/basic-profile-img-.svg'
 
 export default function Avatar({ src, alt = '', size = 'md', className = '' }: AvatarProps) {
-  const defaultAvatar = (size === 'lg' || size === 'xl') ? DEFAULT_AVATAR_LARGE : DEFAULT_AVATAR_SMALL
+  const defaultAvatar = size === 'lg' || size === 'xl' ? DEFAULT_AVATAR_LARGE : DEFAULT_AVATAR_SMALL
+  const resolvedSrc = resolveImageUrl(src) ?? defaultAvatar
   return (
     <img
-      src={src || defaultAvatar}
+      src={resolvedSrc}
       alt={alt}
       onError={(e) => {
         ;(e.target as HTMLImageElement).src = defaultAvatar
