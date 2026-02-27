@@ -13,6 +13,7 @@ import { ROUTES } from '@shared/constants'
 import { request } from '@shared/api/client'
 import { formatRelativeTime, parsePostImages } from '@shared/utils'
 import { getPostDetail, deletePost, reportPost, getComments } from '../api'
+import ImageCarousel from '@shared/components/ImageCarousel'
 
 export default function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>()
