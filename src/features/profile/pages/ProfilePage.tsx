@@ -11,6 +11,7 @@ import Modal from "@shared/components/Modal";
 import BottomSheet from "@shared/components/BottomSheet";
 import TopBar from "@app/layouts/TopBar";
 import { useAuth } from "@app/providers/AuthProvider";
+import { useFollow } from "@app/providers/FollowProvider";
 import { User, Post, Product } from "@shared/types";
 import { ROUTES } from "@shared/constants";
 import { parsePostImages } from "@shared/utils";
@@ -33,6 +34,15 @@ export default function ProfilePage() {
 
   const isMe = me?.accountname === accountName;
   const canGoBack = location.key !== "default";
+  const {
+    isFollowing,
+    syncFollowState,
+    recordFollowAction,
+    clearFollowingDelta,
+    clearFollowerCountDelta,
+    getFollowerCountDelta,
+    followingDelta,
+  } = useFollow();
 
   const [profile, setProfile] = useState<User | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -59,6 +69,16 @@ export default function ProfilePage() {
         setProfile(profile);
         setPosts(post);
         setProducts(product);
+        // 타 유저 프로필 로드 시 팔로우 상태를 전역 스토어에 동기화
+        if (!isMe && profile.isfollow !== undefined) {
+          syncFollowState(profile.accountname, profile.isfollow);
+        }
+        // 신선한 API 데이터를 받았으므로 해당 프로필의 카운트 델타를 초기화
+        if (isMe) {
+          clearFollowingDelta();          // 내 followingCount 델타 리셋
+        } else {
+          clearFollowerCountDelta(profile.accountname); // 상대 followerCount 델타 리셋
+        }
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -66,13 +86,22 @@ export default function ProfilePage() {
 
   const handleFollowToggle = async () => {
     if (!profile) return;
+    const wasFollowing = isFollowing(profile.accountname);
     try {
-      if (profile.isfollow) {
+      if (wasFollowing) {
         const { profile: updated } = await unfollowUser(profile.accountname);
-        setProfile(updated);
+        setProfile(updated); // API 응답에 상대방 followerCount 최신값 포함
+        syncFollowState(profile.accountname, false);
+        // 양방향 델타 기록 후 상대방 followerCount 델타는 즉시 초기화
+        // (setProfile로 이미 최신 followerCount를 반영했으므로 중복 방지)
+        recordFollowAction(profile.accountname, false);
+        clearFollowerCountDelta(profile.accountname);
       } else {
         const { profile: updated } = await followUser(profile.accountname);
-        setProfile(updated);
+        setProfile(updated); // API 응답에 상대방 followerCount 최신값 포함
+        syncFollowState(profile.accountname, true);
+        recordFollowAction(profile.accountname, true);
+        clearFollowerCountDelta(profile.accountname);
       }
     } catch (err) {
       console.error(err);
@@ -168,7 +197,11 @@ export default function ProfilePage() {
             className="flex flex-col items-center gap-0.5 min-w-[72px]"
           >
             <span className="text-xl font-bold text-gray-900">
-              {profile.followerCount.toLocaleString()}
+              {(isMe
+                ? profile.followerCount
+                // 타 유저 프로필: 내가 팔로우/언팔로우한 만큼 즉시 반영
+                : profile.followerCount + getFollowerCountDelta(profile.accountname)
+              ).toLocaleString()}
             </span>
             <span className="text-xs text-gray-400">followers</span>
           </button>
@@ -182,7 +215,10 @@ export default function ProfilePage() {
             className="flex flex-col items-center gap-0.5 min-w-[72px]"
           >
             <span className="text-xl font-bold text-gray-900">
-              {profile.followingCount.toLocaleString()}
+              {(isMe
+                ? profile.followingCount + followingDelta
+                : profile.followingCount
+              ).toLocaleString()}
             </span>
             <span className="text-xs text-gray-400">followings</span>
           </button>
@@ -245,12 +281,12 @@ export default function ProfilePage() {
 
               {/* 팔로우/언팔로우 버튼 */}
               <Button
-                variant={profile.isfollow ? "outline" : "primary"}
+                variant={isFollowing(profile.accountname) ? "outline" : "primary"}
                 size="sm"
                 onClick={handleFollowToggle}
                 className="px-10"
               >
-                {profile.isfollow ? "언팔로우" : "팔로우"}
+                {isFollowing(profile.accountname) ? "언팔로우" : "팔로우"}
               </Button>
 
               {/* 공유 아이콘 버튼 */}
