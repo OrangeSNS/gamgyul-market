@@ -13,5 +13,5 @@ export async function generateAIContent(messages: ChatMessage[]): Promise<string
   })
   if (!res.ok) throw new Error('AI 응답에 실패했습니다.')
   const data = await res.json()
-  return data?.content ?? data?.message ?? ''
+  return data?.choices?.[0]?.message?.content ?? ''
 }
