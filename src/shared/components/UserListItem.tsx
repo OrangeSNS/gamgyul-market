@@ -4,6 +4,7 @@ import Avatar from './Avatar'
 import Button from './Button'
 import { User } from '@shared/types'
 import { ROUTES } from '@shared/constants'
+import { followUser, unfollowUser } from '@features/profile/api'
 
 interface UserListItemProps {
   user: User
@@ -14,10 +15,20 @@ export default function UserListItem({ user, onFollowToggle }: UserListItemProps
   const navigate = useNavigate()
   const [isFollowing, setIsFollowing] = useState(user.isfollow ?? false)
 
-  const handleFollow = (e: React.MouseEvent) => {
+  const handleFollow = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    setIsFollowing((prev) => !prev)
-    onFollowToggle?.(user.accountname, !isFollowing)
+    const next = !isFollowing
+    try {
+      if (next) {
+        await followUser(user.accountname)
+      } else {
+        await unfollowUser(user.accountname)
+      }
+      setIsFollowing(next)
+      onFollowToggle?.(user.accountname, next)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

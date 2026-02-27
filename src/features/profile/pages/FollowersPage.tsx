@@ -29,7 +29,17 @@ export default function FollowersPage() {
       ) : users.length === 0 ? (
         <p className="text-center text-sm text-gray-400 py-12">팔로워가 없습니다.</p>
       ) : (
-        users.map((user) => <UserListItem key={user._id} user={user} />)
+        users.map((user) => (
+          <UserListItem
+            key={user._id}
+            user={user}
+            onFollowToggle={(accountname, following) => {
+              if (!following) {
+                setUsers((prev) => prev.filter((u) => u.accountname !== accountname))
+              }
+            }}
+          />
+        ))
       )}
     </div>
   )
