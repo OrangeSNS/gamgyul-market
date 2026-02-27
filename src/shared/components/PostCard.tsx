@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '@shared/constants';
+import ImageCarousel from '@shared/components/ImageCarousel'
 
 interface PostCardProps {
   post: any;

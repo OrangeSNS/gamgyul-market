@@ -5,6 +5,7 @@ import Button from '@shared/components/Button'
 import { useAuth } from '@app/providers/AuthProvider'
 import { uploadImage } from '@shared/api/client'
 import { createPost } from '../api'
+import ImageCarousel from '@shared/components/ImageCarousel'
 
 const MAX_IMAGES = 3
 
@@ -121,31 +122,17 @@ export default function PostNewPage() {
               className="min-h-[120px] w-full resize-none bg-transparent text-[17px] leading-7 text-[#111827] placeholder:text-[#B7BDC7] outline-none"
             />
 
-            {/* Image previews (선택했을 때만) */}
-            {images.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {images.map((img, idx) => (
-                  <div
-                    key={`${img.preview}-${idx}`}
-                    className="relative h-[92px] w-[92px] overflow-hidden rounded-xl bg-white"
-                  >
-                    <img
-                      src={img.preview}
-                      alt={`preview-${idx}`}
-                      className="h-full w-full object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveImage(idx)}
-                      aria-label={`이미지 ${idx + 1} 삭제`}
-                      className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/55 text-xs text-white"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+           {/* Image previews (슬라이드 + dots) */}
+{images.length > 0 && (
+  <div className="mt-3">
+    <ImageCarousel
+      images={images.map((img) => img.preview)}
+      aspectClassName="aspect-[343/228]"   // 피그마 큰 프리뷰 비율 느낌
+      showDots
+      onRemove={(idx) => handleRemoveImage(idx)} // X 버튼으로 개별 삭제
+    />
+  </div>
+)}
 
             {error && (
               <p className="mt-3 text-xs text-red-500">
