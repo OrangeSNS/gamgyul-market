@@ -113,12 +113,14 @@ export default function ImageCarousel({
               key={`${src}-${idx}`}
               className="relative h-full w-full flex-none snap-center"
             >
-              <img
-                src={src}
-                alt=""
-                className="h-full w-full object-cover"
-                draggable={false}
-              />
+            <img
+  src={src}
+  alt=""
+  className="h-full w-full object-cover"
+  loading="lazy"
+  decoding="async"
+  draggable={false}
+/>
 
               {onRemove && (
                 <button
