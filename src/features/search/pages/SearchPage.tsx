@@ -42,19 +42,18 @@ export default function SearchPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white max-w-[390px] mx-auto">
-      {/* 1. 상단 헤더: 우리가 만든 디자인으로 교체 (뒤로가기 추가) */}
-      <header className="sticky top-0 z-30 bg-white border-b border-[#DBDBDB] px-[16px] h-[48px] flex items-center gap-[8px]">
+      <header className="sticky top-0 z-30 bg-white border-b border-[#DBDBDB] px-[16px] h-[48px] flex items-center gap-[20px]">
         <button onClick={() => navigate(-1)} className="p-0 flex-shrink-0">
-          <img src="/icons/icon-arrow-left.svg" alt="뒤로가기" className="w-[24px] h-[24px]" />
+          <img src="/icons/icon-arrow-left.svg" alt="뒤로가기" className="w-[22px] h-[22px]" />
         </button>
-        <div className="flex-1">
+        <div className="flex-1 h-[32px]">
           <input
             type="text"
             placeholder="계정 검색"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             autoFocus
-            className="w-full bg-[#F2F2F2] px-[16px] py-[7px] rounded-full text-[14px] outline-none placeholder:text-[#C4C4C4]"
+            className="w-full h-full bg-[#F2F2F2] px-[16px] py-0 rounded-full text-[14px] outline-none placeholder:text-[#C4C4C4]"
           />
         </div>
       </header>
