@@ -60,6 +60,7 @@ export default function ChatRoomPage() {
       <TopBar
         showBack
         title={chatName}
+        titleAlign="left"
         rightSlot={
           <button type="button" onClick={chatSheet.open} className="p-1 rounded-full hover:bg-gray-100" aria-label="채팅방 옵션">
             <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
@@ -97,7 +98,7 @@ export default function ChatRoomPage() {
                   <img
                     src={msg.image}
                     alt="채팅 이미지"
-                    className="w-48 h-48 object-cover rounded-2xl"
+                    className="w-[273px] h-[240px] object-cover rounded-2xl"
                   />
                 )}
               </div>

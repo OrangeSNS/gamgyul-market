@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 
 interface TopBarProps {
   title?: string
+  titleAlign?: 'center' | 'left'
   showBack?: boolean
   rightSlot?: ReactNode
   transparent?: boolean
@@ -10,6 +11,7 @@ interface TopBarProps {
 
 export default function TopBar({
   title,
+  titleAlign = 'center',
   showBack = false,
   rightSlot,
   transparent = false,
@@ -41,14 +43,20 @@ export default function TopBar({
         )}
       </div>
 
-      {/* 가운데 (제목 없으면 비워둠) */}
-      <div className="flex-1 text-center">
-        {title ? (
-          <h1 className="truncate text-base font-semibold text-gray-900">
-            {title}
-          </h1>
-        ) : null}
-      </div>
+      {/* 가운데 */}
+      {titleAlign === 'left' ? (
+        <h1 className="ml-0.5 flex-1 truncate text-base font-semibold text-gray-900 text-left">
+          {title}
+        </h1>
+      ) : (
+        <div className="flex-1 text-center">
+          {title ? (
+            <h1 className="truncate text-base font-semibold text-gray-900">
+              {title}
+            </h1>
+          ) : null}
+        </div>
+      )}
 
       {/* 오른쪽 */}
       <div className="flex shrink-0 items-center justify-end">
