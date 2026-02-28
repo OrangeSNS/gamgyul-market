@@ -72,11 +72,11 @@ export function resolveImageUrl(url?: string | null): string | undefined {
   return `${API_BASE_URL}/${url}`
 }
 
-/** post 이미지 배열로 파싱 (콤마 구분) */
+/** post 이미지 배열로 파싱 (콤마 구분 + URL 정규화) */
 export function parsePostImages(image: string): string[] {
   if (!image) return []
   return image
     .split(',')
-    .map((url) => url.trim())
-    .filter(Boolean)
+    .map((url) => resolveImageUrl(url.trim()))
+    .filter((url): url is string => !!url)
 }
