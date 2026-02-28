@@ -109,15 +109,13 @@ export default function ChatRoomPage() {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 h-[60px] flex items-center gap-2">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 h-[60px] flex items-center">
         <button
           type="button"
-          className="p-1.5 rounded-full hover:bg-gray-100"
+          className="shrink-0"
           onClick={() => fileInputRef.current?.click()}
         >
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-brand" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
+          <img src="/icons/img-button.svg" alt="사진 첨부" className="w-9 h-9 object-contain" />
         </button>
         <input
           ref={fileInputRef}
@@ -131,11 +129,11 @@ export default function ChatRoomPage() {
           placeholder="메시지 입력하기..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="flex-1 text-sm outline-none bg-transparent placeholder:text-gray-400"
+          className="flex-1 ml-[18px] text-sm font-normal leading-none tracking-normal outline-none bg-transparent placeholder:text-gray-400"
         />
         <button
           disabled={message.trim() === '' && imageFile === null}
-          className="text-sm font-semibold text-brand disabled:text-gray-300 px-1"
+          className="text-sm font-semibold text-brand disabled:text-gray-300"
         >
           전송
         </button>
