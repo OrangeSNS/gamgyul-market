@@ -31,3 +31,15 @@ export async function deleteComment(postId: string, commentId: string): Promise<
 export async function reportComment(postId: string, commentId: string): Promise<unknown> {
   return request(`/post/${postId}/comments/${commentId}/report`, { method: 'POST' })
 }
+
+export async function postLike(postId: string): Promise<{ post: Post }> {
+  return request<{ post: Post }>(`/post/${postId}/heart`, {
+    method: 'POST',
+  });
+}
+
+export async function deleteLike(postId: string): Promise<{ post: Post }> {
+  return request<{ post: Post }>(`/post/${postId}/unheart`, {
+    method: 'DELETE',
+  });
+}

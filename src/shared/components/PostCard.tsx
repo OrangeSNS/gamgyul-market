@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL, ROUTES } from '@shared/constants';
 import BottomSheet from '@shared/components/BottomSheet';
 import Modal from '@shared/components/Modal';
-import { deletePost, reportPost } from '@features/post/api';
+import { deletePost, reportPost, postLike, deleteLike } from '@features/post/api';
 
 interface PostCardProps {
   post: any;
@@ -38,10 +38,30 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
     return img.startsWith('http') ? img : `${API_BASE_URL}/${img}`;
   };
 
-  const handleLike = (e: React.MouseEvent) => {
+  // --- 여기부터 복사하세요 ---
+  const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked(!isLiked);
-    setHeartCount((prev: number) => isLiked ? prev - 1 : prev + 1);
+
+    try {
+      if (!isLiked) {
+        // 좋아요 안 누른 상태일 때 -> 서버에 좋아요 요청
+        const res = await postLike(post.id);
+        if (res && res.post) {
+          setIsLiked(true);
+          setHeartCount(res.post.heartCount);
+        }
+      } else {
+        // 이미 좋아요 누른 상태일 때 -> 서버에 취소 요청
+        const res = await deleteLike(post.id);
+        if (res && res.post) {
+          setIsLiked(false);
+          setHeartCount(res.post.heartCount);
+        }
+      }
+    } catch (error) {
+      console.error("좋아요 처리 실패:", error);
+      // 서버 통신 실패 시 사용자에게 알림을 줄 수도 있습니다.
+    }
   };
 
   const handleKebab = (e: React.MouseEvent) => {
@@ -59,6 +79,7 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
       setDeleteModalOpen(false);
     }
   };
+  // --- 여기까지 복사하세요 ---
 
   const myItems = [
     {
