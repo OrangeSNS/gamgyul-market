@@ -84,6 +84,10 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
+        path: '/chat/:chatId',
+        element: <div className="mobile-container"><ChatRoomPage /></div>,
+      },
+      {
         element: <AppLayout />,
         children: [
           {
@@ -97,10 +101,6 @@ export const router = createBrowserRouter([
           {
             path: '/chat',
             element: <ChatListPage />,
-          },
-          {
-            path: '/chat/:chatId',
-            element: <ChatRoomPage />,
           },
           {
             path: '/profile/edit',

@@ -46,8 +46,8 @@ export default function TabBar() {
     location.pathname.startsWith('/profile') && !isOnMyProfile
 
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-200 z-40">
-      <div className="flex">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-200 z-40 h-[60px]">
+      <div className="flex h-full">
         {tabs.map((tab) => {
           const isActive =
             tab.to === ROUTES.HOME
