@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import { ROUTES } from '@shared/constants'
+import TopBar from '@app/layouts/TopBar'
 
 // 채팅 목록 - 마크업 전용 (서버 기능 없음)
 const MOCK_CHATS = [
@@ -35,36 +36,38 @@ export default function ChatListPage() {
 
   return (
     <div className="flex flex-col">
-      <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-white border-b border-gray-100">
-        <h1 className="text-base font-bold">채팅</h1>
-        <button className="p-1">
-          <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
-            <circle cx="5" cy="12" r="2" />
-            <circle cx="12" cy="12" r="2" />
-            <circle cx="19" cy="12" r="2" />
-          </svg>
-        </button>
-      </header>
+      <TopBar
+        showBack
+        rightSlot={
+          <button type="button" className="p-1 rounded-full hover:bg-gray-100" aria-label="더보기">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
+              <circle cx="12" cy="5" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="12" cy="19" r="2" />
+            </svg>
+          </button>
+        }
+      />
 
       {MOCK_CHATS.map((chat) => (
         <button
           key={chat.id}
           onClick={() => navigate(ROUTES.CHAT_ROOM(chat.id))}
-          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-50"
+          className="w-full flex items-start gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-50"
         >
           <div className="relative">
             <Avatar src={chat.image} alt={chat.name} size="md" />
             {chat.unread > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand text-white text-[10px] flex items-center justify-center">
+              <span className="absolute -top-0.5 -left-0.5 w-4 h-4 rounded-full bg-brand text-white text-[10px] flex items-center justify-center">
                 {chat.unread}
               </span>
             )}
           </div>
           <div className="flex-1 min-w-0 text-left">
             <p className="text-sm font-semibold text-gray-900 truncate">{chat.name}</p>
-            <p className="text-xs text-gray-400 truncate">{chat.preview}</p>
+            <p className="text-xs text-[#767676] truncate">{chat.preview}</p>
           </div>
-          <span className="text-xs text-gray-400 flex-shrink-0">{chat.time}</span>
+          <span className="text-xs text-[#767676] flex-shrink-0 self-end">{chat.time}</span>
         </button>
       ))}
     </div>

@@ -42,6 +42,8 @@ export default function ChatRoomPage() {
   const { chatId } = useParams()
   const navigate = useNavigate()
   const [message, setMessage] = useState('')
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const chatSheet = useBottomSheet()
   const leaveModal = useModal()
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -53,7 +55,7 @@ export default function ChatRoomPage() {
   const chatName = '애플을 위니브 감귤농장'
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#F2F2F2]">
      {/* TopBar */}
 <header className="sticky top-0 z-30 flex h-14 items-center border-b border-gray-100 bg-white px-4">
   {/* 왼쪽 뒤로가기 */}
@@ -70,8 +72,8 @@ export default function ChatRoomPage() {
     />
   </button>
 
-  {/* 가운데 비우기 */}
-  <div className="flex-1" />
+  {/* 채팅방 이름 */}
+  <span className="text-sm font-semibold ml-2 flex-1">{chatName}</span>
 
   {/* 오른쪽 더보기 */}
   <button
@@ -89,7 +91,7 @@ export default function ChatRoomPage() {
 </header>
 
       {/* Messages */}
-      <div className="flex-1 px-4 py-4 pb-20 flex flex-col gap-4">
+      <div className="flex-1 px-4 py-4 pb-20 flex flex-col gap-4 bg-[#F2F2F2]">
         {MOCK_MESSAGES.map((msg) => (
           <div
             key={msg.id}
@@ -127,11 +129,22 @@ export default function ChatRoomPage() {
 
       {/* Input */}
       <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 py-2 flex items-center gap-2">
-        <button className="p-1.5 rounded-full hover:bg-gray-100">
+        <button
+          type="button"
+          className="p-1.5 rounded-full hover:bg-gray-100"
+          onClick={() => fileInputRef.current?.click()}
+        >
           <svg viewBox="0 0 24 24" className="w-5 h-5 text-brand" fill="none" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+        />
         <input
           type="text"
           placeholder="메시지 입력하기..."
@@ -140,7 +153,7 @@ export default function ChatRoomPage() {
           className="flex-1 text-sm outline-none bg-transparent placeholder:text-gray-400"
         />
         <button
-          disabled={!message.trim()}
+          disabled={message.trim() === '' && imageFile === null}
           className="text-sm font-semibold text-brand disabled:text-gray-300 px-1"
         >
           전송
