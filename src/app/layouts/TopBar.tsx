@@ -59,7 +59,7 @@ export default function TopBar({
       )}
 
       {/* 오른쪽 */}
-      <div className="flex w-10 items-center justify-end">
+      <div className="flex items-center justify-end">
         {rightSlot}
       </div>
     </header>
