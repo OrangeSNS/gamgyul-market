@@ -41,8 +41,8 @@ export default function SearchPage() {
   }, [debouncedKeyword])
 
   return (
-    <div className="flex flex-col min-h-screen bg-white max-w-[390px] mx-auto">
-      <header className="sticky top-0 z-30 bg-white border-b border-[#DBDBDB] px-[16px] h-[48px] flex items-center gap-[20px]">
+    <div className="flex flex-col min-h-screen bg-white w-full">
+      <header className="sticky top-0 z-30 bg-white border-b border-[#DBDBDB] px-[16px] h-[48px] flex items-center gap-[20px] w-full">
         <button onClick={() => navigate(-1)} className="p-0 flex-shrink-0">
           <img src="/icons/icon-arrow-left.svg" alt="뒤로가기" className="w-[22px] h-[22px]" />
         </button>
@@ -59,7 +59,7 @@ export default function SearchPage() {
       </header>
 
       {/* 2. 결과 리스트: 팀원의 컴포넌트 + 우리의 하이라이트 */}
-      <main className="flex-1 p-[16px]">
+      <main className="flex-1 px-[16px]">
         {loading ? (
           <div className="flex justify-center py-10"><Spinner /></div>
         ) : results.length > 0 ? (
