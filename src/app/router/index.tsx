@@ -84,7 +84,7 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        path: '/chat/:chatId',
+        path: '/chat/:targetAccountName',
         element: <div className="mobile-container"><ChatRoomPage /></div>,
       },
       {
