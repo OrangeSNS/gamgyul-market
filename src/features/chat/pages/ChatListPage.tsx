@@ -49,11 +49,12 @@ export default function ChatListPage() {
         }
       />
 
+      <div className="pt-6">
       {MOCK_CHATS.map((chat) => (
         <button
           key={chat.id}
           onClick={() => navigate(ROUTES.CHAT_ROOM(chat.id))}
-          className="w-full flex items-start gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-50"
+          className="w-full flex items-center gap-3 px-4 pb-5 hover:bg-gray-50 border-b border-gray-50"
         >
           <div className="relative">
             <Avatar src={chat.image} alt={chat.name} size="md" />
@@ -63,13 +64,16 @@ export default function ChatListPage() {
               </span>
             )}
           </div>
-          <div className="flex-1 min-w-0 text-left">
+          <div className="flex-1 min-w-0 text-left flex flex-col gap-1">
             <p className="text-sm font-semibold text-gray-900 truncate">{chat.name}</p>
-            <p className="text-xs text-[#767676] truncate">{chat.preview}</p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-normal leading-none tracking-normal text-[#767676] truncate flex-1">{chat.preview}</p>
+              <span className="text-[10px] font-normal text-[#DBDBDB] shrink-0">{chat.time}</span>
+            </div>
           </div>
-          <span className="text-xs text-[#767676] flex-shrink-0 self-end">{chat.time}</span>
         </button>
       ))}
+      </div>
     </div>
   )
 }
