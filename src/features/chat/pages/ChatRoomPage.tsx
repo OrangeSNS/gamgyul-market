@@ -5,6 +5,7 @@ import BottomSheet from '@shared/components/BottomSheet'
 import Modal from '@shared/components/Modal'
 import { useBottomSheet } from '@shared/hooks/useBottomSheet'
 import { useModal } from '@shared/hooks/useModal'
+import TopBar from '@app/layouts/TopBar'
 
 // 채팅방 - 마크업 전용 (서버 기능 없음)
 const MOCK_MESSAGES = [
@@ -56,39 +57,19 @@ export default function ChatRoomPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F2F2F2]">
-     {/* TopBar */}
-<header className="sticky top-0 z-30 flex h-14 items-center border-b border-gray-100 bg-white px-4">
-  {/* 왼쪽 뒤로가기 */}
-  <button
-    type="button"
-    onClick={() => navigate(-1)}
-    className="flex h-8 w-8 items-center justify-center"
-    aria-label="뒤로가기"
-  >
-    <img
-      src="/icons/icon-arrow-left.svg"
-      alt=""
-      className="h-5 w-5 object-contain"
-    />
-  </button>
-
-  {/* 채팅방 이름 */}
-  <span className="text-sm font-semibold ml-2 flex-1">{chatName}</span>
-
-  {/* 오른쪽 더보기 */}
-  <button
-    type="button"
-    onClick={chatSheet.open}
-    className="flex h-8 w-8 items-center justify-center"
-    aria-label="채팅방 옵션"
-  >
-    <img
-      src="/icons/icon-more-vertical.svg"
-      alt=""
-      className="h-5 w-5 object-contain"
-    />
-  </button>
-</header>
+      <TopBar
+        showBack
+        title={chatName}
+        rightSlot={
+          <button type="button" onClick={chatSheet.open} className="p-1 rounded-full hover:bg-gray-100" aria-label="채팅방 옵션">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
+              <circle cx="12" cy="5" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="12" cy="19" r="2" />
+            </svg>
+          </button>
+        }
+      />
 
       {/* Messages */}
       <div className="flex-1 px-4 py-4 pb-20 flex flex-col gap-4 bg-[#F2F2F2]">
@@ -128,7 +109,7 @@ export default function ChatRoomPage() {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 py-2 flex items-center gap-2">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 py-2 flex items-center gap-2">
         <button
           type="button"
           className="p-1.5 rounded-full hover:bg-gray-100"
