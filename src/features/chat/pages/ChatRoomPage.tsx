@@ -72,36 +72,36 @@ export default function ChatRoomPage() {
       />
 
       {/* Messages */}
-      <div className="flex-1 px-4 py-4 pb-20 flex flex-col gap-4 bg-[#F2F2F2]">
+      <div className="flex-1 px-4 py-4 pb-20 flex flex-col justify-end gap-[9px] bg-[#F2F2F2]">
         {MOCK_MESSAGES.map((msg) => (
           <div
             key={msg.id}
-            className={`flex items-end gap-2 ${msg.mine ? 'flex-row-reverse' : ''}`}
+            className={`flex items-start gap-3 ${msg.mine ? 'flex-row-reverse' : ''}`}
           >
-            {!msg.mine && <Avatar size="xs" />}
-            <div className="flex flex-col gap-1 max-w-[70%]">
-              {msg.text && (
-                <div
-                  className={[
-                    'px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed',
-                    msg.mine
-                      ? 'bg-brand text-white rounded-br-sm'
-                      : 'bg-gray-100 text-gray-800 rounded-bl-sm',
-                  ].join(' ')}
-                >
-                  {msg.text}
-                </div>
-              )}
-              {msg.image && (
-                <img
-                  src={msg.image}
-                  alt="채팅 이미지"
-                  className="w-48 h-48 object-cover rounded-2xl"
-                />
-              )}
-              <span className={`text-[10px] text-gray-400 ${msg.mine ? 'text-right' : ''}`}>
-                {msg.time}
-              </span>
+            {!msg.mine && <Avatar className="w-[42px] h-[42px] shrink-0" />}
+            <div className={`flex items-end gap-[6px] ${msg.mine ? 'flex-row-reverse' : ''}`}>
+              <div className="flex flex-col max-w-[240px]">
+                {msg.text && (
+                  <div
+                    className={[
+                      'p-3 rounded-xl text-sm',
+                      msg.mine
+                        ? 'bg-brand text-white rounded-tr-none'
+                        : 'bg-white text-gray-800 rounded-xl rounded-tl-none border border-[#C4C4C4]',
+                    ].join(' ')}
+                  >
+                    {msg.text}
+                  </div>
+                )}
+                {msg.image && (
+                  <img
+                    src={msg.image}
+                    alt="채팅 이미지"
+                    className="w-48 h-48 object-cover rounded-2xl"
+                  />
+                )}
+              </div>
+              <span className="text-[10px] text-[#767676] shrink-0">{msg.time}</span>
             </div>
           </div>
         ))}
