@@ -28,3 +28,6 @@ export const ROUTES = {
 
 export const ACCOUNT_NAME_REGEX = /^[a-zA-Z0-9._]+$/
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+/** 공통 상단바 높이 (48px = h-12) */
+export const TOPBAR_HEIGHT = 'h-12'
