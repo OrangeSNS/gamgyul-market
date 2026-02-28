@@ -109,7 +109,7 @@ export default function ChatRoomPage() {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 py-2 flex items-center gap-2">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 h-[60px] flex items-center gap-2">
         <button
           type="button"
           className="p-1.5 rounded-full hover:bg-gray-100"
