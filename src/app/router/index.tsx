@@ -31,6 +31,7 @@ import ProductEditPage from '@features/product/pages/ProductEditPage'
 import PostNewPage from '@features/upload/pages/PostNewPage'
 import PostDetailPage from '@features/post/pages/PostDetailPage'
 import CommentsPage from '@features/post/pages/CommentsPage'
+import PostWritePage from '@features/upload/pages/PostWritePage';
 
 // Search & Chat (markup)
 import SearchPage from '@features/search/pages/SearchPage'
@@ -128,7 +129,7 @@ export const router = createBrowserRouter([
           },
           {
             path: '/post/new',
-            element: <PostNewPage />,
+            element: <PostWritePage />,
           },
           {
             path: '/post/:postId',
@@ -137,6 +138,10 @@ export const router = createBrowserRouter([
           {
             path: '/post/:postId/comments',
             element: <CommentsPage />,
+          },
+          {
+            path: '/post/:postId/edit',
+            element: <PostWritePage />,
           },
         ],
       },
