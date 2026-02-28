@@ -56,8 +56,8 @@ export default function JoinEmailPage() {
     <div className="flex flex-col min-h-screen">
       <TopBar title="" showBack />
 
-      <div className="flex flex-col flex-1 px-6 pt-10 gap-6">
-        <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">
+      <div className="flex flex-col flex-1 px-6 pt-10 ">
+        <h2 className="text-[24px] font-medium leading-[100%] text-center text-[#000000] mb-[40px]">
           이메일로 회원가입
         </h2>
 
@@ -75,7 +75,7 @@ export default function JoinEmailPage() {
           autoComplete="email"
           underline
         />
-
+      <div className="mt-4">
         <Input
           label="비밀번호"
           type="password"
@@ -90,13 +90,13 @@ export default function JoinEmailPage() {
           autoComplete="new-password"
           underline
         />
-
+      </div>
         <Button
           fullWidth
           size="lg"
           disabled={!isValid}
           onClick={handleNext}
-          className="mt-2"
+          className="mt-[30px]"
         >
           다음
         </Button>
