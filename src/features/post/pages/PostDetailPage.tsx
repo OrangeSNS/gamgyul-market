@@ -165,11 +165,19 @@ export default function PostDetailPage() {
         rightSlot={
           <button
             onClick={postSheet.open}
-            className="flex h-8 w-8 items-center justify-center"
+            className="p-1 rounded-full hover:bg-gray-100"
             aria-label="더보기"
             type="button"
           >
-            <img src="/icons/icon-more-vertical.svg" alt="" className="h-6 w-6 object-contain" />
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6 text-gray-700"
+              fill="currentColor"
+            >
+              <circle cx="12" cy="5" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="12" cy="19" r="2" />
+            </svg>
           </button>
         }
       />
