@@ -109,11 +109,11 @@ export default function JoinProfilePage() {
     <div className="flex flex-col min-h-screen">
       <TopBar showBack />
 
-      <div className="flex flex-col items-center px-6 pt-8 gap-6">
-        <h2 className="text-2xl font-bold text-center text-black">
+      <div className="flex flex-col items-center px-6 pt-8 ">
+        <h2 className="text-[24px] font-medium leading-[100%] text-center text-[#000000]">
           프로필 설정
         </h2>
-        <p className="text-sm text-gray-500 text-center">
+        <p className="text-[14px] text-[#767676] text-center mt-[12px]">
           나중에 언제든지 변경할 수 있습니다.
         </p>
 
@@ -121,7 +121,7 @@ export default function JoinProfilePage() {
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="relative"
+          className="relative mt-[30px]"
         >
           <img
             src={imagePreview}
@@ -140,7 +140,7 @@ export default function JoinProfilePage() {
           />
         </button>
 
-        <div className="w-full flex flex-col gap-5">
+        <div className="w-full flex flex-col mt-[30px]">
           <Input
             label="사용자 이름"
             placeholder="2~10자 이내여야 합니다."
@@ -153,7 +153,7 @@ export default function JoinProfilePage() {
             error={usernameError}
             underline
           />
-
+        <div className="mt-4">
           <Input
             label="계정 ID"
             placeholder="영문, 숫자, 특수문자(.),(_)만 사용 가능합니다."
@@ -166,7 +166,8 @@ export default function JoinProfilePage() {
             error={accountnameError}
             underline
           />
-
+          </div>
+        <div className="mt-4">
           <Input
             label="소개"
             placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
@@ -175,14 +176,14 @@ export default function JoinProfilePage() {
             underline
           />
         </div>
-
+        </div>
         <Button
           fullWidth
           size="lg"
           disabled={!isValid}
           loading={loading}
           onClick={handleSubmit}
-          className="mt-2"
+          className="mt-[30px]"
         >
           감귤마켓 시작하기
         </Button>

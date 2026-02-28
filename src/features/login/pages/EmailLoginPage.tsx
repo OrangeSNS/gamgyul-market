@@ -77,9 +77,11 @@ export default function EmailLoginPage() {
       <TopBar title="" showBack />
 
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 px-6 pt-10" noValidate>
-        <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">로그인</h2>
+        <h2 className="text-[24px] font-medium leading-[100%] text-center text-[#000000] mb-[40px]">
+  로그인
+</h2>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col ">
           <div>
             <Input
               label="이메일"
@@ -94,10 +96,10 @@ export default function EmailLoginPage() {
             />
             {/* [핵심] 이메일 입력창 바로 밑 에러 표시 */}
             {emailError && (
-              <p className="text-[12px] leading-[14px] text-[#EB5757] mt-1">*{emailError}</p>
+              <p className="text-[12px] leading-[14px] text-[#EB5757] mt-[6px]">*{emailError}</p>
             )}
           </div>
-
+          <div className="mt-4">
           <Input
             label="비밀번호"
             type="password"
@@ -109,14 +111,17 @@ export default function EmailLoginPage() {
             }}
             underline
           />
+         </div> 
         </div>
 
         {/* 로그인 결과(비번 틀림 등) 에러 표시 영역 */}
-        <div className="mt-2">
-          {loginError && (
-            <p className="text-[12px] leading-[14px] text-[#EB5757] text-left">*{loginError}</p>
-          )}
-        </div>
+        {loginError && (
+  <div className="mt-[6px]">
+    <p className="text-[12px] leading-[14px] text-[#EB5757] text-left">
+      *{loginError}
+    </p>
+  </div>
+)}
 
         <Button
           type="submit"
