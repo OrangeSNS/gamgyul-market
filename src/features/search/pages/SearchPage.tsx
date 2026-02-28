@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
 import Spinner from '@shared/components/Spinner'
 import { User } from '@shared/types'
-import { ROUTES } from '@shared/constants'
+import { ROUTES, TOPBAR_HEIGHT } from '@shared/constants'
 import { useDebounce } from '@shared/hooks/useDebounce'
 import { request } from '@shared/api/client'
 
@@ -42,7 +42,7 @@ export default function SearchPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white w-full">
-      <header className="sticky top-0 z-30 bg-white border-b border-[#DBDBDB] px-[16px] h-[48px] flex items-center gap-[20px] w-full">
+      <header className={`sticky top-0 z-30 bg-white border-b border-[#DBDBDB] px-[16px] ${TOPBAR_HEIGHT} flex items-center gap-[20px] w-full`}>
         <button onClick={() => navigate(-1)} className="p-0 flex-shrink-0">
           <img src="/icons/icon-arrow-left.svg" alt="뒤로가기" className="w-[22px] h-[22px]" />
         </button>

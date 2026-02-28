@@ -1,5 +1,5 @@
 import { Product } from '@shared/types'
-import { formatPrice } from '@shared/utils'
+import { formatPrice, resolveImageUrl } from '@shared/utils'
 
 interface ProductCardProps {
   product: Product
@@ -14,7 +14,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
     >
       <div className="w-full h-[90px] rounded-xl overflow-hidden bg-gray-100 mb-2">
         <img
-          src={product.itemImage}
+          src={resolveImageUrl(product.itemImage)}
           alt={product.itemName}
           className="w-full h-full object-cover"
           onError={(e) => {

@@ -4,7 +4,8 @@ import PostCard from '@shared/components/PostCard';
 import NoFollowView from '../components/NoFollowView';
 import { getFeed } from '../api';
 import { Post } from '@shared/types';
-import { useAuth } from '@app/providers/AuthProvider';
+import { useAuth } from '@app/providers/AuthProvider'
+import { TOPBAR_HEIGHT } from '@shared/constants';
 
 export default function HomeFeedPage() {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ export default function HomeFeedPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="sticky top-0 bg-white z-10 flex justify-between items-center px-4 h-12 border-b border-gray-200">
+      <header className={`sticky top-0 bg-white z-10 flex justify-between items-center px-4 ${TOPBAR_HEIGHT} border-b border-gray-200`}>
         <h1 className="text-lg font-bold">감귤마켓 피드</h1>
         <button onClick={() => navigate('/search')} className="p-1 text-xl">
           <img src="/icons/icon-search.svg" alt="검색" className="w-6 h-6" />
