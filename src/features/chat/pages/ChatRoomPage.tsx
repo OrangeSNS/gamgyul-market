@@ -129,11 +129,11 @@ export default function ChatRoomPage() {
           placeholder="메시지 입력하기..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="flex-1 ml-[18px] text-sm font-normal leading-none tracking-normal outline-none bg-transparent placeholder:text-gray-400"
+          className="flex-1 ml-[18px] text-sm font-normal leading-none tracking-normal outline-none bg-transparent placeholder:text-[#C4C4C4]"
         />
         <button
           disabled={message.trim() === '' && imageFile === null}
-          className="text-sm font-semibold text-brand disabled:text-gray-300"
+          className="text-sm font-semibold text-brand disabled:text-[#C4C4C4]"
         >
           전송
         </button>
