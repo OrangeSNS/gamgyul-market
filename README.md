@@ -30,7 +30,34 @@ npm run build
 
 ```env
 VITE_API_BASE_URL=https://dev.wenivops.co.kr/services/mandarin
+
+# Firebase 설정 (Firebase 콘솔 > 프로젝트 설정 > 내 앱에서 복사)
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
 ```
+
+### Firebase 설정 방법
+
+1. [Firebase 콘솔](https://console.firebase.google.com)에서 프로젝트 생성
+2. **Firestore Database** 활성화 (위치: `asia-northeast3 서울`, 테스트 모드)
+3. **Authentication > Sign-in method > 익명(Anonymous)** 사용 설정
+4. 프로젝트 설정 > 내 앱 > 웹 앱 등록 후 SDK 구성 값을 `.env`에 붙여넣기
+
+### Netlify 배포 시 환경변수 추가
+
+Netlify Dashboard > Site Settings > Environment Variables에서 위 Firebase 변수들을 동일하게 등록하세요.
+
+### 보안 한계 (MVP)
+
+현재 채팅은 **Firebase 익명 인증(Anonymous Auth)** 기반입니다.
+`firestore.rules`에서 인증된 사용자(`request.auth != null`)만 읽기/쓰기를 허용하지만,
+익명 사용자는 누구든 인증 가능하므로 완전한 접근 제어가 되지 않습니다.
+
+운영 수준 보안을 위해서는 서버에서 gamgyul `accountname` 기반으로 **Firebase Custom Token**을 발급하고 `signInWithCustomToken`으로 전환해야 합니다.
 
 ---
 
@@ -52,7 +79,7 @@ src/
     upload/        # 게시글 작성
     post/          # 게시글 상세, 댓글
     search/        # 사용자 검색
-    chat/          # 채팅 (마크업)
+    chat/          # 채팅 (Firebase 실시간 채팅)
   shared/
     api/           # fetch 기반 API 클라이언트
     components/    # Button/Input/Modal/BottomSheet/TabBar 등
@@ -81,7 +108,6 @@ src/
 
 ### ⚠️ 마크업만 (서버 기능 없음)
 
-- 채팅 목록/채팅방 (목업 데이터)
 - SNS 로그인 버튼 (UI만)
 
 ---
@@ -91,6 +117,7 @@ src/
 - React 18 + TypeScript 5 + TailwindCSS 3 + Vite 5
 - react-router-dom v6
 - Fetch API 기반 커스텀 API 클라이언트
+- Firebase Firestore (실시간 채팅) + Firebase Anonymous Auth
 - Netlify 배포
 
 ---

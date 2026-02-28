@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // MVP용 Rules: Anonymous Auth 기반으로 인증된 사용자만 읽기/쓰기 허용
+    // TODO(운영): Custom Token 기반으로 전환 시
+    // request.auth.token.accountName == participants 검증으로 강화
+    match /chats/{chatId} {
+      allow read, write: if request.auth != null;
+    }
+    match /chats/{chatId}/messages/{messageId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

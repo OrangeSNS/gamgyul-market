@@ -86,16 +86,16 @@ export default function JoinProfilePage() {
       // 회원가입 후 자동 로그인
       const loginRes = await login(email, password)
       const user: User = {
-        _id: loginRes._id,
-        username: loginRes.username,
-        accountname: loginRes.accountname,
+        _id: loginRes._id ?? '',
+        username: loginRes.username ?? '',
+        accountname: loginRes.accountname ?? '',
         email: loginRes.email,
-        intro: loginRes.intro,
-        image: loginRes.image,
+        intro: loginRes.intro ?? '',
+        image: loginRes.image ?? '',
         followerCount: 0,
         followingCount: 0,
       }
-      authLogin(loginRes.token, user)
+      authLogin(loginRes.token ?? '', user)
       navigate(ROUTES.HOME, { replace: true })
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : '회원가입에 실패했습니다.'
