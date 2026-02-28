@@ -342,7 +342,14 @@ export default function PostDetailPage() {
           isMyPost
             ? [
                 { label: '삭제', danger: true, onClick: deletePostModal.open },
-                { label: '수정', onClick: () => navigate(ROUTES.POST_NEW) },
+                // PostDetailPage.tsx 내 BottomSheet 부분 수정
+{ 
+  label: '수정', 
+  onClick: () => {
+    postSheet.close(); // 바텀시트 닫기
+    navigate(`/post/${postId}/edit`); // 수정 전용 경로로 이동
+  }
+},
               ]
             : [{ label: '신고', danger: true, onClick: reportPostModal.open }]
         }
