@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { ReactNode } from 'react'
+import { TOPBAR_HEIGHT } from '@shared/constants'
 
 interface TopBarProps {
   title?: string
@@ -21,7 +22,7 @@ export default function TopBar({
   return (
     <header
       className={[
-        'sticky top-0 z-30 flex items-center h-14 px-4',
+        `sticky top-0 z-30 flex items-center ${TOPBAR_HEIGHT} px-4`,
         transparent ? 'bg-transparent' : 'bg-white border-b border-gray-200',
       ].join(' ')}
     >
