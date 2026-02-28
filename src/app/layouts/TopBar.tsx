@@ -24,7 +24,7 @@ export default function TopBar({
       ].join(' ')}
     >
       {/* 왼쪽 */}
-      <div className="flex w-10 shrink-0 items-center justify-start">
+      <div className="flex w-10 items-center justify-start">
         {showBack && (
           <button
             type="button"
@@ -51,7 +51,7 @@ export default function TopBar({
       </div>
 
       {/* 오른쪽 */}
-      <div className="flex shrink-0 items-center justify-end">
+      <div className="flex w-10 items-center justify-end">
         {rightSlot}
       </div>
     </header>

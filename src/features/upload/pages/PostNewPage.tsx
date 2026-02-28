@@ -7,6 +7,7 @@ import { uploadImage } from '@shared/api/client'
 import { generateAIContent, type ChatMessage } from '@shared/api/ai'
 import { createPost } from '../api'
 import ImageCarousel from '@shared/components/ImageCarousel'
+import TopBar from '@app/layouts/TopBar'
 
 const MAX_IMAGES = 3
 
@@ -161,35 +162,26 @@ export default function PostNewPage() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
       {/* Top Bar */}
-      <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[#EAEAEA] bg-white px-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex h-10 w-10 items-center justify-center"
-          aria-label="뒤로가기"
-          type="button"
-        >
-          <img
-            src="/icons/icon-arrow-left.svg"
-            alt="뒤로가기"
-            className="h-6 w-6 object-contain"
-          />
-        </button>
-
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!isValid || submitting}
-          className={[
-            'flex items-center justify-center',
-            'h-11 min-w-[116px] rounded-full px-6 text-[16px] font-semibold transition',
-            !isValid || submitting
-              ? 'bg-[#F3C8AE] text-white/90'
-              : 'bg-[#F28C45] text-white active:scale-[0.98]',
-          ].join(' ')}
-        >
-          {submitting ? '업로드 중...' : '업로드'}
-        </button>
-      </header>
+<TopBar
+  title=""
+  showBack
+  rightSlot={
+    <button
+      type="button"
+      onClick={handleSubmit}
+      disabled={!isValid || submitting}
+      className={[
+        'h-9 min-w-[92px] rounded-full px-5 text-[14px] font-semibold transition', // 48px 헤더에 맞춘 버튼 높이
+        'flex items-center justify-center',
+        !isValid || submitting
+          ? 'bg-[#F3C8AE] text-white/90'
+          : 'bg-[#F28C45] text-white active:scale-[0.98]',
+      ].join(' ')}
+    >
+      {submitting ? '업로드 중...' : '업로드'}
+    </button>
+  }
+/>
 
       {/* Content Area */}
       <main
