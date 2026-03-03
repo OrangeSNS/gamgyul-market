@@ -31,7 +31,6 @@ npm run build
 ```env
 VITE_API_BASE_URL=https://dev.wenivops.co.kr/services/mandarin
 
-# Firebase 설정 (Firebase 콘솔 > 프로젝트 설정 > 내 앱에서 복사)
 VITE_FIREBASE_API_KEY=
 VITE_FIREBASE_AUTH_DOMAIN=
 VITE_FIREBASE_PROJECT_ID=
@@ -40,24 +39,7 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
 ```
 
-### Firebase 설정 방법
-
-1. [Firebase 콘솔](https://console.firebase.google.com)에서 프로젝트 생성
-2. **Firestore Database** 활성화 (위치: `asia-northeast3 서울`, 테스트 모드)
-3. **Authentication > Sign-in method > 익명(Anonymous)** 사용 설정
-4. 프로젝트 설정 > 내 앱 > 웹 앱 등록 후 SDK 구성 값을 `.env`에 붙여넣기
-
-### Netlify 배포 시 환경변수 추가
-
-Netlify Dashboard > Site Settings > Environment Variables에서 위 Firebase 변수들을 동일하게 등록하세요.
-
-### 보안 한계 (MVP)
-
-현재 채팅은 **Firebase 익명 인증(Anonymous Auth)** 기반입니다.
-`firestore.rules`에서 인증된 사용자(`request.auth != null`)만 읽기/쓰기를 허용하지만,
-익명 사용자는 누구든 인증 가능하므로 완전한 접근 제어가 되지 않습니다.
-
-운영 수준 보안을 위해서는 서버에서 gamgyul `accountname` 기반으로 **Firebase Custom Token**을 발급하고 `signInWithCustomToken`으로 전환해야 합니다.
+Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 GitHub Wiki를 참고하세요. 
 
 ---
 
@@ -96,7 +78,7 @@ src/
 
 ## 구현 범위
 
-### ✅ 필수 구현
+###  필수 구현
 
 - Splash, 로그인/회원가입, 프로필 설정
 - 홈 피드 (팔로우 게시글, 빈 화면)
@@ -106,7 +88,7 @@ src/
 - 바텀시트 + 확인 모달
 - 하단 탭바, 404 페이지, 보호 라우트
 
-### ⚠️ 마크업만 (서버 기능 없음)
+###  마크업만 (서버 기능 없음)
 
 - SNS 로그인 버튼 (UI만)
 
@@ -117,8 +99,26 @@ src/
 - React 18 + TypeScript 5 + TailwindCSS 3 + Vite 5
 - react-router-dom v6
 - Fetch API 기반 커스텀 API 클라이언트
-- Firebase Firestore (실시간 채팅) + Firebase Anonymous Auth
+- Firebase Firestore + Anonymous Auth (1:1 실시간 채팅)
 - Netlify 배포
+
+## 기술적 선택 이유
+
+### 실시간 채팅: Firebase Firestore
+
+기존 백엔드 API는 실시간 통신을 지원하지 않아 별도 인프라가 필요했다.
+WebSocket 직접 구현은 별도 서버가 필요하고, Supabase는 레퍼런스가 부족했다.
+Firebase Firestore는 `onSnapshot`으로 서버 없이 실시간 구독이 가능하고,
+기존 REST API를 건드리지 않고 독립적으로 추가할 수 있어 선택했다.
+
+### 인증: Firebase Anonymous Auth
+
+Firebase Rules 적용을 위해 Firebase 자체 인증이 필요했다.
+MVP 단계에서 기존 gamgyul 서버와 Firebase를 연동하는 Custom Token 방식은 서버 작업이 수반되어,
+구현 복잡도를 낮추고 기능 검증을 우선하기 위해 Anonymous Auth를 채택했다.
+운영 전환 시 Custom Token 방식으로 교체할 수 있도록 `auth.ts` 한 곳에 분리해두었다.
+
+자세한 내용은 GitHub Wiki를 참고하세요. 
 
 ---
 
