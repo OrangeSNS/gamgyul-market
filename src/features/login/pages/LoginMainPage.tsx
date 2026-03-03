@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@shared/constants'
 import Button from '@shared/components/Button'
+import AlertModal from '@shared/components/AlertModal'
 
 const SOCIAL_PROVIDERS = [
   {
@@ -26,9 +28,13 @@ const SOCIAL_PROVIDERS = [
 export default function LoginMainPage() {
   const navigate = useNavigate()
 
-  // 소셜 로그인 클릭 시 실행될 함수
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [alertMsg, setAlertMsg] = useState('')
+
+  //  4. 기존 alert() 대신 상태를 업데이트하는 함수로 변경
   const handleSocialLoginClick = (providerName: string) => {
-    alert(`현재 ${providerName} 로그인은 준비 중입니다. 이메일 로그인을 이용해주세요.`)
+    setAlertMsg(`현재 ${providerName} 로그인은 준비 중입니다.\n이메일 로그인을 이용해주세요.`)
+    setIsAlertOpen(true)
   }
 
   return (
@@ -78,6 +84,12 @@ export default function LoginMainPage() {
           </button>
         </div>
       </div>
+      {/*  5. 커스텀 알림 모달 컴포넌트 배치 */}
+      <AlertModal 
+        isOpen={isAlertOpen} 
+        message={alertMsg} 
+        onClose={() => setIsAlertOpen(false)} 
+      />
     </div>
   )
 }
