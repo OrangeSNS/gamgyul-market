@@ -241,7 +241,7 @@ export default function CommentsPage() {
       <Modal
         open={reportModal.isOpen}
         message="이 댓글을 신고하시겠어요?"
-        confirmLabel="신고"
+        confirmLabel="신고하기"
         onConfirm={handleReport}
         onCancel={reportModal.close}
         destructive
