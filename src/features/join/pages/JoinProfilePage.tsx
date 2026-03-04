@@ -171,7 +171,7 @@ export default function JoinProfilePage() {
             }
           }
 
-          setImageError(message) // 위에서 결정된 메시지를 세팅
+          setImageError(message) 
           setLoading(false)
           return
         }
