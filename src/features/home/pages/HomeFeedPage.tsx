@@ -20,12 +20,11 @@ export default function HomeFeedPage() {
  const loadFeed = useCallback(async (isInitial = false) => {
     if (!hasMore && !isInitial) return;
     
-    // 로딩 상태 구분
     if (isInitial) setLoading(true);
     else setIsFetching(true);
 
     try {
-      // ⚠️ 주의: api 파일의 getFeed가 (limit, skip)을 받도록 수정되어 있어야 합니다!
+
       const data = await getFeed(10, isInitial ? 0 : skip);
       const newPosts = data.posts || [];
 
@@ -48,12 +47,10 @@ export default function HomeFeedPage() {
     }
   }, [skip, hasMore]);
 
-  // 2. 초기 로드 (딱 한 번만 실행)
   useEffect(() => {
     loadFeed(true);
   }, []);
 
-  // 3. 무한 스크롤 감시 (Intersection Observer)
   useEffect(() => {
     if (loading || !hasMore || isFetching) return;
 
@@ -73,7 +70,6 @@ export default function HomeFeedPage() {
     return () => observer.disconnect();
   }, [loadFeed, hasMore, loading, isFetching]);
 
-  // 첫 로딩 화면
   if (loading) return <div className="p-10 text-center">감귤 로딩 중... 🍊</div>;
 
   return (
@@ -92,8 +88,7 @@ export default function HomeFeedPage() {
               <PostCard key={`${post.id}-${index}`} post={post} />
             ))}
             
-            {/* 감시 표지판 */}
-            <div ref={observerTarget} className="h-20 w-full flex justify-center items-center">
+              <div ref={observerTarget} className="h-20 w-full flex justify-center items-center">
               {isFetching && <span className="text-xs text-gray-400">감귤을 더 따오는 중... 🍊</span>}
               {!hasMore && <span className="text-xs text-gray-400">모든 감귤을 다 가져왔어요!</span>}
             </div>
