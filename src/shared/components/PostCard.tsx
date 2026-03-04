@@ -138,7 +138,7 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
 
           {/* 이미지 */}
           {imageList.length > 0 && (
-            <div className="w-full rounded-[10px] overflow-hidden border border-[#DBDBDB] mb-3 relative bg-gray-50">
+            <div className="w-[304px] h-[228px] rounded-[10px] overflow-hidden border border-[#DBDBDB] mb-3 relative bg-gray-50">
               <img
                 src={getImageUrl(imageList[0])}
                 alt="게시글 이미지"
@@ -175,7 +175,7 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
           </div>
 
           {/* 날짜 */}
-          <time className="text-[10px] text-[#767676] mt-4">
+          <time className="text-[10px] text-[#767676] mt-4 h-[12px] leading-[12px] flex items-center">
             {post?.createdAt
               ? new Date(post.createdAt).toLocaleDateString('ko-KR', {
                   year: 'numeric',
