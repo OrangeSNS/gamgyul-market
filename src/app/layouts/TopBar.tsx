@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { ReactNode } from 'react'
+import { TOPBAR_HEIGHT } from '@shared/constants'
 
 interface TopBarProps {
   title?: string
+  titleAlign?: 'center' | 'left'
   showBack?: boolean
   rightSlot?: ReactNode
   transparent?: boolean
@@ -10,6 +12,7 @@ interface TopBarProps {
 
 export default function TopBar({
   title,
+  titleAlign = 'center',
   showBack = false,
   rightSlot,
   transparent = false,
@@ -19,7 +22,7 @@ export default function TopBar({
   return (
     <header
       className={[
-        'sticky top-0 z-30 flex items-center h-14 px-4',
+        `sticky top-0 z-30 flex items-center ${TOPBAR_HEIGHT} px-4`,
         transparent ? 'bg-transparent' : 'bg-white border-b border-gray-200',
       ].join(' ')}
     >
@@ -41,17 +44,23 @@ export default function TopBar({
         )}
       </div>
 
-      {/* 가운데 (제목 없으면 비워둠) */}
-      <div className="flex-1 text-center">
-        {title ? (
-          <h1 className="truncate text-base font-semibold text-gray-900">
-            {title}
-          </h1>
-        ) : null}
-      </div>
+      {/* 가운데 */}
+      {titleAlign === 'left' ? (
+        <h1 className="ml-0.5 flex-1 truncate text-base font-semibold text-gray-900 text-left">
+          {title}
+        </h1>
+      ) : (
+        <div className="flex-1 text-center">
+          {title ? (
+            <h1 className="truncate text-base font-semibold text-gray-900">
+              {title}
+            </h1>
+          ) : null}
+        </div>
+      )}
 
       {/* 오른쪽 */}
-      <div className="flex w-10 items-center justify-end">
+      <div className="flex items-center justify-end">
         {rightSlot}
       </div>
     </header>

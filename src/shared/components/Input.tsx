@@ -26,7 +26,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               .join(' ')}
             {...props}
           />
-          {error && <p className="text-xs text-red-500 mt-0.5">{error}</p>}
+          {error && (
+          <p className="text-[12px] leading-[14px] text-[#EB5757] mt-[6px]">
+            *{error}
+          </p>
+        )}
         </div>
       )
     }
@@ -48,7 +52,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             .join(' ')}
           {...props}
         />
-        {error && <p className="text-xs text-red-500 mt-0.5">{error}</p>}
+        {error && (
+  <p className="text-[12px] leading-[14px] text-[#EB5757] mt-[6px]">
+    *{error}
+  </p>
+)}
       </div>
     )
   },

@@ -38,29 +38,20 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
     return img.startsWith('http') ? img : `${API_BASE_URL}/${img}`;
   };
 
-  // --- 여기부터 복사하세요 ---
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
-
+    const next = !isLiked;
+    setIsLiked(next);
+    setHeartCount((c) => (next ? c + 1 : c - 1));
     try {
-      if (!isLiked) {
-        // 좋아요 안 누른 상태일 때 -> 서버에 좋아요 요청
-        const res = await postLike(post.id);
-        if (res && res.post) {
-          setIsLiked(true);
-          setHeartCount(res.post.heartCount);
-        }
+      if (next) {
+        await postLike(post.id);
       } else {
-        // 이미 좋아요 누른 상태일 때 -> 서버에 취소 요청
-        const res = await deleteLike(post.id);
-        if (res && res.post) {
-          setIsLiked(false);
-          setHeartCount(res.post.heartCount);
-        }
+        await deleteLike(post.id);
       }
-    } catch (error) {
-      console.error("좋아요 처리 실패:", error);
-      // 서버 통신 실패 시 사용자에게 알림을 줄 수도 있습니다.
+    } catch {
+      setIsLiked(!next);
+      setHeartCount((c) => (next ? c - 1 : c + 1));
     }
   };
 
@@ -79,7 +70,6 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
       setDeleteModalOpen(false);
     }
   };
-  // --- 여기까지 복사하세요 ---
 
   const myItems = [
     {

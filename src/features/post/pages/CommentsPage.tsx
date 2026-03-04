@@ -155,14 +155,14 @@ export default function CommentsPage() {
                       setSelectedComment(comment)
                       commentSheet.open()
                     }}
-                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center"
+                   className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center"
                     aria-label="댓글 옵션"
                     type="button"
                   >
                     <img
                       src="/icons/icon-more-vertical.svg"
                       alt=""
-                      className="h-5 w-5 object-contain opacity-80"
+                     className="h-6 w-6 object-contain"
                     />
                   </button>
                 </div>
@@ -172,33 +172,33 @@ export default function CommentsPage() {
         )}
       </div>
 
-      {/* Input area: TabBar(z-40, ~60px) 바로 위에 위치 */}
-      <div className="fixed bottom-[60px] left-1/2 z-50 flex w-full max-w-mobile -translate-x-1/2 items-center gap-3 border-t border-[#EAEAEA] bg-white px-4 py-3">
-        <Avatar src={me?.image} alt={me?.username} size="xs" />
+     {/* Input area: TabBar(60px) 바로 위 / 높이 61px */}
+<div className="fixed bottom-[60px] left-1/2 z-50 flex h-[61px] w-full max-w-mobile -translate-x-1/2 items-center gap-3 border-t border-[#EAEAEA] bg-white px-4">
+  <Avatar src={me?.image} alt={me?.username} size="xs" />
 
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="댓글 입력하기..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault()
-              handleSubmit()
-            }
-          }}
-          className="flex-1 bg-transparent text-[14px] outline-none placeholder:text-gray-300"
-        />
+  <input
+    ref={inputRef}
+    type="text"
+    placeholder="댓글 입력하기..."
+    value={content}
+    onChange={(e) => setContent(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        handleSubmit()
+      }
+    }}
+    className="flex-1 bg-transparent text-[14px] outline-none placeholder:text-gray-300"
+  />
 
-        <button
-          onClick={handleSubmit}
-          disabled={!content.trim() || submitting}
-          className="shrink-0 text-[14px] font-semibold text-[#F28C45] disabled:text-[#D9D9D9]"
-        >
-          게시
-        </button>
-      </div>
+  <button
+    onClick={handleSubmit}
+    disabled={!content.trim() || submitting}
+    className="shrink-0 text-[14px] font-semibold text-[#F28C45] disabled:text-[#D9D9D9]"
+  >
+    게시
+  </button>
+</div>
 
       {/* Comment bottom sheet */}
       <BottomSheet
@@ -241,7 +241,7 @@ export default function CommentsPage() {
       <Modal
         open={reportModal.isOpen}
         message="이 댓글을 신고하시겠어요?"
-        confirmLabel="신고"
+        confirmLabel="신고하기"
         onConfirm={handleReport}
         onCancel={reportModal.close}
         destructive

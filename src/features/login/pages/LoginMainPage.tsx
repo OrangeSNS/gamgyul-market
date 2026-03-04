@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@shared/constants'
 import Button from '@shared/components/Button'
+import AlertModal from '@shared/components/AlertModal'
 
 const SOCIAL_PROVIDERS = [
   {
@@ -26,6 +28,15 @@ const SOCIAL_PROVIDERS = [
 export default function LoginMainPage() {
   const navigate = useNavigate()
 
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [alertMsg, setAlertMsg] = useState('')
+
+  //  4. 기존 alert() 대신 상태를 업데이트하는 함수로 변경
+  const handleSocialLoginClick = (providerName: string) => {
+    setAlertMsg(`현재 ${providerName} 로그인은 준비 중입니다.\n이메일 로그인을 이용해주세요.`)
+    setIsAlertOpen(true)
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-brand">
       <div className="flex-1 flex items-center justify-center">
@@ -46,7 +57,7 @@ export default function LoginMainPage() {
               // h-auto로 설정하고 py-[13px]을 주어 위아래 간격 13px을 맞춤
               // border 색상은 질문하신 피그마 색상값 적용
               className={`relative h-auto py-[13px] border ${provider.borderColor} font-normal text-sm !text-[#767676] rounded-[44px]`}
-              onClick={() => console.log(`${provider.id} login`)}
+              onClick={() => handleSocialLoginClick(provider.name)}
             >
               {/* 아이콘 위치: 좌측 여백 14px 반영 */}
               <span className="absolute left-[14px] top-1/2 -translate-y-1/2 flex items-center justify-center">
@@ -73,6 +84,12 @@ export default function LoginMainPage() {
           </button>
         </div>
       </div>
+      {/*  5. 커스텀 알림 모달 컴포넌트 배치 */}
+      <AlertModal 
+        isOpen={isAlertOpen} 
+        message={alertMsg} 
+        onClose={() => setIsAlertOpen(false)} 
+      />
     </div>
   )
 }

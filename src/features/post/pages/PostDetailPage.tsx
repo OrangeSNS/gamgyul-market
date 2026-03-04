@@ -165,11 +165,19 @@ export default function PostDetailPage() {
         rightSlot={
           <button
             onClick={postSheet.open}
-            className="flex h-8 w-8 items-center justify-center"
+            className="p-1 rounded-full hover:bg-gray-100"
             aria-label="더보기"
             type="button"
           >
-            <img src="/icons/icon-more-vertical.svg" alt="" className="h-6 w-6 object-contain" />
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6 text-gray-700"
+              fill="currentColor"
+            >
+              <circle cx="12" cy="5" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="12" cy="19" r="2" />
+            </svg>
           </button>
         }
       />
@@ -178,76 +186,105 @@ export default function PostDetailPage() {
       <div className="pb-32">
         {/* ── 게시글 ── */}
         <article className="px-4 py-4">
-          {/* 작성자 */}
-          <div className="flex items-center gap-2 mb-3">
-            <button onClick={() => navigate(ROUTES.PROFILE(post.author.accountname))}>
+          <div className="flex items-start gap-3">
+            {/* 왼쪽: 아바타 */}
+            <button
+              onClick={() => navigate(ROUTES.PROFILE(post.author.accountname))}
+              className="shrink-0"
+              type="button"
+            >
               <Avatar src={post.author.image} alt={post.author.username} size="sm" />
             </button>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-900 truncate">{post.author.username}</p>
-              <p className="text-xs text-gray-400 truncate">@{post.author.accountname}</p>
-            </div>
-          </div>
 
-          {/* 본문 */}
-          <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-line mb-3">
-            {post.content}
-          </p>
+            {/* 오른쪽: 작성자/본문/이미지/메타 전부 */}
+            <div className="min-w-0 flex-1">
+              {/* 작성자 */}
+              <div className="flex items-center gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-gray-900 truncate">
+                    {post.author.username}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate">
+                    @{post.author.accountname}
+                  </p>
+                </div>
+              </div>
 
-          {/* 이미지 캐러셀 */}
-          {images.length > 0 && (
-            <div className="mb-3">
-              <ImageCarousel images={images} showDots={images.length > 1} />
-            </div>
-          )}
+              {/* 본문 */}
+              <p className="mt-3 text-sm text-gray-800 leading-relaxed whitespace-pre-line">
+                {post.content}
+              </p>
 
-          {/* 좋아요 · 댓글 수 */}
-          <div className="flex items-center gap-4 py-2">
-            <button onClick={handleHeart} className="flex items-center gap-1.5">
-              {hearted ? (
-                <svg viewBox="0 0 24 24" className="w-5 h-5 text-red-500" fill="currentColor">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-              ) : (
-                <svg
-                  viewBox="0 0 24 24"
-                  className="w-5 h-5 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                >
-                  <path
-                    strokeLinecap="round"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              {/* 이미지 캐러셀 */}
+              {images.length > 0 && (
+                <div className="mt-3 w-full">
+                  <ImageCarousel
+                    images={images}
+                    showDots={images.length > 1}
+                    className="w-full"
                   />
-                </svg>
+                </div>
               )}
-              <span className="text-xs text-gray-500">{heartCount}</span>
-            </button>
 
-            <div className="flex items-center gap-1.5">
-              <svg
-                viewBox="0 0 24 24"
-                className="w-5 h-5 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.8}
-              >
-                <path
-                  strokeLinecap="round"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
-              <span className="text-xs text-gray-500">{comments.length}</span>
+              {/* 좋아요 · 댓글 (한 줄) + 날짜(아래 줄) */}
+              <div className="mt-3">
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={handleHeart}
+                    className="flex items-center gap-1.5"
+                    type="button"
+                  >
+                    {hearted ? (
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-red-500"
+                        fill="currentColor"
+                      >
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-gray-500"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={1.8}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                        />
+                      </svg>
+                    )}
+                    <span className="text-xs text-gray-600">{heartCount}</span>
+                  </button>
+
+                  <div className="flex items-center gap-1.5">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-gray-500"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.8}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                    <span className="text-xs text-gray-600">{comments.length}</span>
+                  </div>
+                </div>
+
+                <div className="mt-2 text-xs text-gray-400">
+                  {new Date(post.createdAt).toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </div>
+              </div>
             </div>
-
-            <span className="text-xs text-gray-400 ml-auto">
-              {new Date(post.createdAt).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
           </div>
         </article>
 
@@ -264,6 +301,7 @@ export default function PostDetailPage() {
                 <button
                   onClick={() => navigate(ROUTES.PROFILE(comment.author.accountname))}
                   className="shrink-0"
+                  type="button"
                 >
                   <Avatar src={comment.author.image} alt={comment.author.username} size="xs" />
                 </button>
@@ -274,6 +312,7 @@ export default function PostDetailPage() {
                         <button
                           onClick={() => navigate(ROUTES.PROFILE(comment.author.accountname))}
                           className="truncate text-[14px] font-semibold text-gray-900 hover:underline"
+                          type="button"
                         >
                           {comment.author.username}
                         </button>
@@ -329,6 +368,7 @@ export default function PostDetailPage() {
           onClick={handleSubmitComment}
           disabled={!content.trim() || submitting}
           className="shrink-0 text-[14px] font-semibold text-[#F28C45] disabled:text-[#D9D9D9]"
+          type="button"
         >
           게시
         </button>

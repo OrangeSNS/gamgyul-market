@@ -30,7 +30,16 @@ npm run build
 
 ```env
 VITE_API_BASE_URL=https://dev.wenivops.co.kr/services/mandarin
+
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
 ```
+
+Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 GitHub Wiki를 참고하세요. 
 
 ---
 
@@ -52,7 +61,7 @@ src/
     upload/        # 게시글 작성
     post/          # 게시글 상세, 댓글
     search/        # 사용자 검색
-    chat/          # 채팅 (마크업)
+    chat/          # 채팅 (Firebase 실시간 채팅)
   shared/
     api/           # fetch 기반 API 클라이언트
     components/    # Button/Input/Modal/BottomSheet/TabBar 등
@@ -69,7 +78,7 @@ src/
 
 ## 구현 범위
 
-### ✅ 필수 구현
+###  필수 구현
 
 - Splash, 로그인/회원가입, 프로필 설정
 - 홈 피드 (팔로우 게시글, 빈 화면)
@@ -79,9 +88,8 @@ src/
 - 바텀시트 + 확인 모달
 - 하단 탭바, 404 페이지, 보호 라우트
 
-### ⚠️ 마크업만 (서버 기능 없음)
+###  마크업만 (서버 기능 없음)
 
-- 채팅 목록/채팅방 (목업 데이터)
 - SNS 로그인 버튼 (UI만)
 
 ---
@@ -91,7 +99,26 @@ src/
 - React 18 + TypeScript 5 + TailwindCSS 3 + Vite 5
 - react-router-dom v6
 - Fetch API 기반 커스텀 API 클라이언트
+- Firebase Firestore + Anonymous Auth (1:1 실시간 채팅)
 - Netlify 배포
+
+## 기술적 선택 이유
+
+### 실시간 채팅: Firebase Firestore
+
+기존 백엔드 API는 실시간 통신을 지원하지 않아 별도 인프라가 필요했다.
+WebSocket 직접 구현은 별도 서버가 필요하고, Supabase는 레퍼런스가 부족했다.
+Firebase Firestore는 `onSnapshot`으로 서버 없이 실시간 구독이 가능하고,
+기존 REST API를 건드리지 않고 독립적으로 추가할 수 있어 선택했다.
+
+### 인증: Firebase Anonymous Auth
+
+Firebase Rules 적용을 위해 Firebase 자체 인증이 필요했다.
+MVP 단계에서 기존 gamgyul 서버와 Firebase를 연동하는 Custom Token 방식은 서버 작업이 수반되어,
+구현 복잡도를 낮추고 기능 검증을 우선하기 위해 Anonymous Auth를 채택했다.
+운영 전환 시 Custom Token 방식으로 교체할 수 있도록 `auth.ts` 한 곳에 분리해두었다.
+
+자세한 내용은 GitHub Wiki를 참고하세요. 
 
 ---
 
@@ -141,7 +168,7 @@ Phase 4                                                        ████  █
 
 ---
 
-### Phase 3. UX/UI 개선 & 에러 핸들링 `3/3 (화) ~ 3/5 (목)`
+### Phase 3. QA 및 안정화 `3/3 (화) ~ 3/5 (목)`
 
 | No. | 작업 항목 | 세부 내용 | 기간 |
 |-----|-----------|-----------|:----:|

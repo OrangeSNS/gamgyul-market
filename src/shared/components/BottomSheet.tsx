@@ -37,8 +37,8 @@ export default function BottomSheet({ open, items, onClose }: BottomSheetProps) 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle bar */}
-        <div className="flex justify-center pt-3 pb-1">
-          <div className="w-12 h-1 rounded-full bg-gray-300" />
+        <div className="flex justify-center pt-4 pb-1">
+          <div className="w-[50px] h-1 rounded-full bg-[#DBDBDB]" />
         </div>
 
         {items.map((item, idx) => (
@@ -49,10 +49,10 @@ export default function BottomSheet({ open, items, onClose }: BottomSheetProps) 
               onClose()
             }}
             className={[
-              'w-full py-4 text-sm font-medium text-center border-b border-gray-100 last:border-0 transition-colors',
+              'w-full py-4 pl-[26px] text-sm font-medium text-left border-b border-gray-100 last:border-0 transition-colors',
               item.danger
-                ? 'text-red-500 hover:bg-red-50'
-                : 'text-gray-800 hover:bg-gray-50',
+                ? 'text-[#000000] hover:text-red-500 hover:bg-red-50'
+                : 'text-[#000000] hover:bg-gray-50',
             ].join(' ')}
           >
             {item.label}

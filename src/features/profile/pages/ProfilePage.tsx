@@ -10,6 +10,7 @@ import Spinner from "@shared/components/Spinner";
 import Modal from "@shared/components/Modal";
 import BottomSheet from "@shared/components/BottomSheet";
 import TopBar from "@app/layouts/TopBar";
+import UserMenuTopBar from "@shared/components/UserMenuTopBar";
 import { useAuth } from "@app/providers/AuthProvider";
 import { useFollow } from "@app/providers/FollowProvider";
 import { User, Post, Product } from "@shared/types";
@@ -30,7 +31,7 @@ export default function ProfilePage() {
   const { accountName } = useParams<{ accountName: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user: me, logout } = useAuth();
+  const { user: me } = useAuth();
 
   const isMe = me?.accountname === accountName;
   const canGoBack = location.key !== "default";
@@ -52,7 +53,6 @@ export default function ProfilePage() {
 
   const profileSheet = useBottomSheet();
   const productSheet = useBottomSheet();
-  const logoutModal = useModal();
   const deleteModal = useModal();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
@@ -123,6 +123,12 @@ export default function ProfilePage() {
 
   const handleProductClick = (product: Product) => {
     if (!isMe) {
+      const isValidUrl =
+        product.link.startsWith('http://') || product.link.startsWith('https://')
+      if (!isValidUrl) {
+        navigate(ROUTES.NOT_FOUND)
+        return
+      }
       window.open(product.link, "_blank");
       return;
     }
@@ -163,28 +169,26 @@ export default function ProfilePage() {
   return (
     <div className="flex flex-col">
       {/* ── 상단 바 ──────────────────────────────────────────── */}
-      <TopBar
-        showBack={canGoBack}
-        title=""
-        rightSlot={
-          <button
-            onClick={profileSheet.open}
-            className="p-1 rounded-full hover:bg-gray-100"
-            aria-label="더보기"
-          >
-            {/* 세로 3점 메뉴 */}
-            <svg
-              viewBox="0 0 24 24"
-              className="w-6 h-6 text-gray-700"
-              fill="currentColor"
+      {isMe ? (
+        <UserMenuTopBar showBack={canGoBack} />
+      ) : (
+        <TopBar
+          showBack={canGoBack}
+          rightSlot={
+            <button
+              onClick={profileSheet.open}
+              className="p-1 rounded-full hover:bg-gray-100"
+              aria-label="더보기"
             >
-              <circle cx="12" cy="5" r="2" />
-              <circle cx="12" cy="12" r="2" />
-              <circle cx="12" cy="19" r="2" />
-            </svg>
-          </button>
-        }
-      />
+              <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
+                <circle cx="12" cy="5" r="2" />
+                <circle cx="12" cy="12" r="2" />
+                <circle cx="12" cy="19" r="2" />
+              </svg>
+            </button>
+          }
+        />
+      )}
 
       {/* ── 프로필 헤더 ──────────────────────────────────────── */}
       <section className="px-6 pt-8 pb-6">
@@ -440,21 +444,7 @@ export default function ProfilePage() {
       <BottomSheet
         open={profileSheet.isOpen}
         onClose={profileSheet.close}
-        items={
-          isMe
-            ? [
-                {
-                  label: "설정 및 개인정보",
-                  onClick: () => navigate(ROUTES.PROFILE_EDIT),
-                },
-                {
-                  label: "로그아웃",
-                  onClick: logoutModal.open,
-                  danger: true,
-                },
-              ]
-            : [{ label: "신고하기", onClick: () => {}, danger: true }]
-        }
+        items={[{ label: "신고하기", onClick: () => {}, danger: true }]}
       />
 
       {/* ── 상품 바텀시트 ────────────────────────────────────── */}
@@ -487,18 +477,6 @@ export default function ProfilePage() {
         ]}
       />
 
-      {/* ── 로그아웃 모달 ────────────────────────────────────── */}
-      <Modal
-        open={logoutModal.isOpen}
-        message="로그아웃 하시겠어요?"
-        confirmLabel="로그아웃"
-        onConfirm={() => {
-          logout();
-          navigate(ROUTES.LOGIN, { replace: true });
-        }}
-        onCancel={logoutModal.close}
-        destructive
-      />
 
       {/* ── 상품 삭제 모달 ───────────────────────────────────── */}
       <Modal

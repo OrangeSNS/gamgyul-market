@@ -1,72 +1,59 @@
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@shared/components/Avatar'
+import UserMenuTopBar from '@shared/components/UserMenuTopBar'
+import Spinner from '@shared/components/Spinner'
 import { ROUTES } from '@shared/constants'
-
-// 채팅 목록 - 마크업 전용 (서버 기능 없음)
-const MOCK_CHATS = [
-  {
-    id: '1',
-    name: '애플을 위니브 감귤농장',
-    preview: '이번 정기 전국마촌마?',
-    time: '2020.10.25',
-    image: '',
-    unread: 0,
-  },
-  {
-    id: '2',
-    name: '제주감귤마을',
-    preview: '같은 어동의 주제같. 퐁스로이스는 뇨 탈배 예약...',
-    time: '2020.10.25',
-    image: '',
-    unread: 1,
-  },
-  {
-    id: '3',
-    name: '누구네 농장 진환경 환마병',
-    preview: '내 타는 내가 정리한다. 요즘 사변에서 정의 이...',
-    time: '2020.10.25',
-    image: '',
-    unread: 0,
-  },
-]
+import { formatChatTime } from '@shared/utils/formatChatTime'
+import { useChatList } from '../hooks/useChatList'
 
 export default function ChatListPage() {
   const navigate = useNavigate()
+  const { items, isLoading, error } = useChatList()
 
   return (
     <div className="flex flex-col">
-      <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-white border-b border-gray-100">
-        <h1 className="text-base font-bold">채팅</h1>
-        <button className="p-1">
-          <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-700" fill="currentColor">
-            <circle cx="5" cy="12" r="2" />
-            <circle cx="12" cy="12" r="2" />
-            <circle cx="19" cy="12" r="2" />
-          </svg>
-        </button>
-      </header>
+      <UserMenuTopBar showBack />
 
-      {MOCK_CHATS.map((chat) => (
-        <button
-          key={chat.id}
-          onClick={() => navigate(ROUTES.CHAT_ROOM(chat.id))}
-          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-50"
-        >
-          <div className="relative">
-            <Avatar src={chat.image} alt={chat.name} size="md" />
-            {chat.unread > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand text-white text-[10px] flex items-center justify-center">
-                {chat.unread}
-              </span>
-            )}
+      <div className="pt-6">
+        {isLoading && (
+          <div className="flex justify-center py-10">
+            <Spinner />
           </div>
-          <div className="flex-1 min-w-0 text-left">
-            <p className="text-sm font-semibold text-gray-900 truncate">{chat.name}</p>
-            <p className="text-xs text-gray-400 truncate">{chat.preview}</p>
-          </div>
-          <span className="text-xs text-gray-400 flex-shrink-0">{chat.time}</span>
-        </button>
-      ))}
+        )}
+
+        {!isLoading && error && (
+          <p className="text-center text-sm text-gray-500 py-10">{error}</p>
+        )}
+
+        {!isLoading && !error && items.length === 0 && (
+          <p className="text-center text-sm text-gray-500 py-10">
+            아직 팔로잉한 사용자가 없습니다.
+          </p>
+        )}
+
+        {!isLoading && !error && items.map((item) => (
+          <button
+            key={item.chatId}
+            onClick={() => navigate(ROUTES.CHAT_ROOM(item.user.accountname))}
+            className="w-full flex items-center gap-3 px-4 pb-5 hover:bg-gray-50 border-b border-gray-50"
+          >
+            <Avatar src={item.user.image} alt={item.user.username} size="md" />
+            <div className="flex-1 min-w-0 text-left flex flex-col gap-1">
+              <p className="text-sm font-semibold text-gray-900 truncate">{item.user.username}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-xs font-normal leading-none tracking-normal text-[#767676] truncate flex-1">
+                  {item.lastMessage ?? '대화를 시작해보세요'}
+                </p>
+                {item.lastMessageAt && (
+                  <span className="text-[10px] font-normal text-[#DBDBDB] shrink-0">
+                    {formatChatTime(item.lastMessageAt)}
+                  </span>
+                )}
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
