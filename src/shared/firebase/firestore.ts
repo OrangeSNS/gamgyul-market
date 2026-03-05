@@ -105,6 +105,43 @@ export async function sendTextMessage(
   await batch.commit()
 }
 
+export async function sendImageMessage(
+  chatId: string,
+  senderProfile: ChatParticipantProfile,
+  imageUrl: string,
+): Promise<void> {
+  const messagesRef = collection(db, CHATS, chatId, MESSAGES)
+  const chatRef = doc(db, CHATS, chatId)
+  const now = serverTimestamp() as Timestamp
+
+  const batch = writeBatch(db)
+
+  const newMessageRef = doc(messagesRef)
+  const newMessage: Omit<ChatMessage, 'id'> = {
+    chatId,
+    senderAccountName: senderProfile.accountName,
+    text: '',
+    imageUrl,
+    type: 'image',
+    createdAt: now,
+    readBy: [senderProfile.accountName],
+  }
+  batch.set(newMessageRef, newMessage)
+
+  const recipientAccountName = chatId
+    .split('__')
+    .find((p) => p !== senderProfile.accountName)
+
+  batch.update(chatRef, {
+    lastMessage: '사진',
+    lastMessageAt: now,
+    updatedAt: now,
+    ...(recipientAccountName ? { unreadBy: arrayUnion(recipientAccountName) } : {}),
+  })
+
+  await batch.commit()
+}
+
 export async function markChatAsRead(chatId: string, accountName: string): Promise<void> {
   const chatRef = doc(db, CHATS, chatId)
   await updateDoc(chatRef, { unreadBy: arrayRemove(accountName) })

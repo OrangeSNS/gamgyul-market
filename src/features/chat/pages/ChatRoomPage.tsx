@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '@app/providers/AuthProvider'
+import { uploadImage } from '@shared/api/client'
 import Avatar from '@shared/components/Avatar'
 import BottomSheet from '@shared/components/BottomSheet'
 import Modal from '@shared/components/Modal'
@@ -17,17 +18,32 @@ export default function ChatRoomPage() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [message, setMessage] = useState('')
+  const [imageUploading, setImageUploading] = useState(false)
   const chatSheet = useBottomSheet()
   const leaveModal = useModal()
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { messages, targetProfile, chatId, isLoading, error } = useChatRoom(targetAccountName)
-  const { sendMessage, isSending } = useSendMessage(chatId)
+  const { sendMessage, sendImage, isSending } = useSendMessage(chatId)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImageUploading(true)
+    try {
+      const url = await uploadImage(file)
+      await sendImage(url)
+    } finally {
+      setImageUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
 
   async function handleSend() {
     const text = message.trim()
@@ -96,16 +112,24 @@ export default function ChatRoomPage() {
               )}
               <div className={`flex items-end gap-[6px] ${isMine ? 'flex-row-reverse' : ''}`}>
                 <div className="flex flex-col max-w-[240px]">
-                  <div
-                    className={[
-                      'p-3 rounded-xl text-sm',
-                      isMine
-                        ? 'bg-brand text-white rounded-tr-none'
-                        : 'bg-white text-gray-800 rounded-xl rounded-tl-none border border-[#C4C4C4]',
-                    ].join(' ')}
-                  >
-                    {msg.text}
-                  </div>
+                  {msg.type === 'image' && msg.imageUrl ? (
+                    <img
+                      src={msg.imageUrl}
+                      alt="채팅 이미지"
+                      className={`w-48 h-48 object-cover ${isMine ? 'rounded-xl rounded-tr-none' : 'rounded-xl rounded-tl-none'}`}
+                    />
+                  ) : (
+                    <div
+                      className={[
+                        'p-3 rounded-xl text-sm',
+                        isMine
+                          ? 'bg-brand text-white rounded-tr-none'
+                          : 'bg-white text-gray-800 rounded-xl rounded-tl-none border border-[#C4C4C4]',
+                      ].join(' ')}
+                    >
+                      {msg.text}
+                    </div>
+                  )}
                 </div>
                 <span className="text-[10px] text-[#767676] shrink-0">
                   {formatChatTime(msg.createdAt)}
@@ -119,7 +143,16 @@ export default function ChatRoomPage() {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 px-4 h-[60px] flex items-center">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 pl-4 pr-4 h-[60px] flex items-center gap-[18px]">
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={imageUploading || isSending}
+          className="shrink-0 p-1.5 rounded-full hover:bg-gray-100 disabled:opacity-40"
+          aria-label="이미지 전송"
+        >
+          <img src="/icons/img-button.svg" alt="" className="w-9 h-9" />
+        </button>
         <input
           ref={inputRef}
           type="text"
@@ -136,6 +169,13 @@ export default function ChatRoomPage() {
         >
           전송
         </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageUpload}
+        />
       </div>
 
       <BottomSheet
