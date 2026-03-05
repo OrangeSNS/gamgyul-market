@@ -5,6 +5,7 @@ import { API_BASE_URL, ROUTES } from '@shared/constants';
 import BottomSheet from '@shared/components/BottomSheet';
 import Modal from '@shared/components/Modal';
 import { deletePost, reportPost, postLike, deleteLike } from '@features/post/api';
+import ImageCarousel from './ImageCarousel';
 
 interface PostCardProps {
   post: any;
@@ -22,16 +23,16 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
   const author = post?.author;
   const content = post?.content;
 
-  const imageList = post?.image
-    ? post.image.split(',')
-        .map((img: string) => img.trim())
-        .filter((img: string) => {
-          if (!img) return false;
-          if (img === 'undefined' || img === 'null') return false;
-          if (img === API_BASE_URL || img === `${API_BASE_URL}/`) return false;
-          return true;
-        })
-    : [];
+const imageList = post?.image
+  ? post.image.split(',')
+      .map((img: string) => img.trim())
+      .filter((img: string) => {
+        if (!img || img === 'undefined' || img === 'null') return false;
+        const isOnlyBaseUrl = img === API_BASE_URL || img === `${API_BASE_URL}/`;
+        const hasExtension = img.includes('.');
+        return !isOnlyBaseUrl && hasExtension;
+      })
+  : [];
 
   const getImageUrl = (img: string) => {
     if (!img) return `${API_BASE_URL}/1687141187512.png`;
@@ -136,24 +137,17 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
             {content}
           </p>
 
-          {/* 이미지 */}
-          {imageList.length > 0 && (
-            <div className="w-[304px] h-[228px] rounded-[10px] overflow-hidden border border-[#DBDBDB] mb-3 relative bg-gray-50">
-              <img
-                src={getImageUrl(imageList[0])}
-                alt="게시글 이미지"
-                className="w-full object-cover"
-                onError={(e) => {
-                  (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
-                }}
-              />
-              {imageList.length > 1 && (
-                <div className="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full">
-                  +{imageList.length - 1}
-                </div>
-              )}
-            </div>
-          )}
+          {/* 이미지 영역 - ImageCarousel로 교체 */}
+{imageList.length > 0 && (
+  <div className="w-full mb-3 overflow-hidden rounded-[10px] border border-[#DBDBDB]">
+    <ImageCarousel
+      images={imageList.map((img) => getImageUrl(img))} 
+      className='w-full h-full object-cover'
+      // aspectClassName = 'h-[228px]'
+      showDots={imageList.length > 1}
+    /> 
+  </div>
+)}
 
           {/* 좋아요 · 댓글 */}
           <div className="flex gap-4 items-center">
