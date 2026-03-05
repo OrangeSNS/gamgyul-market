@@ -19,6 +19,8 @@ export default function ChatRoomPage() {
   const { user } = useAuth()
   const [message, setMessage] = useState('')
   const [imageUploading, setImageUploading] = useState(false)
+  const [pendingImageUrl, setPendingImageUrl] = useState<string | null>(null)
+  const [pendingImagePreview, setPendingImagePreview] = useState<string | null>(null)
   const chatSheet = useBottomSheet()
   const leaveModal = useModal()
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -37,17 +39,32 @@ export default function ChatRoomPage() {
     if (!file) return
     setImageUploading(true)
     try {
+      const preview = URL.createObjectURL(file)
       const url = await uploadImage(file)
-      await sendImage(url)
+      setPendingImagePreview(preview)
+      setPendingImageUrl(url)
     } finally {
       setImageUploading(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }
 
+  function handleCancelImage() {
+    setPendingImageUrl(null)
+    setPendingImagePreview(null)
+  }
+
   async function handleSend() {
+    if (isSending) return
+    if (pendingImageUrl) {
+      const url = pendingImageUrl
+      setPendingImageUrl(null)
+      setPendingImagePreview(null)
+      await sendImage(url)
+      return
+    }
     const text = message.trim()
-    if (!text || isSending) return
+    if (!text) return
     setMessage('')
     await sendMessage(text)
   }
@@ -143,7 +160,25 @@ export default function ChatRoomPage() {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100 pl-4 pr-4 h-[60px] flex items-center gap-[18px]">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100">
+        {pendingImagePreview && (
+          <div className="px-4 pt-3 pb-1 flex items-center gap-2">
+            <div className="relative w-16 h-16 shrink-0">
+              <img src={pendingImagePreview} alt="미리보기" className="w-16 h-16 object-cover rounded-lg" />
+              <button
+                type="button"
+                onClick={handleCancelImage}
+                className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center"
+                aria-label="이미지 취소"
+              >
+                <svg viewBox="0 0 24 24" className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="pl-4 pr-4 h-[60px] flex items-center gap-[18px]">
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
@@ -164,7 +199,7 @@ export default function ChatRoomPage() {
         />
         <button
           onClick={handleSend}
-          disabled={message.trim() === '' || isSending}
+          disabled={(message.trim() === '' && !pendingImageUrl) || isSending}
           className="text-sm font-semibold text-brand disabled:text-[#C4C4C4] ml-2"
         >
           전송
@@ -176,6 +211,7 @@ export default function ChatRoomPage() {
           className="hidden"
           onChange={handleImageUpload}
         />
+        </div>
       </div>
 
       <BottomSheet
