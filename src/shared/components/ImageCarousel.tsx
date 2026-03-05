@@ -20,6 +20,15 @@ export default function ImageCarousel({
 }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
+  const [brokenImages, setBrokenImages] = useState<Set<number>>(new Set())
+
+  const handleImageError = (idx: number) => {
+    setBrokenImages((prev) => {
+      const next = new Set(prev)
+      next.add(idx)
+      return next
+    })
+  }
 
   const count = images.length
   const canSlide = count > 1
@@ -113,14 +122,21 @@ export default function ImageCarousel({
               key={`${src}-${idx}`}
               className="relative h-full w-full flex-none snap-center"
             >
-            <img
-  src={src}
-  alt=""
-  className="h-full w-full object-cover"
-  loading="lazy"
-  decoding="async"
-  draggable={false}
-/>
+            {brokenImages.has(idx) ? (
+                <div className="h-full w-full bg-gray-100 flex items-center justify-center">
+                  <span className="text-xs text-gray-400">이미지를 불러올 수 없습니다</span>
+                </div>
+              ) : (
+                <img
+                  src={src}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                  onError={() => handleImageError(idx)}
+                />
+              )}
 
               {onRemove && (
                 <button
