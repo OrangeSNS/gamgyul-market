@@ -34,6 +34,7 @@ export interface ChatListItemVM {
   chatId: string
   lastMessage?: string
   lastMessageAt?: Timestamp
+  isUnread?: boolean
 }
 
 export interface SendMessagePayload {

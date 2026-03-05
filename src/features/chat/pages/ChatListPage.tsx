@@ -37,7 +37,12 @@ export default function ChatListPage() {
             onClick={() => navigate(ROUTES.CHAT_ROOM(item.user.accountname))}
             className="w-full flex items-center gap-3 px-4 pb-5 hover:bg-gray-50 border-b border-gray-50"
           >
-            <Avatar src={item.user.image} alt={item.user.username} size="md" />
+            <div className="relative shrink-0">
+              <Avatar src={item.user.image} alt={item.user.username} size="md" />
+              {item.isUnread && (
+                <span className="absolute top-0 left-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+              )}
+            </div>
             <div className="flex-1 min-w-0 text-left flex flex-col gap-1">
               <p className="text-sm font-semibold text-gray-900 truncate">{item.user.username}</p>
               <div className="flex items-center gap-2">
