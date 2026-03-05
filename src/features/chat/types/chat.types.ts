@@ -24,7 +24,8 @@ export interface ChatMessage {
   chatId: string
   senderAccountName: string
   text: string
-  type: 'text'
+  imageUrl?: string
+  type: 'text' | 'image'
   createdAt: Timestamp
   readBy: string[]
 }
