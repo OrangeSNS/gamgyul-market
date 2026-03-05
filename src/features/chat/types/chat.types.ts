@@ -14,6 +14,7 @@ export interface DirectChat {
   participantProfiles: Record<string, ChatParticipantProfile>
   lastMessage: string
   lastMessageAt: Timestamp | null
+  unreadBy: string[]
   createdAt: Timestamp
   updatedAt: Timestamp
 }
@@ -33,6 +34,7 @@ export interface ChatListItemVM {
   chatId: string
   lastMessage?: string
   lastMessageAt?: Timestamp
+  isUnread?: boolean
 }
 
 export interface SendMessagePayload {

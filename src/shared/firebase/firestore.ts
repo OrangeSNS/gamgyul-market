@@ -5,10 +5,14 @@ import {
   addDoc,
   collection,
   query,
+  where,
   orderBy,
   onSnapshot,
   serverTimestamp,
   writeBatch,
+  arrayUnion,
+  arrayRemove,
+  updateDoc,
   Timestamp,
   type Unsubscribe,
 } from 'firebase/firestore'
@@ -40,6 +44,7 @@ export async function getOrCreateDirectChat(
     },
     lastMessage: '',
     lastMessageAt: null,
+    unreadBy: [],
     createdAt: now,
     updatedAt: now,
   }
@@ -86,13 +91,33 @@ export async function sendTextMessage(
   }
   batch.set(newMessageRef, newMessage)
 
+  const recipientAccountName = chatId
+    .split('__')
+    .find((p) => p !== senderProfile.accountName)
+
   batch.update(chatRef, {
     lastMessage: text,
     lastMessageAt: now,
     updatedAt: now,
+    ...(recipientAccountName ? { unreadBy: arrayUnion(recipientAccountName) } : {}),
   })
 
   await batch.commit()
+}
+
+export async function markChatAsRead(chatId: string, accountName: string): Promise<void> {
+  const chatRef = doc(db, CHATS, chatId)
+  await updateDoc(chatRef, { unreadBy: arrayRemove(accountName) })
+}
+
+export function subscribeUnreadChats(
+  accountName: string,
+  callback: (hasUnread: boolean) => void,
+): Unsubscribe {
+  const q = query(collection(db, CHATS), where('unreadBy', 'array-contains', accountName))
+  return onSnapshot(q, (snapshot) => {
+    callback(!snapshot.empty)
+  })
 }
 
 export async function getChatDoc(chatId: string): Promise<DirectChat | null> {

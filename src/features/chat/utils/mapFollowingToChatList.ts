@@ -25,6 +25,7 @@ export function mapFollowingToChatList(
         chatId,
         lastMessage: chatDoc.lastMessage,
         lastMessageAt: chatDoc.lastMessageAt,
+        isUnread: chatDoc.unreadBy?.includes(myAccountName) ?? false,
       })
     } else {
       withoutChat.push({ user, chatId })
