@@ -28,7 +28,6 @@ import ProductNewPage from '@features/product/pages/ProductNewPage'
 import ProductEditPage from '@features/product/pages/ProductEditPage'
 
 // Post/Upload feature
-import PostNewPage from '@features/upload/pages/PostNewPage'
 import PostDetailPage from '@features/post/pages/PostDetailPage'
 import CommentsPage from '@features/post/pages/CommentsPage'
 import PostWritePage from '@features/upload/pages/PostWritePage';

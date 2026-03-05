@@ -72,6 +72,16 @@ export function resolveImageUrl(url?: string | null): string | undefined {
   return `${API_BASE_URL}/${url}`
 }
 
+/** 네트워크 에러 여부 판단 */
+export function isNetworkError(err: unknown): boolean {
+  if (!(err instanceof Error)) return false
+  return (
+    err.message.includes('Failed to fetch') ||
+    err.message.includes('Network') ||
+    err.message.includes('ERR_INTERNET_DISCONNECTED')
+  )
+}
+
 /** post 이미지 배열로 파싱 (콤마 구분 + URL 정규화) */
 export function parsePostImages(image: string): string[] {
   if (!image) return []
