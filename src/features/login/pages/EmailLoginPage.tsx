@@ -6,6 +6,8 @@ import Input from '@shared/components/Input'
 import { ROUTES, API_BASE_URL } from '@shared/constants'
 import { useAuth } from '@app/providers/AuthProvider'
 import { User } from '@shared/types'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function EmailLoginPage() {
   const navigate = useNavigate()
@@ -43,7 +45,7 @@ export default function EmailLoginPage() {
 
       const res = await response.json()
 
-      if (!response.ok || res.message) {
+      if (!response.ok) {
         // 계정 정보가 틀렸을 때 (이미지 2번: image_ce21d9.png)
         setLoginError(res.message || '이메일 또는 비밀번호가 일치하지 않습니다.')
         setLoading(false)
@@ -66,7 +68,7 @@ export default function EmailLoginPage() {
       navigate(ROUTES.HOME, { replace: true })
 
     } catch (err) {
-      setLoginError('서버와 연결할 수 없습니다.')
+      toast.error('네트워크 연결을 확인해주세요')
     } finally {
       setLoading(false)
     }
@@ -75,6 +77,17 @@ export default function EmailLoginPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <TopBar title="" showBack />
+      <ToastContainer
+  position="top-center"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+/>
 
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 px-6 pt-10" noValidate>
         <h2 className="text-[24px] font-medium leading-[100%] text-center text-[#000000] mb-[40px]">
@@ -91,6 +104,7 @@ export default function EmailLoginPage() {
               onChange={(e) => {
                 setEmail(e.target.value)
                 if (emailError) setEmailError('')
+                if (loginError) setLoginError('')
               }}
               underline
             />
