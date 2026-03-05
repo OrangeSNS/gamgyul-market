@@ -36,6 +36,12 @@ export default function PostWritePage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+  // AI
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiGenerated, setAiGenerated] = useState(false)
+  const [showOverwriteModal, setShowOverwriteModal] = useState(false)
+  const [pendingAiContent, setPendingAiContent] = useState('')
+
   // 키보드 대응 레이아웃 상태
   const [keyboardOffset, setKeyboardOffset] = useState(0)
   const [bottomBarH, setBottomBarH] = useState(0)
@@ -108,12 +114,54 @@ export default function PostWritePage() {
     }
   }
 
-  // 4. 이미지 삭제 로직 (수정 시 매우 중요)
+  // 4. AI 내용 생성
+  const handleAIGenerate = async () => {
+    setAiLoading(true)
+    setError('')
+    try {
+      const imageUrls = images.map((img) => img.url).join(', ')
+      const messages: ChatMessage[] = [
+        {
+          role: 'system',
+          content:
+            '당신은 SNS 게시글 작성을 도와주는 AI입니다. 이미지를 보고 자연스러운 한국어 게시글 내용을 2~3문장으로 작성해주세요.',
+        },
+        {
+          role: 'user',
+          content: `이 이미지들을 보고 게시글 내용을 작성해주세요: ${imageUrls}`,
+        },
+      ]
+      const result = await generateAIContent(messages)
+
+      if (content.trim() !== '') {
+        setPendingAiContent(result)
+        setShowOverwriteModal(true)
+      } else {
+        setContent(result)
+        setAiGenerated(true)
+        requestAnimationFrame(() => textareaRef.current?.focus())
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'AI 생성에 실패했습니다.')
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
+  const applyAIContent = () => {
+    setContent(pendingAiContent)
+    setAiGenerated(true)
+    setPendingAiContent('')
+    setShowOverwriteModal(false)
+    requestAnimationFrame(() => textareaRef.current?.focus())
+  }
+
+  // 6. 이미지 삭제 로직 (수정 시 매우 중요)
   const handleRemoveImage = (idx: number) => {
     setImages((prev) => prev.filter((_, i) => i !== idx))
   }
 
-  // 5. 최종 제출 (작성 vs 수정 분기)
+  // 7. 최종 제출 (작성 vs 수정 분기)
   const handleSubmit = async () => {
     if (!isValid || submitting) return
     setSubmitting(true)
@@ -211,6 +259,29 @@ export default function PostWritePage() {
             </svg>
             <span>{uploading ? '업로드 중...' : `사진 추가 (${images.length}/${MAX_IMAGES})`}</span>
           </button>
+
+          {images.length > 0 && (
+            <button
+              type="button"
+              onClick={handleAIGenerate}
+              disabled={aiLoading}
+              className="text-[15px] font-medium text-brand disabled:opacity-50"
+            >
+              {aiLoading ? 'AI 생성 중...' : aiGenerated ? '다시 생성' : 'AI 내용 생성'}
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={images.length >= MAX_IMAGES || uploading}
+            aria-label="사진 추가"
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F97316] text-white shadow-sm disabled:bg-gray-300"
+          >
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </button>
         </div>
         <input
           ref={fileInputRef}
@@ -221,6 +292,13 @@ export default function PostWritePage() {
           onChange={handleImageAdd}
         />
       </div>
+      <Modal
+        open={showOverwriteModal}
+        message="기존 입력 내용이 있습니다. 덮어쓰시겠습니까?"
+        confirmLabel="덮어쓰기"
+        onConfirm={applyAIContent}
+        onCancel={() => setShowOverwriteModal(false)}
+      />
     </div>
   )
 }
