@@ -6,7 +6,7 @@ import Input from '@shared/components/Input'
 import Modal from '@shared/components/Modal'
 import { ROUTES } from '@shared/constants'
 import { uploadImage } from '@shared/api/client'
-import { generateAIContent, type ChatMessage } from '@shared/api/ai'
+import { useAIGenerate } from '@shared/hooks/useAIGenerate'
 import { createProduct } from '../api'
 
 export default function ProductNewPage() {
@@ -21,10 +21,30 @@ export default function ProductNewPage() {
   const [link, setLink] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [aiLoading, setAiLoading] = useState(false)
-  const [aiGenerated, setAiGenerated] = useState(false)
-  const [showOverwriteModal, setShowOverwriteModal] = useState(false)
-  const [pendingAiResult, setPendingAiResult] = useState<{ name: string } | null>(null)
+  const {
+    generate: handleAIGenerate,
+    isLoading: aiLoading,
+    isGenerated: aiGenerated,
+    showOverwriteModal,
+    confirmOverwrite,
+    cancelOverwrite,
+  } = useAIGenerate({
+    buildMessages: () => [
+      {
+        role: 'system',
+        content:
+          '당신은 중고거래 플랫폼의 상품 등록을 도와주는 AI입니다. 이미지 URL을 보고 상품명을 한국어로 2~15자 이내로 생성해주세요.',
+      },
+      {
+        role: 'user',
+        content: `이 이미지의 상품명을 생성해주세요: ${imageUrl}`,
+      },
+    ],
+    transform: (result) => result.trim().slice(0, 15),
+    currentValue: itemName,
+    onApply: (result) => setItemName(result),
+    onError: (msg) => setError(msg),
+  })
 
   const price = Number(priceInput.replace(/[^0-9]/g, ''))
 
@@ -51,49 +71,6 @@ export default function ProductNewPage() {
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/[^0-9]/g, '')
     setPriceInput(raw)
-  }
-
-  const handleAIGenerate = async () => {
-    if (!imageUrl) {
-      setError('이미지를 먼저 업로드해 주세요.')
-      return
-    }
-    setAiLoading(true)
-    setError('')
-    try {
-      const messages: ChatMessage[] = [
-        {
-          role: 'system',
-          content: '당신은 중고거래 플랫폼의 상품 등록을 도와주는 AI입니다. 이미지 URL을 보고 상품명을 한국어로 2~15자 이내로 생성해주세요.',
-        },
-        {
-          role: 'user',
-          content: `이 이미지의 상품명을 생성해주세요: ${imageUrl}`,
-        },
-      ]
-      const result = await generateAIContent(messages)
-      const trimmed = result.trim().slice(0, 15)
-      if (itemName !== '') {
-        setPendingAiResult({ name: trimmed })
-        setShowOverwriteModal(true)
-      } else {
-        setItemName(trimmed)
-        setAiGenerated(true)
-      }
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'AI 생성에 실패했습니다.')
-    } finally {
-      setAiLoading(false)
-    }
-  }
-
-  const applyAIResult = () => {
-    if (pendingAiResult) {
-      setItemName(pendingAiResult.name)
-      setAiGenerated(true)
-    }
-    setPendingAiResult(null)
-    setShowOverwriteModal(false)
   }
 
   const handleSubmit = async () => {
@@ -196,8 +173,8 @@ export default function ProductNewPage() {
         open={showOverwriteModal}
         message="기존 입력 내용이 있습니다. 덮어쓰시겠습니까?"
         confirmLabel="덮어쓰기"
-        onConfirm={applyAIResult}
-        onCancel={() => setShowOverwriteModal(false)}
+        onConfirm={confirmOverwrite}
+        onCancel={cancelOverwrite}
       />
     </div>
   )

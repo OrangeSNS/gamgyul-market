@@ -2,6 +2,15 @@ import { useState } from 'react'
 import { useAuth } from '@app/providers/AuthProvider'
 import { sendTextMessage, sendImageMessage } from '@shared/firebase/firestore'
 import type { ChatParticipantProfile } from '../types/chat.types'
+import type { User } from '@shared/types'
+
+function buildSenderProfile(user: User): ChatParticipantProfile {
+  return {
+    accountName: user.accountname,
+    username: user.username,
+    image: user.image,
+  }
+}
 
 interface UseSendMessageResult {
   sendMessage: (text: string) => Promise<void>
@@ -15,16 +24,9 @@ export function useSendMessage(chatId: string): UseSendMessageResult {
 
   async function sendMessage(text: string): Promise<void> {
     if (!text.trim() || !user || !chatId) return
-
-    const senderProfile: ChatParticipantProfile = {
-      accountName: user.accountname,
-      username: user.username,
-      image: user.image,
-    }
-
     setIsSending(true)
     try {
-      await sendTextMessage(chatId, senderProfile, text)
+      await sendTextMessage(chatId, buildSenderProfile(user), text)
     } finally {
       setIsSending(false)
     }
@@ -32,16 +34,9 @@ export function useSendMessage(chatId: string): UseSendMessageResult {
 
   async function sendImage(imageUrl: string): Promise<void> {
     if (!imageUrl || !user || !chatId) return
-
-    const senderProfile: ChatParticipantProfile = {
-      accountName: user.accountname,
-      username: user.username,
-      image: user.image,
-    }
-
     setIsSending(true)
     try {
-      await sendImageMessage(chatId, senderProfile, imageUrl)
+      await sendImageMessage(chatId, buildSenderProfile(user), imageUrl)
     } finally {
       setIsSending(false)
     }
