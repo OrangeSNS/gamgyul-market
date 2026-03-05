@@ -91,6 +91,7 @@ export default function EmailLoginPage() {
               onChange={(e) => {
                 setEmail(e.target.value)
                 if (emailError) setEmailError('')
+                if (loginError) setLoginError('')
               }}
               underline
             />
