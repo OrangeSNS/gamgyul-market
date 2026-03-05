@@ -211,7 +211,7 @@ export default function PostDetailPage() {
               </div>
 
               {/* 본문 */}
-              <p className="mt-3 text-sm text-gray-800 leading-relaxed whitespace-pre-line">
+              <p className="mt-3 text-sm text-gray-800 leading-relaxed whitespace-pre-line break-words">
                 {post.content}
               </p>
 
