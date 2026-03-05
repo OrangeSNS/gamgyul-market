@@ -68,7 +68,7 @@ export default function EmailLoginPage() {
       navigate(ROUTES.HOME, { replace: true })
 
     } catch (err) {
-      toast.error('네트워크 오류가 발생했습니다. 다시 시도해주세요.')
+      toast.error('네트워크 연결을 확인해주세요')
     } finally {
       setLoading(false)
     }
