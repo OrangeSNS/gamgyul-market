@@ -6,6 +6,8 @@ import Input from '@shared/components/Input'
 import { ROUTES, API_BASE_URL } from '@shared/constants'
 import { useAuth } from '@app/providers/AuthProvider'
 import { User } from '@shared/types'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function EmailLoginPage() {
   const navigate = useNavigate()
@@ -66,7 +68,7 @@ export default function EmailLoginPage() {
       navigate(ROUTES.HOME, { replace: true })
 
     } catch (err) {
-      setLoginError('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
+      toast.error('네트워크 오류가 발생했습니다. 다시 시도해주세요.')
     } finally {
       setLoading(false)
     }
@@ -75,6 +77,17 @@ export default function EmailLoginPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <TopBar title="" showBack />
+      <ToastContainer
+  position="top-center"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+/>
 
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 px-6 pt-10" noValidate>
         <h2 className="text-[24px] font-medium leading-[100%] text-center text-[#000000] mb-[40px]">
