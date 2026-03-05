@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@app/providers/AuthProvider'
 import { ensureFirebaseSession } from '@shared/firebase/auth'
-import { subscribeMessages, getOrCreateDirectChat } from '@shared/firebase/firestore'
+import { subscribeMessages, getOrCreateDirectChat, markChatAsRead } from '@shared/firebase/firestore'
 import { getProfile } from '@features/profile/api'
 import { buildChatId } from '../utils/buildChatId'
 import type { ChatMessage } from '../types/chat.types'
@@ -56,6 +56,9 @@ export function useChatRoom(targetAccountName: string): UseChatRoomResult {
         if (cancelled) return
 
         const currentChatId = buildChatId(user!.accountname, targetAccountName)
+
+        await markChatAsRead(currentChatId, user!.accountname)
+
         unsubscribe = subscribeMessages(currentChatId, (msgs) => {
           if (!cancelled) setMessages(msgs)
         })

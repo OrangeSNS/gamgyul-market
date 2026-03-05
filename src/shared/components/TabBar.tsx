@@ -1,10 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { ROUTES } from '@shared/constants'
 import { useAuth } from '@app/providers/AuthProvider'
+import { useHasUnreadMessages } from '@features/chat/hooks/useHasUnreadMessages'
 
 export default function TabBar() {
   const location = useLocation()
   const { user } = useAuth()
+  const hasUnread = useHasUnreadMessages()
 
   const tabs = [
     {
@@ -18,7 +20,12 @@ export default function TabBar() {
       to: ROUTES.CHAT,
       label: '채팅',
       icon: (active: boolean) => (
-        <img src={active ? '/icons/icon-message-circle-fill.svg' : '/icons/icon-message-circle.svg'} alt="" className="w-6 h-6" />
+        <div className="relative w-6 h-6">
+          <img src={active ? '/icons/icon-message-circle-fill.svg' : '/icons/icon-message-circle.svg'} alt="" className="w-6 h-6" />
+          {hasUnread && (
+            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
+          )}
+        </div>
       ),
     },
     {

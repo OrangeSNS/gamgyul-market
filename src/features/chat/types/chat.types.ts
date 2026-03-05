@@ -14,6 +14,7 @@ export interface DirectChat {
   participantProfiles: Record<string, ChatParticipantProfile>
   lastMessage: string
   lastMessageAt: Timestamp | null
+  unreadBy: string[]
   createdAt: Timestamp
   updatedAt: Timestamp
 }
