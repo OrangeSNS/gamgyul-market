@@ -43,7 +43,7 @@ export default function EmailLoginPage() {
 
       const res = await response.json()
 
-      if (!response.ok || res.message) {
+      if (!response.ok) {
         // 계정 정보가 틀렸을 때 (이미지 2번: image_ce21d9.png)
         setLoginError(res.message || '이메일 또는 비밀번호가 일치하지 않습니다.')
         setLoading(false)
@@ -66,7 +66,7 @@ export default function EmailLoginPage() {
       navigate(ROUTES.HOME, { replace: true })
 
     } catch (err) {
-      setLoginError('서버와 연결할 수 없습니다.')
+      setLoginError('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
     } finally {
       setLoading(false)
     }
