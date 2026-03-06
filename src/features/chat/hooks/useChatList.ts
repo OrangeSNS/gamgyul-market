@@ -6,6 +6,7 @@ import { getFollowing } from '@features/profile/api'
 import { buildChatId } from '../utils/buildChatId'
 import { mapFollowingToChatList } from '../utils/mapFollowingToChatList'
 import type { ChatListItemVM } from '../types/chat.types'
+import type { FirebaseError } from 'firebase/app'
 
 interface UseChatListResult {
   items: ChatListItemVM[]
@@ -39,6 +40,14 @@ export function useChatList(): UseChatListResult {
           setItems(mapFollowingToChatList(user!.accountname, followingList, chatDocs))
         }
       } catch (err) {
+        console.error('[useChatList] failed:', err)
+
+        const fe = err as FirebaseError
+        if (fe?.code) {
+          console.error('[useChatList] firebase code:', fe.code)
+          console.error('[useChatList] firebase message:', fe.message)
+        }
+
         if (!cancelled) {
           setError('채팅 목록을 불러오지 못했습니다.')
         }
