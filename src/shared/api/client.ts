@@ -48,7 +48,7 @@ export async function request<T>(
     },
   })
 
-  if (response.status === 401) {
+  if (response.status === 401 && path !== '/user/login') {
     localStorage.removeItem(TOKEN_KEY)
     window.location.href = '/login'
     throw new ApiError(401, '인증이 만료되었습니다. 다시 로그인해주세요.')
