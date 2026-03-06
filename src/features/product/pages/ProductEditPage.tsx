@@ -16,7 +16,6 @@ export default function ProductEditPage() {
   const [saving, setSaving] = useState(false)
   const [imagePreview, setImagePreview] = useState('')
   const [imageUrl, setImageUrl] = useState('')
-  const [imageFile, setImageFile] = useState<File | null>(null)
   const [itemName, setItemName] = useState('')
   const [priceInput, setPriceInput] = useState('')
   const [link, setLink] = useState('')
@@ -42,7 +41,6 @@ export default function ProductEditPage() {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    setImageFile(file)
     setImagePreview(URL.createObjectURL(file))
     try {
       const url = await uploadImage(file)

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostCard from '@shared/components/PostCard';
 import NoFollowView from '../components/NoFollowView';
+import Spinner from '@shared/components/Spinner';
 import { getFeed } from '../api';
 import { Post } from '@shared/types';
 import { useAuth } from '@app/providers/AuthProvider'
@@ -70,7 +71,7 @@ export default function HomeFeedPage() {
     return () => observer.disconnect();
   }, [loadFeed, hasMore, loading, isFetching]);
 
-  if (loading) return <div className="p-10 text-center">감귤 로딩 중... 🍊</div>;
+  if (loading) return <div className="flex justify-center py-20"><Spinner size="lg" /></div>;
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,8 +85,8 @@ export default function HomeFeedPage() {
       <main className="pb-16">
         {posts.length > 0 ? (
           <div className="flex flex-col">
-            {posts.map((post: any, index: number) => (
-              <PostCard key={`${post.id}-${index}`} post={post} />
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
             ))}
             
               <div ref={observerTarget} className="h-20 w-full flex justify-center items-center">

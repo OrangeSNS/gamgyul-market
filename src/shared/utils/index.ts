@@ -82,11 +82,18 @@ export function isNetworkError(err: unknown): boolean {
   )
 }
 
-/** post 이미지 배열로 파싱 (콤마 구분 + URL 정규화) */
+/** post 이미지 배열로 파싱 (콤마 구분 + URL 정규화 + 잘못된 값 필터링) */
 export function parsePostImages(image: string): string[] {
   if (!image) return []
   return image
     .split(',')
-    .map((url) => resolveImageUrl(url.trim()))
+    .map((url) => url.trim())
+    .filter((url): boolean => {
+      if (!url || url === 'undefined' || url === 'null') return false
+      if (url === API_BASE_URL || url === `${API_BASE_URL}/`) return false
+      if (!url.includes('.')) return false
+      return true
+    })
+    .map((url) => resolveImageUrl(url))
     .filter((url): url is string => !!url)
 }

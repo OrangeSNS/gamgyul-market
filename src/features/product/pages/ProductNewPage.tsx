@@ -13,7 +13,6 @@ export default function ProductNewPage() {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [itemName, setItemName] = useState('')
@@ -58,7 +57,6 @@ export default function ProductNewPage() {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    setImageFile(file)
     setImagePreview(URL.createObjectURL(file))
     try {
       const url = await uploadImage(file)
