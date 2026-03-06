@@ -11,7 +11,6 @@ import ImageCarousel from '@shared/components/ImageCarousel'
 import { useAuth } from '@app/providers/AuthProvider'
 import { Post, Comment } from '@shared/types'
 import { ROUTES } from '@shared/constants'
-import { request } from '@shared/api/client'
 import { formatRelativeTime, parsePostImages } from '@shared/utils'
 import {
   getPostDetail,
@@ -21,6 +20,8 @@ import {
   createComment,
   deleteComment,
   reportComment,
+  postLike,
+  deleteLike,
 } from '../api'
 
 export default function PostDetailPage() {
@@ -73,9 +74,11 @@ export default function PostDetailPage() {
     setHearted(next)
     setHeartCount((c) => (next ? c + 1 : c - 1))
     try {
-      const method = next ? 'POST' : 'DELETE'
-      const path = next ? `/post/${post.id}/heart` : `/post/${post.id}/unheart`
-      await request(path, { method })
+      if (next) {
+        await postLike(post.id)
+      } else {
+        await deleteLike(post.id)
+      }
     } catch {
       setHearted(!next)
       setHeartCount((c) => (next ? c - 1 : c + 1))
@@ -382,14 +385,12 @@ export default function PostDetailPage() {
           isMyPost
             ? [
                 { label: '삭제', danger: true, onClick: deletePostModal.open },
-                // PostDetailPage.tsx 내 BottomSheet 부분 수정
-{ 
-  label: '수정', 
-  onClick: () => {
-    postSheet.close(); // 바텀시트 닫기
-    navigate(`/post/${postId}/edit`); // 수정 전용 경로로 이동
-  }
-},
+                {
+                  label: '수정',
+                  onClick: () => {
+                    navigate(ROUTES.POST_EDIT(postId!))
+                  },
+                },
               ]
             : [{ label: '신고', danger: true, onClick: reportPostModal.open }]
         }
@@ -421,20 +422,14 @@ export default function PostDetailPage() {
                 {
                   label: '삭제',
                   danger: true,
-                  onClick: () => {
-                    commentSheet.close()
-                    deleteCommentModal.open()
-                  },
+                  onClick: deleteCommentModal.open,
                 },
               ]
             : [
                 {
                   label: '신고',
                   danger: true,
-                  onClick: () => {
-                    commentSheet.close()
-                    reportCommentModal.open()
-                  },
+                  onClick: reportCommentModal.open,
                 },
               ]
         }

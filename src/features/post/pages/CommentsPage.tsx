@@ -111,7 +111,7 @@ export default function CommentsPage() {
           <div className="flex justify-center py-10">
             <Spinner />
           </div>
-        ) : (comments?.length ?? 0) === 0 ? (
+        ) : comments.length === 0 ? (
           <p className="py-10 text-center text-sm text-gray-400">
             첫 댓글을 작성해보세요!
           </p>
@@ -210,20 +210,14 @@ export default function CommentsPage() {
                 {
                   label: '삭제',
                   danger: true,
-                  onClick: () => {
-                    commentSheet.close()
-                    deleteModal.open()
-                  },
+                  onClick: deleteModal.open,
                 },
               ]
             : [
                 {
                   label: '신고',
                   danger: true,
-                  onClick: () => {
-                    commentSheet.close()
-                    reportModal.open()
-                  },
+                  onClick: reportModal.open,
                 },
               ]
         }

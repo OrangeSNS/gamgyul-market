@@ -23,7 +23,7 @@ export default function FollowingPage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false))
-  }, [accountName])
+  }, [accountName, syncFollowStates])
 
   const handleFollowToggle = (targetAccountname: string, following: boolean) => {
     if (!following) {

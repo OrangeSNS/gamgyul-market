@@ -23,7 +23,7 @@ export default function FollowersPage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false))
-  }, [accountName])
+  }, [accountName, syncFollowStates])
 
   return (
     <div className="flex flex-col">

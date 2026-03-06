@@ -19,6 +19,7 @@ export default function ChatRoomPage() {
   const { user } = useAuth()
   const [message, setMessage] = useState('')
   const [imageUploading, setImageUploading] = useState(false)
+  const [imageUploadError, setImageUploadError] = useState('')
   const [pendingImageUrl, setPendingImageUrl] = useState<string | null>(null)
   const [pendingImagePreview, setPendingImagePreview] = useState<string | null>(null)
   const chatSheet = useBottomSheet()
@@ -38,11 +39,14 @@ export default function ChatRoomPage() {
     const file = e.target.files?.[0]
     if (!file) return
     setImageUploading(true)
+    setImageUploadError('')
     try {
       const preview = URL.createObjectURL(file)
       const url = await uploadImage(file)
       setPendingImagePreview(preview)
       setPendingImageUrl(url)
+    } catch {
+      setImageUploadError('이미지 업로드에 실패했습니다.')
     } finally {
       setImageUploading(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
@@ -52,6 +56,7 @@ export default function ChatRoomPage() {
   function handleCancelImage() {
     setPendingImageUrl(null)
     setPendingImagePreview(null)
+    setImageUploadError('')
   }
 
   async function handleSend() {
@@ -161,6 +166,11 @@ export default function ChatRoomPage() {
 
       {/* Input */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile bg-white border-t border-gray-100">
+        {imageUploadError && (
+          <div className="px-4 pt-2 pb-1">
+            <p className="text-xs text-red-500">{imageUploadError}</p>
+          </div>
+        )}
         {pendingImagePreview && (
           <div className="px-4 pt-3 pb-1 flex items-center gap-2">
             <div className="relative w-16 h-16 shrink-0">
