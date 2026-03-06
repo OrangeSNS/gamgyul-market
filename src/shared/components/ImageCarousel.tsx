@@ -14,7 +14,7 @@ type Props = {
 export default function ImageCarousel({
   images,
   className = '',
-  aspectClassName = 'aspect-[343/228]',
+  aspectClassName = 'aspect-[304/228]',
   showDots = true,
   onRemove,
 }: Props) {
@@ -101,13 +101,12 @@ export default function ImageCarousel({
       <div
         className={[
           'relative overflow-hidden rounded-2xl bg-gray-100',
-          aspectClassName,
         ].join(' ')}
       >
         <div
           ref={scrollerRef}
           className={[
-            'h-full w-full flex overflow-x-auto',
+            'w-full flex overflow-x-auto',
             'snap-x snap-mandatory',
             'scrollbar-hide',
             canSlide ? 'cursor-grab active:cursor-grabbing' : '',
@@ -120,8 +119,12 @@ export default function ImageCarousel({
           {images.map((src, idx) => (
             <div
               key={`${src}-${idx}`}
-              className="relative h-full w-full flex-none snap-center"
+              className="relative w-full flex-none snap-center"
             >
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/dev
             {brokenImages.has(idx) ? (
                 <div className="h-full w-full bg-gray-100 flex items-center justify-center">
                   <span className="text-xs text-gray-400">이미지를 불러올 수 없습니다</span>
@@ -130,7 +133,13 @@ export default function ImageCarousel({
                 <img
                   src={src}
                   alt=""
+<<<<<<< HEAD
                   className="h-full w-full object-cover"
+=======
+                  className={`h-full w-full object-cover ${
+                    aspectClassName
+                  }`}
+>>>>>>> origin/dev
                   loading="lazy"
                   decoding="async"
                   draggable={false}

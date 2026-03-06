@@ -5,7 +5,7 @@ import Button from '@shared/components/Button'
 import Input from '@shared/components/Input'
 import { ROUTES } from '@shared/constants'
 import { useAuth } from '@app/providers/AuthProvider'
-import { validateUsername, validateAccountName } from '@shared/utils'
+import { validateUsername, validateAccountName, isNetworkError } from '@shared/utils'
 import { checkAccountName, signup } from '../api'
 import { uploadImage } from '@shared/api/client'
 import { User } from '@shared/types'
@@ -103,6 +103,7 @@ export default function JoinProfilePage() {
         setAccountnameError('')
       }
     } catch (err: unknown) {
+<<<<<<< HEAD
   if (requestId !== accountCheckRef.current) return
 
   if (err instanceof Error) {
@@ -121,6 +122,15 @@ export default function JoinProfilePage() {
 }
   }
 
+=======
+      if (requestId !== accountCheckRef.current) return
+      setAccountnameError(
+        isNetworkError(err) ? '네트워크 연결을 확인해주세요.' : '계정 ID 확인에 실패했습니다.'
+      )
+    }
+  }
+
+>>>>>>> origin/dev
   /* --------------------------------------------------
      유효성 검사
   -------------------------------------------------- */
@@ -156,6 +166,7 @@ export default function JoinProfilePage() {
       if (imageFile) {
         try {
           imageUrl = await uploadImage(imageFile)
+<<<<<<< HEAD
         } catch (err: unknown) { // err를 받아옵니다
           let message = '이미지 업로드에 실패했습니다.'
 
@@ -172,6 +183,10 @@ export default function JoinProfilePage() {
           }
 
           setImageError(message) 
+=======
+        } catch (err: unknown) {
+          setImageError(isNetworkError(err) ? '네트워크 연결을 확인해주세요.' : '이미지 업로드에 실패했습니다.')
+>>>>>>> origin/dev
           setLoading(false)
           return
         }
@@ -202,6 +217,7 @@ export default function JoinProfilePage() {
       authLogin(loginRes.token ?? '', user)
       navigate(ROUTES.HOME, { replace: true })
     } catch (err: unknown) {
+<<<<<<< HEAD
   let message = '회원가입에 실패했습니다.'
 
   if (err instanceof Error) {
@@ -219,6 +235,13 @@ export default function JoinProfilePage() {
 
   setFormError(message)
 } finally {
+=======
+      const message = isNetworkError(err)
+        ? '네트워크 연결을 확인해주세요.'
+        : err instanceof Error ? err.message : '회원가입에 실패했습니다.'
+      setFormError(message)
+    } finally {
+>>>>>>> origin/dev
       setLoading(false)
     }
   }

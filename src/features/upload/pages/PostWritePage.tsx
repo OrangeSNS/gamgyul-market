@@ -4,8 +4,9 @@ import Avatar from '@shared/components/Avatar'
 import Modal from '@shared/components/Modal'
 import { useAuth } from '@app/providers/AuthProvider'
 import { uploadImage } from '@shared/api/client'
-import { generateAIContent, type ChatMessage } from '@shared/api/ai'
-import { createPost, updatePost, getPostDetail } from '../api' // getPostDetail, updatePost 추가 확인
+import { useAIGenerate } from '@shared/hooks/useAIGenerate'
+import { useKeyboardHeight } from '@shared/hooks/useKeyboardHeight'
+import { createPost, updatePost, getPostDetail } from '../api'
 import { parsePostImages } from '@shared/utils'
 import ImageCarousel from '@shared/components/ImageCarousel'
 import TopBar from '@app/layouts/TopBar'
@@ -27,7 +28,6 @@ export default function PostWritePage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const bottomBarRef = useRef<HTMLDivElement>(null)
 
   const [content, setContent] = useState('')
   const [images, setImages] = useState<ImageItem[]>([])
@@ -36,6 +36,7 @@ export default function PostWritePage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+<<<<<<< HEAD
   // AI
   const [aiLoading, setAiLoading] = useState(false)
   const [aiGenerated, setAiGenerated] = useState(false)
@@ -45,6 +46,36 @@ export default function PostWritePage() {
   // 키보드 대응 레이아웃 상태
   const [keyboardOffset, setKeyboardOffset] = useState(0)
   const [bottomBarH, setBottomBarH] = useState(0)
+=======
+  const { keyboardOffset, bottomBarH, bottomBarRef } = useKeyboardHeight()
+
+  const {
+    generate: handleAIGenerate,
+    isLoading: aiLoading,
+    isGenerated: aiGenerated,
+    showOverwriteModal,
+    confirmOverwrite,
+    cancelOverwrite,
+  } = useAIGenerate({
+    buildMessages: () => [
+      {
+        role: 'system',
+        content:
+          '당신은 SNS 게시글 작성을 도와주는 AI입니다. 이미지를 보고 자연스러운 한국어 게시글 내용을 2~3문장으로 작성해주세요.',
+      },
+      {
+        role: 'user',
+        content: `이 이미지들을 보고 게시글 내용을 작성해주세요: ${images.map((img) => img.url).join(', ')}`,
+      },
+    ],
+    currentValue: content,
+    onApply: (result) => {
+      setContent(result)
+      requestAnimationFrame(() => textareaRef.current?.focus())
+    },
+    onError: (msg) => setError(msg),
+  })
+>>>>>>> origin/dev
 
   const isValid = content.trim() !== '' || images.length > 0
 
@@ -66,25 +97,7 @@ export default function PostWritePage() {
       .finally(() => setLoading(false))
   }, [postId, isEditMode])
 
-  // 2. 하단바 및 키보드 높이 측정 (기존 PostNewPage 로직 유지)
-  useEffect(() => {
-    const measureBar = () => setBottomBarH(bottomBarRef.current?.getBoundingClientRect().height ?? 0)
-    measureBar()
-    const vv = window.visualViewport
-    if (!vv) return
-    const onViewportChange = () => {
-      setKeyboardOffset(Math.max(0, window.innerHeight - vv.height - vv.offsetTop))
-      measureBar()
-    }
-    vv.addEventListener('resize', onViewportChange)
-    window.addEventListener('resize', measureBar)
-    return () => {
-      vv.removeEventListener('resize', onViewportChange)
-      window.removeEventListener('resize', measureBar)
-    }
-  }, [])
-
-  // 3. 이미지 추가 로직 (기존 PostNewPage 활용)
+  // 2. 이미지 추가 로직
   const handleImageAdd = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
     const remaining = MAX_IMAGES - images.length
@@ -114,6 +127,7 @@ export default function PostWritePage() {
     }
   }
 
+<<<<<<< HEAD
   // 4. AI 내용 생성
   const handleAIGenerate = async () => {
     setAiLoading(true)
@@ -157,11 +171,18 @@ export default function PostWritePage() {
   }
 
   // 6. 이미지 삭제 로직 (수정 시 매우 중요)
+=======
+  // 3. 이미지 삭제 로직
+>>>>>>> origin/dev
   const handleRemoveImage = (idx: number) => {
     setImages((prev) => prev.filter((_, i) => i !== idx))
   }
 
+<<<<<<< HEAD
   // 7. 최종 제출 (작성 vs 수정 분기)
+=======
+  // 4. 최종 제출 (작성 vs 수정 분기)
+>>>>>>> origin/dev
   const handleSubmit = async () => {
     if (!isValid || submitting) return
     setSubmitting(true)
@@ -178,8 +199,8 @@ export default function PostWritePage() {
         await createPost(content, imageString)
       }
       navigate(-1)
-    } catch (err: any) {
-      setError(err.message || '요청에 실패했습니다.')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : '요청에 실패했습니다.')
     } finally {
       setSubmitting(false)
     }
@@ -291,8 +312,13 @@ export default function PostWritePage() {
         open={showOverwriteModal}
         message="기존 입력 내용이 있습니다. 덮어쓰시겠습니까?"
         confirmLabel="덮어쓰기"
+<<<<<<< HEAD
         onConfirm={applyAIContent}
         onCancel={() => setShowOverwriteModal(false)}
+=======
+        onConfirm={confirmOverwrite}
+        onCancel={cancelOverwrite}
+>>>>>>> origin/dev
       />
     </div>
   )
