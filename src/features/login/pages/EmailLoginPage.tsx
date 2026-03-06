@@ -6,6 +6,7 @@ import Input from '@shared/components/Input'
 import { ROUTES } from '@shared/constants'
 import { useAuth } from '@app/providers/AuthProvider'
 import { User } from '@shared/types'
+import { validateEmail } from '@shared/utils'
 import { login } from '../api'
 import { ApiError } from '@shared/api/client'
 import { toast, ToastContainer } from 'react-toastify'
@@ -58,9 +59,9 @@ export default function EmailLoginPage() {
     if (!isFormFilled || loading) return
 
     // ─── 이메일 형식 검증 ──────────────────────────────
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      setEmailError('잘못된 이메일 형식입니다.')
+    const emailErr = validateEmail(email)
+    if (emailErr) {
+      setEmailError(emailErr)
       return
     }
 
@@ -74,18 +75,18 @@ export default function EmailLoginPage() {
 
       // ─── User 객체 생성 (타입 안전성 확보) ───────────────
       const user: User = {
-        _id: res._id!,
-        username: res.username!,
-        accountname: res.accountname!,
+        _id: res._id ?? '',
+        username: res.username ?? '',
+        accountname: res.accountname ?? '',
         email: res.email,
-        intro: res.intro!,
-        image: res.image!,
+        intro: res.intro ?? '',
+        image: res.image ?? '',
         followerCount: 0,
         followingCount: 0,
       }
 
       // ─── 로그인 상태 저장 ──────────────────────────────
-      authLogin(res.token!, user)
+      authLogin(res.token ?? '', user)
 
       // ─── 홈 화면 이동 ──────────────────────────────
       navigate(ROUTES.HOME, { replace: true })

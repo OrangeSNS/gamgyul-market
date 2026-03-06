@@ -82,7 +82,7 @@ export default function ProfilePage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [accountName]);
+  }, [accountName, isMe, syncFollowState, clearFollowingDelta, clearFollowerCountDelta]);
 
   const handleFollowToggle = async () => {
     if (!profile) return;
@@ -140,12 +140,13 @@ export default function ProfilePage() {
     if (!deleteTarget) return;
     try {
       await deleteProduct(deleteTarget);
+      setProducts((prev) => prev.filter((p) => p.id !== deleteTarget));
     } catch (err) {
       console.error(err);
+    } finally {
+      setDeleteTarget(null);
+      deleteModal.close();
     }
-    setProducts((prev) => prev.filter((p) => p.id !== deleteTarget));
-    setDeleteTarget(null);
-    deleteModal.close();
   };
 
   const albumPosts = posts.filter((p) => parsePostImages(p.image).length > 0);

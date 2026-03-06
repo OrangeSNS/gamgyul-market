@@ -1,13 +1,6 @@
 import { request } from '@shared/api/client'
 import { Post } from '@shared/types'
 
-
-export async function getPostDetail(postId: string): Promise<{ post: Post }> {
-  return request<{ post: Post }>(`/post/${postId}`, {
-    method: 'GET',
-  })
-}
-
 export async function createPost(content: string, image = ''): Promise<{ post: Post[] }> {
   return request<{ post: Post[] }>('/post', {
     method: 'POST',
