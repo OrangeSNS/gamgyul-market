@@ -34,22 +34,9 @@ export function useSendMessage(chatId: string): UseSendMessageResult {
 
   async function sendImage(imageUrl: string): Promise<void> {
     if (!imageUrl || !user || !chatId) return
-<<<<<<< HEAD
-
-    const senderProfile: ChatParticipantProfile = {
-      accountName: user.accountname,
-      username: user.username,
-      image: user.image,
-    }
-
-    setIsSending(true)
-    try {
-      await sendImageMessage(chatId, senderProfile, imageUrl)
-=======
     setIsSending(true)
     try {
       await sendImageMessage(chatId, buildSenderProfile(user), imageUrl)
->>>>>>> origin/dev
     } finally {
       setIsSending(false)
     }

@@ -33,10 +33,7 @@ export default function ImageCarousel({
   const count = images.length
   const canSlide = count > 1
 
-  const snapPoints = useMemo(() => {
-    // index -> left position
-    return images.map((_, i) => i)
-  }, [images])
+  const snapPoints = useMemo(() => images.map((_, i) => i), [images])
 
   useEffect(() => {
     const el = scrollerRef.current
@@ -98,11 +95,7 @@ export default function ImageCarousel({
 
   return (
     <div className={className}>
-      <div
-        className={[
-          'relative overflow-hidden rounded-2xl bg-gray-100',
-        ].join(' ')}
-      >
+      <div className={['relative overflow-hidden rounded-2xl bg-gray-100'].join(' ')}>
         <div
           ref={scrollerRef}
           className={[
@@ -119,13 +112,9 @@ export default function ImageCarousel({
           {images.map((src, idx) => (
             <div
               key={`${src}-${idx}`}
-              className="relative w-full flex-none snap-center"
+              className={['relative w-full flex-none snap-center', aspectClassName].join(' ')}
             >
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/dev
-            {brokenImages.has(idx) ? (
+              {brokenImages.has(idx) ? (
                 <div className="h-full w-full bg-gray-100 flex items-center justify-center">
                   <span className="text-xs text-gray-400">이미지를 불러올 수 없습니다</span>
                 </div>
@@ -133,13 +122,7 @@ export default function ImageCarousel({
                 <img
                   src={src}
                   alt=""
-<<<<<<< HEAD
                   className="h-full w-full object-cover"
-=======
-                  className={`h-full w-full object-cover ${
-                    aspectClassName
-                  }`}
->>>>>>> origin/dev
                   loading="lazy"
                   decoding="async"
                   draggable={false}
@@ -170,10 +153,7 @@ export default function ImageCarousel({
                 type="button"
                 onClick={() => goTo(i)}
                 aria-label={`이미지 ${i + 1}로 이동`}
-                className={[
-                  'h-2 w-2 rounded-full transition',
-                  i === active ? 'bg-[#F28C45]' : 'bg-white/80',
-                ].join(' ')}
+                className={['h-2 w-2 rounded-full transition', i === active ? 'bg-[#F28C45]' : 'bg-white/80'].join(' ')}
               />
             ))}
           </div>
