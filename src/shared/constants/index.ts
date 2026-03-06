@@ -20,6 +20,7 @@ export const ROUTES = {
   PRODUCT_EDIT: (productId: string) => `/product/${productId}/edit`,
   POST_NEW: '/post/new',
   POST_DETAIL: (postId: string) => `/post/${postId}`,
+  POST_EDIT: (postId: string) => `/post/${postId}/edit`,
   POST_COMMENTS: (postId: string) => `/post/${postId}/comments`,
   CHAT: '/chat',
   CHAT_ROOM: (chatId: string) => `/chat/${chatId}`,
