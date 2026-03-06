@@ -125,7 +125,7 @@ export default function EmailLoginPage() {
         className="flex flex-col flex-1 px-6 pt-10"
         noValidate
       >
-        <h2 className="text-[24px] font-medium text-center mb-[40px]">
+        <h2 className="text-[24px] font-medium text-[#000000] text-center mb-[40px]">
           로그인
         </h2>
 
