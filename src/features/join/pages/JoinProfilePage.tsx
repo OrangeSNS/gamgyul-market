@@ -11,16 +11,14 @@ import { uploadImage } from '@shared/api/client'
 import { User } from '@shared/types'
 import { login } from '@features/login/api'
 
-const DEFAULT_AVATAR =
-  'https://dev.wenivops.co.kr/services/mandarin/Ellipse.png'
+const DEFAULT_AVATAR = 'https://dev.wenivops.co.kr/services/mandarin/Ellipse.png'
 
 export default function JoinProfilePage() {
   const navigate = useNavigate()
   const location = useLocation()
   const { login: authLogin } = useAuth()
 
-  const { email = '', password = '' } =
-    (location.state as { email: string; password: string }) ?? {}
+  const { email = '', password = '' } = (location.state as { email: string; password: string }) ?? {}
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const accountCheckRef = useRef(0)
@@ -38,21 +36,15 @@ export default function JoinProfilePage() {
   const [formError, setFormError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  /* --------------------------------------------------
-     🚨 email / password 없으면 접근 차단
-  -------------------------------------------------- */
+  /*  email / password 없으면 접근 차단 */
   useEffect(() => {
     if (!email || !password) {
       navigate(ROUTES.LOGIN, { replace: true })
     }
   }, [email, password, navigate])
 
-  /* --------------------------------------------------
-     이미지 변경
-  -------------------------------------------------- */
-  const handleImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  /* 이미지 변경 */
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
@@ -71,16 +63,12 @@ export default function JoinProfilePage() {
     }
   }
 
-  /* --------------------------------------------------
-     username 검증
-  -------------------------------------------------- */
+  /*  username 검증 */
   const handleUsernameBlur = () => {
     setUsernameError(validateUsername(username))
   }
 
-  /* --------------------------------------------------
-     accountname 검증 (race condition 방지)
-  -------------------------------------------------- */
+  /*  accountname 검증 (race condition 방지) */
   const handleAccountnameBlur = async () => {
     setAccountnameError('')
     const localErr = validateAccountName(accountname)
@@ -104,31 +92,23 @@ export default function JoinProfilePage() {
       }
     } catch (err: unknown) {
       if (requestId !== accountCheckRef.current) return
-      setAccountnameError(
-        isNetworkError(err) ? '네트워크 연결을 확인해주세요.' : '계정 ID 확인에 실패했습니다.'
-      )
+      setAccountnameError(isNetworkError(err) ? '네트워크 연결을 확인해주세요.' : '계정 ID 확인에 실패했습니다.')
     }
   }
 
-  /* --------------------------------------------------
-     유효성 검사
-  -------------------------------------------------- */
-  const isValid =
-    username &&
-    accountname &&
-    !usernameError &&
-    !accountnameError &&
-    !imageError
+  /* 유효성 검사  */
+  const isValid = username && accountname && !usernameError && !accountnameError && !imageError
 
-  /* --------------------------------------------------
-     제출
-  -------------------------------------------------- */
+  /* 제출 */
   const handleSubmit = async () => {
     if (loading) return
+
+    // 에러 초기화
     setUsernameError('')
-  setAccountnameError('')
-  setImageError('')
-  setFormError('')
+    setAccountnameError('')
+    setImageError('')
+    setFormError('')
+
     const uErr = validateUsername(username)
     const aErr = validateAccountName(accountname)
 
@@ -179,53 +159,31 @@ export default function JoinProfilePage() {
     } catch (err: unknown) {
       const message = isNetworkError(err)
         ? '네트워크 연결을 확인해주세요.'
-        : err instanceof Error ? err.message : '회원가입에 실패했습니다.'
+        : err instanceof Error
+          ? err.message
+          : '회원가입에 실패했습니다.'
       setFormError(message)
     } finally {
       setLoading(false)
     }
   }
 
-  /* --------------------------------------------------
-     UI
-  -------------------------------------------------- */
+  /* UI */
   return (
     <div className="flex flex-col min-h-screen">
       <TopBar showBack />
 
       <div className="flex flex-col items-center px-6 pt-8">
-        <h2 className="text-[24px] font-medium text-center">
-          프로필 설정
-        </h2>
-        <p className="text-[14px] text-[#767676] text-center mt-[12px]">
-          나중에 언제든지 변경할 수 있습니다.
-        </p>
+        <h2 className="text-[24px] font-medium text-center">프로필 설정</h2>
+        <p className="text-[14px] text-[#767676] text-center mt-[12px]">나중에 언제든지 변경할 수 있습니다.</p>
 
         {/* 아바타 */}
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className="relative mt-[30px]"
-        >
-          <img
-            src={imagePreview}
-            alt="프로필 이미지"
-            className="w-24 h-24 rounded-full object-cover bg-gray-100"
-          />
+        <button type="button" onClick={() => fileInputRef.current?.click()} className="relative mt-[30px]">
+          <img src={imagePreview} alt="프로필 이미지" className="w-24 h-24 rounded-full object-cover bg-gray-100" />
           <span className="absolute bottom-0 right-0 w-8 h-8 bg-brand rounded-full flex items-center justify-center shadow-md">
-            <img
-              src="/icons/icon-image-upload.svg"
-              alt=""
-              className="w-4 h-4"
-            />
+            <img src="/icons/icon-image-upload.svg" alt="" className="w-4 h-4" />
           </span>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleImageChange}
-          />
+          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
         </button>
 
         {/* 입력 영역 */}
@@ -267,25 +225,22 @@ export default function JoinProfilePage() {
               underline
             />
 
-           {/* 에러 또는 버튼 영역 */}
-{(imageError || formError || imageFile) && (
-  <div className="flex justify-between items-center mt-[6px]">
+            {/* 에러 또는 버튼 영역 */}
+            {(imageError || formError || imageFile) && (
+              <div className="flex justify-between items-center mt-[6px]">
+                <p className="text-[12px] text-[#EB5757]">{(imageError || formError) && `*${imageError || formError}`}</p>
 
-    <p className="text-[12px] text-[#EB5757]">
-      {(imageError || formError) && `*${imageError || formError}`}
-    </p>
-
-    {(imageFile || imageError) && (
-      <button
-        type="button"
-        onClick={handleResetImage}
-        className="text-[12px] text-[#767676] underline underline-offset-2 hover:text-brand transition-colors"
-      >
-        기본 이미지로 가기
-      </button>
-    )}
-  </div>
-)}
+                {(imageFile || imageError) && (
+                  <button
+                    type="button"
+                    onClick={handleResetImage}
+                    className="text-[12px] text-[#767676] underline underline-offset-2 hover:text-brand transition-colors"
+                  >
+                    기본 이미지로 가기
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
