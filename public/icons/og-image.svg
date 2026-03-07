@@ -1,0 +1,34 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- background -->
+  <rect width="512" height="512" fill="#FFF6EC"></rect>
+
+  <!-- leaf -->
+  <ellipse cx="300" cy="110" rx="55" ry="28" fill="#45C47C" transform="rotate(-18 300 110)"></ellipse>
+  <ellipse cx="240" cy="120" rx="48" ry="24" fill="#5ED98F" transform="rotate(25 240 120)"></ellipse>
+
+  <!-- body (more round) -->
+  <circle cx="256" cy="280" r="160" fill="#FFA531"></circle>
+
+  <!-- arms (raised higher) -->
+  <circle cx="120" cy="250" r="32" fill="#FFA531"></circle>
+  <circle cx="392" cy="250" r="32" fill="#FFA531"></circle>
+
+  <!-- big eye -->
+  <circle cx="210" cy="250" r="30" fill="#2E2E2E"></circle>
+  <circle cx="220" cy="238" r="10" fill="white"></circle>
+
+  <!-- wink eye -->
+  <path d="M285 250 Q305 235 325 250" stroke="#2E2E2E" stroke-width="6" fill="none" stroke-linecap="round"></path>
+
+  <!-- cheeks -->
+  <circle cx="175" cy="295" r="18" fill="#FF7A7A" opacity="0.45"></circle>
+  <circle cx="340" cy="295" r="18" fill="#FF7A7A" opacity="0.45"></circle>
+
+  <!-- mouth moved up -->
+  <path d="M220 305 Q256 335 292 305 Z" fill="#2E2E2E"></path>
+
+  <!-- tongue -->
+  <path d="M240 312 Q256 330 272 312 Z" fill="#FF7FA0"></path>
+
+</svg>
