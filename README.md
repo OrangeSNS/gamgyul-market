@@ -315,4 +315,3 @@ Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wi
 ## 🔮 추후 개선 사항
 
 - 카카오 · 구글 SNS 로그인 기능 연동
-- Firebase Anonymous Auth → Custom Token 방식으로 전환
