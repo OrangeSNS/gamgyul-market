@@ -60,7 +60,6 @@ export default function PostWritePage() {
 
   const isValid = content.trim() !== '' || images.length > 0
 
-  // [수정 모드] 기존 게시글 데이터 불러오기
   useEffect(() => {
     if (!isEditMode || !postId) return
 
@@ -77,7 +76,6 @@ export default function PostWritePage() {
       .finally(() => setLoading(false))
   }, [postId, isEditMode])
 
-  // 이미지 추가 로직
   const handleImageAdd = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
     const remaining = MAX_IMAGES - images.length
@@ -103,12 +101,10 @@ export default function PostWritePage() {
     }
   }
 
-  // 이미지 삭제 로직
   const handleRemoveImage = (idx: number) => {
     setImages((prev) => prev.filter((_, i) => i !== idx))
   }
 
-  // 최종 제출 (작성 vs 수정 분기)
   const handleSubmit = async () => {
     if (!isValid || submitting) return
     setSubmitting(true)

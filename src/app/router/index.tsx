@@ -1,37 +1,29 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import AppLayout from '@app/layouts/AppLayout'
 import ProtectedRoute from '@app/layouts/ProtectedRoute'
-
 // Pages
 import SplashPage from '@pages/SplashPage'
 import NotFoundPage from '@pages/NotFoundPage'
-
 // Login feature
 import LoginMainPage from '@features/login/pages/LoginMainPage'
 import EmailLoginPage from '@features/login/pages/EmailLoginPage'
-
 // Join feature
 import JoinEmailPage from '@features/join/pages/JoinEmailPage'
 import JoinProfilePage from '@features/join/pages/JoinProfilePage'
-
 // Home feature
 import HomeFeedPage from '@features/home/pages/HomeFeedPage'
-
 // Profile feature
 import ProfilePage from '@features/profile/pages/ProfilePage'
 import FollowersPage from '@features/profile/pages/FollowersPage'
 import FollowingPage from '@features/profile/pages/FollowingPage'
 import ProfileEditPage from '@features/profile/pages/ProfileEditPage'
-
 // Product feature
 import ProductNewPage from '@features/product/pages/ProductNewPage'
 import ProductEditPage from '@features/product/pages/ProductEditPage'
-
 // Post/Upload feature
 import PostDetailPage from '@features/post/pages/PostDetailPage'
 import CommentsPage from '@features/post/pages/CommentsPage'
 import PostWritePage from '@features/upload/pages/PostWritePage';
-
 // Search & Chat (markup)
 import SearchPage from '@features/search/pages/SearchPage'
 import ChatListPage from '@features/chat/pages/ChatListPage'
