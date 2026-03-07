@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { API_BASE_URL, ROUTES } from '@shared/constants'
+import { ROUTES } from '@shared/constants'
 import BottomSheet from '@shared/components/BottomSheet'
 import Modal from '@shared/components/Modal'
 import { deletePost, reportPost, postLike, deleteLike } from '@features/post/api'
@@ -16,7 +16,7 @@ interface PostCardProps {
   onDelete?: (id: string) => void
 }
 
-const DEFAULT_AUTHOR_IMAGE = `${API_BASE_URL}/1687141187512.png`
+const DEFAULT_AUTHOR_IMAGE = '/icons/basic-profile-img-.svg'
 
 export default function PostCard({ post, isMyPost = false, onDelete }: PostCardProps) {
   const navigate = useNavigate()
