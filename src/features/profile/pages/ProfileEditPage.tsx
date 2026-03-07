@@ -7,10 +7,12 @@ import { useAuth } from '@app/providers/AuthProvider'
 import { validateUsername, validateAccountName } from '@shared/utils'
 import { checkAccountName, updateMyProfile } from '../api'
 import { uploadImage } from '@shared/api/client'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function ProfileEditPage() {
   const navigate = useNavigate()
   const { user, updateUser } = useAuth()
+  usePageTitle('프로필 수정')
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -104,7 +106,7 @@ export default function ProfileEditPage() {
 
       <div className="flex flex-col items-center px-6 pt-8 gap-6">
         {/* Avatar */}
-        <button type="button" onClick={() => fileInputRef.current?.click()} className="relative">
+        <button type="button" onClick={() => fileInputRef.current?.click()} aria-label="프로필 이미지 변경하기" className="relative">
           <img
             src={imagePreview || '/icons/basic-profile-img-.svg'}
             alt="프로필 이미지"

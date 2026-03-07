@@ -2,10 +2,12 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@app/providers/AuthProvider'
 import { ROUTES } from '@shared/constants'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function SplashPage() {
   const navigate = useNavigate()
   const { token, isLoading } = useAuth()
+  usePageTitle('')
 
   useEffect(() => {
     if (isLoading) return

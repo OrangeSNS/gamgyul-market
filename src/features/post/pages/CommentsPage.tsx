@@ -12,12 +12,14 @@ import { Comment } from '@shared/types'
 import { formatRelativeTime } from '@shared/utils'
 import { ROUTES } from '@shared/constants'
 import { getComments, createComment, deleteComment, reportComment } from '../api'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function CommentsPage() {
   const { postId } = useParams<{ postId: string }>()
   const navigate = useNavigate()
   const { user: me } = useAuth()
   const inputRef = useRef<HTMLInputElement>(null)
+  usePageTitle('댓글')
 
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
@@ -188,7 +190,7 @@ export default function CommentsPage() {
         handleSubmit()
       }
     }}
-    className="flex-1 bg-transparent text-[14px] outline-none placeholder:text-gray-300"
+    className="flex-1 bg-transparent text-[14px] outline-none focus-visible:ring-1 focus-visible:ring-brand focus-visible:rounded placeholder:text-gray-300"
   />
 
   <button

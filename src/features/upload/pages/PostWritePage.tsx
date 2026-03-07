@@ -11,6 +11,7 @@ import { getPostDetail } from '@features/post/api'
 import { parsePostImages } from '@shared/utils'
 import ImageCarousel from '@shared/components/ImageCarousel'
 import TopBar from '@app/layouts/TopBar'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 const MAX_IMAGES = 3
 
@@ -25,6 +26,7 @@ export default function PostWritePage() {
   const isEditMode = !!postId
   const navigate = useNavigate()
   const { user } = useAuth()
+  usePageTitle(isEditMode ? '게시글 수정' : '게시글 작성')
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -158,7 +160,7 @@ export default function PostWritePage() {
         }
       />
 
-      <main className="flex-1 px-4 pt-6" style={{ paddingBottom: bottomBarH + keyboardOffset + 16 }}>
+      <div className="flex-1 px-4 pt-6" style={{ paddingBottom: bottomBarH + keyboardOffset + 16 }}>
         <div className="flex gap-3">
           <Avatar src={user?.image} alt={user?.username} size="md" />
           <div className="flex min-w-0 flex-1 flex-col">
@@ -168,7 +170,7 @@ export default function PostWritePage() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={6}
-              className="min-h-[120px] w-full resize-none bg-transparent text-[17px] leading-7 text-[#111827] outline-none"
+              className="min-h-[120px] w-full resize-none bg-transparent text-[17px] leading-7 text-[#111827] outline-none focus-visible:ring-1 focus-visible:ring-brand focus-visible:rounded"
             />
 
             {images.length > 0 && (
@@ -185,7 +187,7 @@ export default function PostWritePage() {
             {error && <p className="mt-3 text-xs text-red-500">{error}</p>}
           </div>
         </div>
-      </main>
+      </div>
 
       <div
         ref={bottomBarRef}

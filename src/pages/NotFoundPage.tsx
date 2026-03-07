@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import Button from '@shared/components/Button'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function NotFoundPage() {
   const navigate = useNavigate()
+  usePageTitle('페이지를 찾을 수 없습니다')
 
   return (
     <main className="mobile-container flex flex-col items-center min-h-screen bg-white">

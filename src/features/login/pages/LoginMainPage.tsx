@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@shared/constants'
 import Button from '@shared/components/Button'
 import AlertModal from '@shared/components/AlertModal'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 // ── 소셜 로그인 제공자 타입 선언 ──
 interface SocialProvider {
@@ -36,6 +37,7 @@ const SOCIAL_PROVIDERS: SocialProvider[] = [
 
 export default function LoginMainPage() {
   const navigate = useNavigate()
+  usePageTitle('로그인')
 
   // ── 모달 상태 ──
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false)

@@ -121,7 +121,7 @@ export default function ImageCarousel({
               ) : (
                 <img
                   src={src}
-                  alt=""
+                  alt={`${idx + 1}번째 게시글 이미지 (총 ${count}개)`}
                   className="h-full w-full object-cover"
                   loading="lazy"
                   decoding="async"

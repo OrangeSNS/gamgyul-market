@@ -12,6 +12,7 @@ import TopBar from '@app/layouts/TopBar'
 import { formatChatTime } from '@shared/utils/formatChatTime'
 import { useChatRoom } from '../hooks/useChatRoom'
 import { useSendMessage } from '../hooks/useSendMessage'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function ChatRoomPage() {
   const { targetAccountName = '' } = useParams()
@@ -30,6 +31,7 @@ export default function ChatRoomPage() {
 
   const { messages, targetProfile, chatId, isLoading, error } = useChatRoom(targetAccountName)
   const { sendMessage, sendImage, isSending } = useSendMessage(chatId)
+  usePageTitle(targetProfile?.username ?? targetAccountName)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -205,7 +207,7 @@ export default function ChatRoomPage() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 text-sm font-normal leading-none tracking-normal outline-none bg-transparent placeholder:text-[#C4C4C4]"
+          className="flex-1 text-sm font-normal leading-none tracking-normal outline-none focus-visible:ring-1 focus-visible:ring-brand focus-visible:rounded bg-transparent placeholder:text-[#C4C4C4]"
         />
         <button
           onClick={handleSend}

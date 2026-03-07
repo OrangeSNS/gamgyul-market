@@ -8,10 +8,12 @@ import { ROUTES } from '@shared/constants'
 import { uploadImage } from '@shared/api/client'
 import { useAIGenerate } from '@shared/hooks/useAIGenerate'
 import { createProduct } from '../api'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function ProductNewPage() {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  usePageTitle('상품 등록')
 
   const [imagePreview, setImagePreview] = useState('')
   const [imageUrl, setImageUrl] = useState('')
@@ -151,7 +153,7 @@ export default function ProductNewPage() {
             placeholder="숫자만 입력 가능합니다."
             value={price > 0 ? price.toLocaleString('ko-KR') : priceInput}
             onChange={handlePriceChange}
-            className="w-full pb-2 text-sm bg-transparent border-b border-gray-300 focus:border-brand outline-none transition-colors placeholder:text-gray-400"
+            className="w-full pb-2 text-sm bg-transparent border-b border-gray-300 focus:border-brand outline-none focus-visible:ring-1 focus-visible:ring-brand focus-visible:rounded transition-colors placeholder:text-gray-400"
           />
         </div>
 

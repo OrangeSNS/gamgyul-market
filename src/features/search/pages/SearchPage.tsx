@@ -6,9 +6,11 @@ import { User } from '@shared/types'
 import { ROUTES, TOPBAR_HEIGHT } from '@shared/constants'
 import { useDebounce } from '@shared/hooks/useDebounce'
 import { request } from '@shared/api/client'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function SearchPage() {
   const navigate = useNavigate()
+  usePageTitle('검색')
   const [keyword, setKeyword] = useState('')
   const [results, setResults] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
@@ -53,13 +55,13 @@ export default function SearchPage() {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             autoFocus
-            className="w-full h-full bg-[#F2F2F2] px-[16px] py-0 rounded-full text-[14px] outline-none placeholder:text-[#C4C4C4]"
+            className="w-full h-full bg-[#F2F2F2] px-[16px] py-0 rounded-full text-[14px] outline-none focus-visible:ring-2 focus-visible:ring-brand placeholder:text-[#C4C4C4]"
           />
         </div>
       </header>
 
       {/* 2. 결과 리스트: 팀원의 컴포넌트 + 우리의 하이라이트 */}
-      <main className="flex-1 px-[16px]">
+      <div className="flex-1 px-[16px]">
         {loading ? (
           <div className="flex justify-center py-10"><Spinner /></div>
         ) : results.length > 0 ? (
@@ -92,7 +94,7 @@ export default function SearchPage() {
              <p className="text-sm">사용자 이름이나 계정 ID로 검색하세요</p>
           </div>
         )}
-      </main>
+      </div>
     </div>
   )
 }

@@ -107,7 +107,17 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
                 e.stopPropagation()
                 navigate(ROUTES.PROFILE(author.accountname))
               }}
-              className="flex flex-col"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  navigate(ROUTES.PROFILE(author.accountname))
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`${author.username} 프로필 보기`}
+              className="flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 rounded-sm"
             >
               <strong className="text-[14px] font-medium text-black leading-[18px]">
                 {author.username}
@@ -139,7 +149,11 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
 
           {/* 좋아요 · 댓글 */}
           <div className="flex gap-4 items-center">
-            <button onClick={handleLike} className="flex items-center gap-1.5">
+            <button
+              onClick={handleLike}
+              aria-label={isLiked ? `좋아요 취소, 현재 ${heartCount}개` : `좋아요, 현재 ${heartCount}개`}
+              className="flex items-center gap-1.5"
+            >
               <img
                 src={isLiked ? '/icons/icon-heart-fill.svg' : '/icons/icon-heart.svg'}
                 alt="좋아요"

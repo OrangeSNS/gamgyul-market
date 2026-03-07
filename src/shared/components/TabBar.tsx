@@ -23,7 +23,10 @@ export default function TabBar() {
         <div className="relative w-6 h-6">
           <img src={active ? '/icons/icon-message-circle-fill.svg' : '/icons/icon-message-circle.svg'} alt="" className="w-6 h-6" />
           {hasUnread && (
-            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
+            <>
+              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" aria-hidden="true" />
+              <span className="sr-only">새 메시지 있음</span>
+            </>
           )}
         </div>
       ),

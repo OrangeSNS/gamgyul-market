@@ -5,10 +5,12 @@ import Spinner from '@shared/components/Spinner'
 import { ROUTES } from '@shared/constants'
 import { formatChatTime } from '@shared/utils/formatChatTime'
 import { useChatList } from '../hooks/useChatList'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function ChatListPage() {
   const navigate = useNavigate()
   const { items, isLoading, error } = useChatList()
+  usePageTitle('채팅')
 
   return (
     <div className="flex flex-col">
@@ -40,7 +42,10 @@ export default function ChatListPage() {
             <div className="relative shrink-0">
               <Avatar src={item.user.image} alt={item.user.username} size="md" />
               {item.isUnread && (
-                <span className="absolute top-0 left-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+                <>
+                  <span className="absolute top-0 left-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white" aria-hidden="true" />
+                  <span className="sr-only">읽지 않은 메시지 있음</span>
+                </>
               )}
             </div>
             <div className="flex-1 min-w-0 text-left flex flex-col gap-1">

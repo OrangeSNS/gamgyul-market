@@ -11,6 +11,7 @@ import { login } from '../api'
 import { ApiError } from '@shared/api/client'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 /**
  * EmailLoginPage
@@ -32,6 +33,7 @@ import 'react-toastify/dist/ReactToastify.css'
 export default function EmailLoginPage() {
   const navigate = useNavigate()
   const { login: authLogin } = useAuth()
+  usePageTitle('이메일 로그인')
 
   // ─── 상태 변수 ──────────────────────────────
   const [email, setEmail] = useState('')         // 이메일 입력값
@@ -126,9 +128,9 @@ export default function EmailLoginPage() {
         className="flex flex-col flex-1 px-6 pt-10"
         noValidate
       >
-        <h2 className="text-[24px] font-medium text-[#000000] text-center mb-[40px]">
+        <h1 className="text-[24px] font-medium text-[#000000] text-center mb-[40px]">
           로그인
-        </h2>
+        </h1>
 
         <div className="flex flex-col">
           {/* 이메일 입력 */}

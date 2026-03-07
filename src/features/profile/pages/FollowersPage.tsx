@@ -6,12 +6,14 @@ import Spinner from '@shared/components/Spinner'
 import { User } from '@shared/types'
 import { useFollow } from '@app/providers/FollowProvider'
 import { getFollowers } from '../api'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function FollowersPage() {
   const { accountName } = useParams<{ accountName: string }>()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const { syncFollowStates } = useFollow()
+  usePageTitle('팔로워')
 
   useEffect(() => {
     if (!accountName) return
