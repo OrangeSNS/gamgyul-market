@@ -3,8 +3,13 @@ export type ChatMessage = {
   content: string
 }
 
-const AI_API_URL = 'https://dev.wenivops.co.kr/services/openai-api'
+const AI_API_URL = import.meta.env.VITE_AI_API_URL as string
 
+/**
+ * OpenAI 호환 API로 AI 콘텐츠 생성 요청
+ * @param messages - system/user role 메시지 배열
+ * @returns AI가 생성한 텍스트 문자열
+ */
 export async function generateAIContent(messages: ChatMessage[]): Promise<string> {
   const res = await fetch(AI_API_URL, {
     method: 'POST',
