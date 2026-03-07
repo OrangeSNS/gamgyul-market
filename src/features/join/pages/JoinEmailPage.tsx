@@ -6,9 +6,11 @@ import Input from '@shared/components/Input'
 import { ROUTES } from '@shared/constants'
 import { validateEmail, validatePassword } from '@shared/utils'
 import { checkEmail } from '@features/join/api'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function JoinEmailPage() {
   const navigate = useNavigate()
+  usePageTitle('회원가입')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -57,9 +59,9 @@ export default function JoinEmailPage() {
       <TopBar title="" showBack />
 
       <div className="flex flex-col flex-1 px-6 pt-10 ">
-        <h2 className="text-[24px] font-medium leading-[100%] text-center text-[#000000] mb-[40px]">
+        <h1 className="text-[24px] font-medium leading-[100%] text-center text-[#000000] mb-[40px]">
           이메일로 회원가입
-        </h2>
+        </h1>
 
         <Input
           label="이메일"

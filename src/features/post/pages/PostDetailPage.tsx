@@ -23,6 +23,7 @@ import {
   postLike,
   deleteLike,
 } from '../api'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>()
@@ -52,6 +53,7 @@ export default function PostDetailPage() {
   const reportCommentModal = useModal()
 
   const isMyPost = post?.author._id === me?._id
+  usePageTitle('게시글')
 
   useEffect(() => {
     if (!postId) return
@@ -234,6 +236,7 @@ export default function PostDetailPage() {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={handleHeart}
+                    aria-label={hearted ? `좋아요 취소, 현재 ${heartCount}개` : `좋아요, 현재 ${heartCount}개`}
                     className="flex items-center gap-1.5"
                     type="button"
                   >
@@ -365,7 +368,7 @@ export default function PostDetailPage() {
               handleSubmitComment()
             }
           }}
-          className="flex-1 bg-transparent text-[14px] outline-none placeholder:text-gray-300"
+          className="flex-1 bg-transparent text-[14px] outline-none focus-visible:ring-1 focus-visible:ring-brand focus-visible:rounded placeholder:text-gray-300"
         />
         <button
           onClick={handleSubmitComment}

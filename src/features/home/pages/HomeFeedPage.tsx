@@ -7,10 +7,12 @@ import { getFeed } from '../api';
 import { Post } from '@shared/types';
 import { useAuth } from '@app/providers/AuthProvider'
 import { TOPBAR_HEIGHT } from '@shared/constants';
+import { usePageTitle } from '@shared/hooks/usePageTitle';
 
 export default function HomeFeedPage() {
   const navigate = useNavigate();
   const { user: me } = useAuth();
+  usePageTitle('홈');
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
@@ -82,7 +84,7 @@ export default function HomeFeedPage() {
         </button>
       </header>
 
-      <main className="pb-16">
+      <div className="pb-16">
         {posts.length > 0 ? (
           <div className="flex flex-col">
             {posts.map((post) => (
@@ -97,7 +99,7 @@ export default function HomeFeedPage() {
         ) : (
           <NoFollowView onSearchClick={() => navigate('/search')} />
         )}
-      </main>
+      </div>
     </div>
   );
 }

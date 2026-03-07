@@ -10,6 +10,7 @@ import { checkAccountName, signup } from '../api'
 import { uploadImage } from '@shared/api/client'
 import { User } from '@shared/types'
 import { login } from '@features/login/api'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 const DEFAULT_AVATAR = 'https://dev.wenivops.co.kr/services/mandarin/Ellipse.png'
 
@@ -17,6 +18,7 @@ export default function JoinProfilePage() {
   const navigate = useNavigate()
   const location = useLocation()
   const { login: authLogin } = useAuth()
+  usePageTitle('프로필 설정')
 
   const { email = '', password = '' } = (location.state as { email: string; password: string }) ?? {}
 
@@ -174,11 +176,11 @@ export default function JoinProfilePage() {
       <TopBar showBack />
 
       <div className="flex flex-col items-center px-6 pt-8">
-        <h2 className="text-[24px] font-medium text-center">프로필 설정</h2>
+        <h1 className="text-[24px] font-medium text-center">프로필 설정</h1>
         <p className="text-[14px] text-[#767676] text-center mt-[12px]">나중에 언제든지 변경할 수 있습니다.</p>
 
         {/* 아바타 */}
-        <button type="button" onClick={() => fileInputRef.current?.click()} className="relative mt-[30px]">
+        <button type="button" onClick={() => fileInputRef.current?.click()} aria-label="프로필 이미지 선택하기" className="relative mt-[30px]">
           <img src={imagePreview} alt="프로필 이미지" className="w-24 h-24 rounded-full object-cover bg-gray-100" />
           <span className="absolute bottom-0 right-0 w-8 h-8 bg-brand rounded-full flex items-center justify-center shadow-md">
             <img src="/icons/icon-image-upload.svg" alt="" className="w-4 h-4" />

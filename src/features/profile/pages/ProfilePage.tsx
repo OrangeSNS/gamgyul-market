@@ -24,6 +24,7 @@ import {
   getProducts,
   deleteProduct,
 } from "../api";
+import { usePageTitle } from "@shared/hooks/usePageTitle";
 
 type ViewMode = "list" | "grid";
 
@@ -50,6 +51,7 @@ export default function ProfilePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
+  usePageTitle(profile?.username ?? '');
 
   const profileSheet = useBottomSheet();
   const productSheet = useBottomSheet();
@@ -410,12 +412,13 @@ export default function ProfilePage() {
         ) : albumPosts.length > 0 ? (
           /* 앨범 뷰 */
           <div className="grid grid-cols-3 gap-0.5">
-            {albumPosts.map((post) => {
+            {albumPosts.map((post, index) => {
               const images = parsePostImages(post.image);
               return (
                 <button
                   key={post.id}
                   onClick={() => navigate(ROUTES.POST_DETAIL(post.id))}
+                  aria-label={`${index + 1}번째 게시글 보기`}
                   className="relative aspect-square overflow-hidden bg-gray-100"
                 >
                   <img

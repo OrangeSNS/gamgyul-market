@@ -6,11 +6,13 @@ import Input from '@shared/components/Input'
 import Spinner from '@shared/components/Spinner'
 import { uploadImage } from '@shared/api/client'
 import { getProductDetail, updateProduct } from '../api'
+import { usePageTitle } from '@shared/hooks/usePageTitle'
 
 export default function ProductEditPage() {
   const { productId } = useParams<{ productId: string }>()
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  usePageTitle('상품 수정')
 
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -103,7 +105,7 @@ export default function ProductEditPage() {
             inputMode="numeric"
             value={price > 0 ? price.toLocaleString('ko-KR') : priceInput}
             onChange={(e) => setPriceInput(e.target.value.replace(/[^0-9]/g, ''))}
-            className="w-full pb-2 text-sm bg-transparent border-b border-gray-300 focus:border-brand outline-none transition-colors placeholder:text-gray-400"
+            className="w-full pb-2 text-sm bg-transparent border-b border-gray-300 focus:border-brand outline-none focus-visible:ring-1 focus-visible:ring-brand focus-visible:rounded transition-colors placeholder:text-gray-400"
           />
         </div>
         <Input label="판매 링크" type="url" value={link} onChange={(e) => setLink(e.target.value)} underline />
