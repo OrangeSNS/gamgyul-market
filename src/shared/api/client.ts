@@ -1,4 +1,11 @@
-import { API_BASE_URL, TOKEN_KEY } from '@shared/constants'
+import {
+  API_BASE_URL,
+  TOKEN_KEY,
+  CONTENT_TYPE_JSON,
+  AUTH_HEADER_PREFIX,
+  API_PATHS,
+  ROUTES,
+} from '@shared/constants'
 
 export class ApiError extends Error {
   constructor(
@@ -21,13 +28,13 @@ function buildHeaders(options?: {
   const headers: Record<string, string> = {}
 
   if (!options?.isFormData) {
-    headers['Content-type'] = 'application/json'
+    headers['Content-type'] = CONTENT_TYPE_JSON
   }
 
   if (options?.auth !== false) {
     const token = getToken()
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`
+      headers['Authorization'] = `${AUTH_HEADER_PREFIX} ${token}`
     }
   }
 
@@ -48,9 +55,9 @@ export async function request<T>(
     },
   })
 
-  if (response.status === 401 && path !== '/user/login') {
+  if (response.status === 401 && path !== API_PATHS.LOGIN) {
     localStorage.removeItem(TOKEN_KEY)
-    window.location.href = '/login'
+    window.location.href = ROUTES.LOGIN
     throw new ApiError(401, '인증이 만료되었습니다. 다시 로그인해주세요.')
   }
 
@@ -66,12 +73,11 @@ export async function request<T>(
   return data as T
 }
 
-/** 이미지 업로드 */
 export async function uploadImage(file: File): Promise<string> {
   const formData = new FormData()
   formData.append('image', file)
 
-  const res = await fetch(`${API_BASE_URL}/image/uploadfile`, {
+  const res = await fetch(`${API_BASE_URL}${API_PATHS.IMAGE_UPLOAD}`, {
     method: 'POST',
     headers: buildHeaders({ isFormData: true }),
     body: formData,

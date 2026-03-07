@@ -28,3 +28,6 @@ dist-ssr/
 .DS_Store
 Thumbs.db
 .claude/
+
+# Docs (API 키 노출 방지)
+Docs/API-spec.md

@@ -26,7 +26,6 @@ export default function CommentsPage() {
   const [content, setContent] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
-  // Bottom sheet
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const commentSheet = useBottomSheet()
   const deleteModal = useModal()
@@ -87,7 +86,7 @@ export default function CommentsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F5F5F5]">
-      {/* Top Bar - 피그마 스타일(뒤로가기 + 세로 더보기) */}
+      {/* Top Bar - 피그마 스타일(뒤로가기 + 더보기) */}
     <TopBar
   title=""
   showBack
@@ -106,7 +105,6 @@ export default function CommentsPage() {
   }
 />
 
-      {/* Comments list */}
       {/* pb-32: TabBar(60px) + 댓글입력창(56px) + 여유 */}
       <div className="flex-1 px-4 py-3 pb-32">
         {loading ? (
@@ -202,7 +200,6 @@ export default function CommentsPage() {
   </button>
 </div>
 
-      {/* Comment bottom sheet */}
       <BottomSheet
         open={commentSheet.isOpen}
         onClose={commentSheet.close}
