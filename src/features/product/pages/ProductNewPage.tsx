@@ -7,6 +7,7 @@ import Modal from '@shared/components/Modal'
 import { ROUTES } from '@shared/constants'
 import { uploadImage } from '@shared/api/client'
 import { useAIGenerate } from '@shared/hooks/useAIGenerate'
+import { buildProductPrompt } from '@shared/prompts'
 import { createProduct } from '../api'
 import { usePageTitle } from '@shared/hooks/usePageTitle'
 
@@ -30,17 +31,7 @@ export default function ProductNewPage() {
     confirmOverwrite,
     cancelOverwrite,
   } = useAIGenerate({
-    buildMessages: () => [
-      {
-        role: 'system',
-        content:
-          '당신은 중고거래 플랫폼의 상품 등록을 도와주는 AI입니다. 이미지 URL을 보고 상품명을 한국어로 2~15자 이내로 생성해주세요.',
-      },
-      {
-        role: 'user',
-        content: `이 이미지의 상품명을 생성해주세요: ${imageUrl}`,
-      },
-    ],
+    buildMessages: () => buildProductPrompt(imageUrl),
     transform: (result) => result.trim().slice(0, 15),
     currentValue: itemName,
     onApply: (result) => setItemName(result),
