@@ -34,6 +34,9 @@ export default function BottomSheet({ open, items, onClose }: BottomSheetProps) 
       <div className="absolute inset-0 bg-black/40" />
       <div
         className="relative bg-white rounded-t-2xl w-full max-w-mobile overflow-hidden shadow-xl"
+        role="dialog"
+        aria-modal="true"
+        aria-label="작업 선택"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle bar */}

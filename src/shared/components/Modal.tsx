@@ -40,10 +40,13 @@ export default function Modal({
       <div className="absolute inset-0 bg-black/40" />
       <div
         className="relative bg-white rounded-2xl w-[280px] overflow-hidden shadow-xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-message"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-6 py-6 text-center">
-          <p className="text-sm font-medium text-gray-800 whitespace-pre-line">{message}</p>
+          <p id="modal-message" className="text-sm font-medium text-gray-800 whitespace-pre-line">{message}</p>
         </div>
         <div className="flex border-t border-gray-200">
           <button

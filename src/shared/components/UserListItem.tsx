@@ -38,8 +38,17 @@ export default function UserListItem({ user, onFollowToggle }: UserListItemProps
 
   return (
     <div
-      className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50"
+      className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
       onClick={() => navigate(ROUTES.PROFILE(user.accountname))}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          navigate(ROUTES.PROFILE(user.accountname))
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`${user.username} 프로필 보기`}
     >
       <Avatar src={user.image} alt={user.username} size="sm" />
       <div className="flex-1 min-w-0">
