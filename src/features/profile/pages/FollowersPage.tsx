@@ -20,7 +20,6 @@ export default function FollowersPage() {
     getFollowers(accountName)
       .then((data) => {
         setUsers(data)
-        // 로드된 유저들의 isfollow 상태를 전역 스토어에 반영
         syncFollowStates(data)
       })
       .catch(console.error)
@@ -39,7 +38,6 @@ export default function FollowersPage() {
       ) : (
         users.map((user) => (
           // onFollowToggle 없음: 언팔로우해도 목록에서 즉시 삭제하지 않음
-          // 다시 진입 시 API 재fetch로 최신 상태 반영
           <UserListItem key={user._id} user={user} />
         ))
       )}

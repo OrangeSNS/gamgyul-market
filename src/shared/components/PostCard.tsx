@@ -87,7 +87,6 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
         onClick={() => navigate(ROUTES.POST_DETAIL(post.id))}
         className="w-full py-4 flex gap-3 border-b border-[#DBDBDB] last:border-none cursor-pointer px-4"
       >
-        {/* 프로필 이미지 */}
         <img
           onClick={(e) => {
             e.stopPropagation()
@@ -100,7 +99,6 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
         />
 
         <div className="flex-1 min-w-0 flex flex-col">
-          {/* 유저 정보 및 케밥 버튼 */}
           <div className="flex justify-between items-start mb-3">
             <div
               onClick={(e) => {
@@ -131,12 +129,10 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
             </button>
           </div>
 
-          {/* 게시글 본문 */}
           <p className="text-[14px] text-[#333333] mb-4 leading-[18px] whitespace-pre-wrap break-words">
             {post.content}
           </p>
 
-          {/* 이미지 영역 */}
           {imageList.length > 0 && (
             <div className="w-full mb-3 overflow-hidden rounded-[10px] border border-[#DBDBDB]">
               <ImageCarousel
@@ -147,7 +143,6 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
             </div>
           )}
 
-          {/* 좋아요 · 댓글 */}
           <div className="flex gap-4 items-center">
             <button
               onClick={handleLike}
@@ -170,7 +165,6 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
             </div>
           </div>
 
-          {/* 날짜 */}
           <time className="text-[10px] text-[#767676] mt-4 h-[12px] leading-[12px] flex items-center">
             {post.createdAt
               ? new Date(post.createdAt).toLocaleDateString('ko-KR', {
@@ -183,14 +177,12 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
         </div>
       </article>
 
-      {/* 케밥 바텀시트 */}
       <BottomSheet
         open={sheet.isOpen}
         onClose={sheet.close}
         items={isMyPost ? myItems : otherItems}
       />
 
-      {/* 삭제 확인 모달 */}
       <Modal
         open={deleteModal.isOpen}
         message="게시글을 삭제하시겠어요?"
