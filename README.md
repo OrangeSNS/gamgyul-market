@@ -29,18 +29,18 @@
 | | 팀장 | 팀원 | 팀원 | 팀원 | 팀원 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | **프로필** | <img src="프로필 이미지 URL" width="80" height="80"> | <img src="프로필 이미지 URL" width="80" height="80"> | <img src="프로필 이미지 URL" width="80" height="80"> | <img src="프로필 이미지 URL" width="80" height="80"> | <img src="프로필 이미지 URL" width="80" height="80"> |
-| **이름** | 팀원 1 | 팀원 2 | 팀원 3 | 팀원 4 | 팀원 5 |
+| **이름** | 정준서 | 강지연| 강명주 | 김수진 | 한태영 |
 | **GitHub** | [@팀원1](https://github.com) | [@팀원2](https://github.com) | [@팀원3](https://github.com) | [@팀원4](https://github.com) | [@팀원5](https://github.com) |
 
 ### 역할 분담
 
 | 담당자 | 페이지 | 주요 기능 | Route | CRUD |
 |:------:|--------|-----------|-------|:----:|
-| 팀원 1 | Login · 404 | 로그인 메인 · 이메일 로그인 화면 전환 · 입력값 충족 시 버튼 활성/비활성 · 로그인 실패 경고 문구 · focus 시 underline 색 변경 · 404 페이지 · 회원가입 페이지 에러메시지 위치 수정 | `/login` `/404` | - |
-| 팀원 2 | Home Feed | 팔로우 없을 때 빈 화면(검색하기 버튼) · 피드 목록 UI · 검색 아이콘 이동 · 게시글 카드 공통 UI | `/home` | Read |
-| 팀원 3 | Upload (작성/수정) | 글 입력 또는 사진 업로드 시 버튼 활성 · 기본 1장(최대 3장) · Create/Update 동일 컴포넌트 재사용(prefill) | `/post/upload` `/post/:id/edit` | Create / Update |
-| 팀원 4 | Post Detail | 게시글 상세 화면 · 우측 상단 모달(삭제/수정/신고) · 삭제/신고 확인 모달 · 좋아요 토글 UI | `/post/:id` | Read / Delete |
-| 팀원 5 | Join · Chat | **Join** : 이메일/비번 blur 시 즉시 검증 · 2단계 폼(step) · 프로필 설정(사진/이름/계정ID/소개) · 계정ID 형식/중복 검증 · 저장 버튼 활성 조건 **/** **Chat** : 채팅 목록 · 채팅방 UI · Firebase Firestore 실시간 메시지 동기화(`onSnapshot`) | `/join` (step 1/2) `/chat` `/chat/:id` | Create / Read |
+| 강지연 | Login · 404 | 로그인 메인 · 이메일 로그인 화면 전환 · 입력값 충족 시 버튼 활성/비활성 · 로그인 실패 경고 문구 · focus 시 underline 색 변경 · 404 페이지 · 회원가입 페이지 에러메시지 위치 수정 | `/login` `/404` | - |
+| 강명주 | Home Feed | 팔로우 없을 때 빈 화면(검색하기 버튼) · 피드 목록 UI · 검색 아이콘 이동 · 게시글 카드 공통 UI | `/home` | Read |
+| 김수진 | Upload (작성/수정) | 글 입력 또는 사진 업로드 시 버튼 활성 · 기본 1장(최대 3장) · Create/Update 동일 컴포넌트 재사용(prefill) | `/post/upload` `/post/:id/edit` | Create / Update |
+| 정준서 | Post Detail | 게시글 상세 화면 · 우측 상단 모달(삭제/수정/신고) · 삭제/신고 확인 모달 · 좋아요 토글 UI | `/post/:id` | Read / Delete |
+| 한태영 | Join · Chat | **Join** : 이메일/비번 blur 시 즉시 검증 · 2단계 폼(step) · 프로필 설정(사진/이름/계정ID/소개) · 계정ID 형식/중복 검증 · 저장 버튼 활성 조건 **/** **Chat** : 채팅 목록 · 채팅방 UI · Firebase Firestore 실시간 메시지 동기화(`onSnapshot`) | `/join` (step 1/2) `/chat` `/chat/:id` | Create / Read |
 
 ---
 
