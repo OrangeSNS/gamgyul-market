@@ -59,16 +59,26 @@ export function isValidImageUrl(url: string): boolean {
 }
 
 /**
+ * 서버가 프로필 미설정 시 내려주는 기본 이미지 파일명 목록
+ * 이 파일명이 감지되면 로컬 기본 아바타를 즉시 사용한다.
+ */
+const SERVER_DEFAULT_IMAGE_FILENAMES = ['1687141187512.png']
+
+/**
  * Weniv API 이미지 URL 정규화
- * - "https://..." → 그대로 반환
- * - "filename.jpg" (파일명만) → API_BASE_URL + "/" + filename
+ * - "https://..." → 그대로 반환 (단, 서버 기본 이미지 URL이면 undefined)
+ * - "filename.jpg" (파일명만) → API_BASE_URL + "/" + filename (단, 서버 기본 파일명이면 undefined)
  * - "/path" (루트 상대경로) → undefined (기본 아바타 사용)
- * - null/undefined/"" → undefined (기본 아바타 사용)
+ * - null/undefined/"undefined"/"null"/"" → undefined (기본 아바타 사용)
  */
 export function resolveImageUrl(url?: string | null): string | undefined {
-  if (!url || url.trim() === '') return undefined
-  if (url.startsWith('http://') || url.startsWith('https://')) return url
+  if (!url || url.trim() === '' || url === 'undefined' || url === 'null') return undefined
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    if (SERVER_DEFAULT_IMAGE_FILENAMES.some((name) => url.endsWith(name))) return undefined
+    return url
+  }
   if (url.startsWith('/')) return undefined
+  if (SERVER_DEFAULT_IMAGE_FILENAMES.includes(url)) return undefined
   return `${API_BASE_URL}/${url}`
 }
 
