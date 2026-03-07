@@ -11,8 +11,9 @@ import { uploadImage } from '@shared/api/client'
 import { User } from '@shared/types'
 import { login } from '@features/login/api'
 import { usePageTitle } from '@shared/hooks/usePageTitle'
+import { API_BASE_URL } from '@shared/constants'
 
-const DEFAULT_AVATAR = 'https://dev.wenivops.co.kr/services/mandarin/Ellipse.png'
+const DEFAULT_AVATAR = `${API_BASE_URL}/Ellipse.png`
 
 export default function JoinProfilePage() {
   const navigate = useNavigate()

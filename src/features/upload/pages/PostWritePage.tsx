@@ -5,6 +5,7 @@ import Modal from '@shared/components/Modal'
 import { useAuth } from '@app/providers/AuthProvider'
 import { uploadImage } from '@shared/api/client'
 import { useAIGenerate } from '@shared/hooks/useAIGenerate'
+import { buildPostPrompt } from '@shared/prompts'
 import { useKeyboardHeight } from '@shared/hooks/useKeyboardHeight'
 import { createPost, updatePost } from '../api'
 import { getPostDetail } from '@features/post/api'
@@ -48,17 +49,7 @@ export default function PostWritePage() {
     confirmOverwrite,
     cancelOverwrite,
   } = useAIGenerate({
-    buildMessages: () => [
-      {
-        role: 'system',
-        content:
-          '당신은 SNS 게시글 작성을 도와주는 AI입니다. 이미지를 보고 자연스러운 한국어 게시글 내용을 2~3문장으로 작성해주세요.',
-      },
-      {
-        role: 'user',
-        content: `이 이미지들을 보고 게시글 내용을 작성해주세요: ${images.map((img) => img.url).join(', ')}`,
-      },
-    ],
+    buildMessages: () => buildPostPrompt(images.map((img) => img.url)),
     currentValue: content,
     onApply: (result) => {
       setContent(result)
