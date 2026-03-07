@@ -1,5 +1,4 @@
-export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ?? 'https://dev.wenivops.co.kr/services/mandarin'
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string
 
 export const TOKEN_KEY = 'gamgyul_token'
 export const USER_KEY = 'gamgyul_user'
