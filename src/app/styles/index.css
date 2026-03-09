@@ -18,7 +18,6 @@
     font-family: inherit;
   }
 }
-
 @layer components {
   /* Mobile container */
   .mobile-container {
@@ -30,7 +29,6 @@
     @apply flex flex-col min-h-screen;
   }
 }
-
 @layer utilities {
   /* Hide scrollbar */
   .scrollbar-hide {

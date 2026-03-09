@@ -20,7 +20,6 @@ export default function FollowingPage() {
     getFollowing(accountName)
       .then((data) => {
         setUsers(data)
-        // 로드된 유저들의 isfollow 상태를 전역 스토어에 반영
         syncFollowStates(data)
       })
       .catch(console.error)
@@ -29,7 +28,6 @@ export default function FollowingPage() {
 
   const handleFollowToggle = (targetAccountname: string, following: boolean) => {
     if (!following) {
-      // 언팔로우 시 팔로잉 목록에서 즉시 제거
       setUsers((prev) => prev.filter((u) => u.accountname !== targetAccountname))
     }
   }

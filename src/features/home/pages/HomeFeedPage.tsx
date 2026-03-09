@@ -19,22 +19,16 @@ export default function HomeFeedPage() {
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true); 
   const observerTarget = useRef<HTMLDivElement>(null); 
-
- const loadFeed = useCallback(async (isInitial = false) => {
+  const loadFeed = useCallback(async (isInitial = false) => {
     if (!hasMore && !isInitial) return;
-    
     if (isInitial) setLoading(true);
     else setIsFetching(true);
-
     try {
-
       const data = await getFeed(10, isInitial ? 0 : skip);
       const newPosts = data.posts || [];
-
       if (newPosts.length < 10) {
         setHasMore(false);
       }
-
       if (isInitial) {
         setPosts(newPosts);
         setSkip(newPosts.length);
@@ -53,10 +47,8 @@ export default function HomeFeedPage() {
   useEffect(() => {
     loadFeed(true);
   }, []);
-
   useEffect(() => {
     if (loading || !hasMore || isFetching) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -69,12 +61,10 @@ export default function HomeFeedPage() {
     if (observerTarget.current) {
       observer.observe(observerTarget.current);
     }
-
     return () => observer.disconnect();
   }, [loadFeed, hasMore, loading, isFetching]);
 
   if (loading) return <div className="flex justify-center py-20"><Spinner size="lg" /></div>;
-
   return (
     <div className="min-h-screen bg-white">
       <header className={`sticky top-0 bg-white z-10 flex justify-between items-center px-4 ${TOPBAR_HEIGHT} border-b border-gray-200`}>

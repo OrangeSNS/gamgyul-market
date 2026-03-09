@@ -37,16 +37,11 @@ export default function PostDetailPage() {
   const [hearted, setHearted] = useState(false)
   const [heartCount, setHeartCount] = useState(0)
 
-  // 댓글 입력
   const [content, setContent] = useState('')
   const [submitting, setSubmitting] = useState(false)
-
-  // 게시글 바텀시트 / 모달
   const postSheet = useBottomSheet()
   const deletePostModal = useModal()
   const reportPostModal = useModal()
-
-  // 댓글 바텀시트 / 모달
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const commentSheet = useBottomSheet()
   const deleteCommentModal = useModal()
@@ -163,7 +158,6 @@ export default function PostDetailPage() {
 
   return (
     <div className="flex flex-col bg-white">
-      {/* 상단 바 */}
       <TopBar
         title=""
         showBack
@@ -189,10 +183,8 @@ export default function PostDetailPage() {
 
       {/* 스크롤 영역: AppLayout의 pb-16(TabBar) + 댓글입력창 높이(56px) 확보 */}
       <div className="pb-32">
-        {/* ── 게시글 ── */}
         <article className="px-4 py-4">
           <div className="flex items-start gap-3">
-            {/* 왼쪽: 아바타 */}
             <button
               onClick={() => navigate(ROUTES.PROFILE(post.author.accountname))}
               className="shrink-0"
@@ -201,9 +193,7 @@ export default function PostDetailPage() {
               <Avatar src={post.author.image} alt={post.author.username} size="sm" />
             </button>
 
-            {/* 오른쪽: 작성자/본문/이미지/메타 전부 */}
             <div className="min-w-0 flex-1">
-              {/* 작성자 */}
               <div className="flex items-center gap-2">
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold text-gray-900 truncate">
@@ -215,12 +205,10 @@ export default function PostDetailPage() {
                 </div>
               </div>
 
-              {/* 본문 */}
               <p className="mt-3 text-sm text-gray-800 leading-relaxed whitespace-pre-line break-words">
                 {post.content}
               </p>
 
-              {/* 이미지 캐러셀 */}
               {images.length > 0 && (
                 <div className="mt-3 w-full">
                   <ImageCarousel
@@ -231,7 +219,6 @@ export default function PostDetailPage() {
                 </div>
               )}
 
-              {/* 좋아요 · 댓글 (한 줄) + 날짜(아래 줄) */}
               <div className="mt-3">
                 <div className="flex items-center gap-4">
                   <button
@@ -294,10 +281,8 @@ export default function PostDetailPage() {
           </div>
         </article>
 
-        {/* 구분선 */}
         <div className="h-px bg-gray-100" />
 
-        {/* ── 댓글 목록 ── */}
         <div className="px-4 py-3">
           {comments.length === 0 ? (
             <p className="py-8 text-center text-sm text-gray-400">첫 댓글을 작성해보세요!</p>

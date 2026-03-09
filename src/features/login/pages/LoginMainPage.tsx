@@ -5,7 +5,6 @@ import Button from '@shared/components/Button'
 import AlertModal from '@shared/components/AlertModal'
 import { usePageTitle } from '@shared/hooks/usePageTitle'
 
-// ── 소셜 로그인 제공자 타입 선언 ──
 interface SocialProvider {
   id: 'kakao' | 'google' | 'facebook'
   name: string
@@ -13,7 +12,6 @@ interface SocialProvider {
   icon: ReactElement
 }
 
-// ── 소셜 로그인 버튼 데이터 ──
 const SOCIAL_PROVIDERS: SocialProvider[] = [
   {
     id: 'kakao',
@@ -39,14 +37,9 @@ export default function LoginMainPage() {
   const navigate = useNavigate()
   usePageTitle('로그인')
 
-  // ── 모달 상태 ──
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false)
   const [alertMsg, setAlertMsg] = useState<string>('')
 
-  /**
-   * 소셜 로그인 클릭 핸들러
-   * - 현재 미구현 소셜 로그인은 모달 알림
-   */
   const handleSocialLoginClick = (providerName: string) => {
     setAlertMsg(
       `현재 ${providerName} 로그인은 준비 중입니다.\n이메일 로그인을 이용해주세요.`
@@ -56,7 +49,6 @@ export default function LoginMainPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-brand">
-      {/* 로고 영역 */}
       <div className="flex-1 flex items-center justify-center">
         <img 
           src="/icons/symbol-logo-W.svg" 
@@ -65,7 +57,6 @@ export default function LoginMainPage() {
         />
       </div>
 
-      {/* 로그인 버튼 영역 */}
       <div className="bg-white rounded-t-3xl px-[34px] pt-[50px] pb-[82px] flex flex-col">
         <div className="flex flex-col gap-[10px]">
           {SOCIAL_PROVIDERS.map((provider) => (
@@ -76,7 +67,7 @@ export default function LoginMainPage() {
               className={`relative h-auto py-[13px] border ${provider.borderColor} font-normal text-sm !text-[#767676] rounded-[44px]`}
               onClick={() => handleSocialLoginClick(provider.name)}
             >
-              {/* 아이콘 위치 */}
+
               <span className="absolute left-[14px] top-1/2 -translate-y-1/2 flex items-center justify-center">
                 {provider.icon}
               </span>
@@ -85,7 +76,6 @@ export default function LoginMainPage() {
           ))}
         </div>
 
-        {/* 이메일 로그인 / 회원가입 링크 */}
         <div className="flex items-center justify-center gap-3 mt-[20px] text-[12px] font-normal text-[#767676]">
           <button
             onClick={() => navigate(ROUTES.LOGIN_EMAIL)}
@@ -103,7 +93,6 @@ export default function LoginMainPage() {
         </div>
       </div>
 
-      {/* 커스텀 모달 */}
       <AlertModal 
         isOpen={isAlertOpen} 
         message={alertMsg} 

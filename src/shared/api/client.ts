@@ -66,7 +66,6 @@ export async function request<T>(
   return data as T
 }
 
-/** 이미지 업로드 */
 export async function uploadImage(file: File): Promise<string> {
   const formData = new FormData()
   formData.append('image', file)

@@ -13,54 +13,23 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { usePageTitle } from '@shared/hooks/usePageTitle'
 
-/**
- * EmailLoginPage
- *
- * 기능:
- * - 이메일과 비밀번호 입력 폼 제공
- * - 로그인 API 호출
- * - 로그인 성공 시 홈 화면으로 이동
- * - 로그인 실패 시 폼 하단 빨간 텍스트 표시
- * - 네트워크/기타 오류 시 Toast 알림
- *
- * 상태 변수:
- * - email: 이메일 입력값
- * - password: 비밀번호 입력값
- * - emailError: 이메일 형식 오류 메시지
- * - loginError: 로그인 실패 메시지
- * - loading: API 호출 중 상태 (버튼 disable 및 로딩 표시용)
- */
 export default function EmailLoginPage() {
   const navigate = useNavigate()
   const { login: authLogin } = useAuth()
   usePageTitle('이메일 로그인')
 
-  // ─── 상태 변수 ──────────────────────────────
-  const [email, setEmail] = useState('')         // 이메일 입력값
-  const [password, setPassword] = useState('')   // 비밀번호 입력값
-  const [emailError, setEmailError] = useState('')   // 이메일 형식 오류 메시지
-  const [loginError, setLoginError] = useState('')   // 로그인 실패 메시지
-  const [loading, setLoading] = useState(false)      // API 호출 진행 중 상태
+  const [email, setEmail] = useState('')        
+  const [password, setPassword] = useState('')  
+  const [emailError, setEmailError] = useState('')
+  const [loginError, setLoginError] = useState('')   
+  const [loading, setLoading] = useState(false)  
 
-  // 폼에 모든 값이 채워졌는지 체크
   const isFormFilled = email.trim() !== '' && password.trim() !== ''
 
-  // ─── 로그인 처리 함수 ──────────────────────────────
-  /**
-   * handleSubmit
-   *
-   * 목적:
-   * - 로그인 버튼 클릭 시 호출
-   * - 이메일 형식 검증
-   * - API 호출
-   * - 성공 시 authLogin 저장 및 홈 화면 이동
-   * - 실패 시 폼 에러 또는 Toast 표시
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isFormFilled || loading) return
 
-    // ─── 이메일 형식 검증 ──────────────────────────────
     const emailErr = validateEmail(email)
     if (emailErr) {
       setEmailError(emailErr)
@@ -72,10 +41,8 @@ export default function EmailLoginPage() {
     setLoading(true)
 
     try {
-      // ─── API 호출: 로그인 ──────────────────────────────
       const res = await login(email, password)
 
-      // ─── User 객체 생성 (타입 안전성 확보) ───────────────
       const user: User = {
         _id: res._id ?? '',
         username: res.username ?? '',
@@ -87,24 +54,18 @@ export default function EmailLoginPage() {
         followingCount: 0,
       }
 
-      // ─── 로그인 상태 저장 ──────────────────────────────
       authLogin(res.token ?? '', user)
 
-      // ─── 홈 화면 이동 ──────────────────────────────
       navigate(ROUTES.HOME, { replace: true })
 
     } catch (err) {
-      // ─── 에러 처리 ──────────────────────────────
       if (err instanceof ApiError) {
-        // 로그인 실패 시 폼 하단 빨간 텍스트 표시
         if (err.status === 422 || err.status === 401) {
           setLoginError(err.message)
         } else {
-          // 기타 API 오류: Toast 표시
           toast.error(err.message)
         }
       } else {
-        // 네트워크 오류
         toast.error('네트워크 연결을 확인해주세요')
       }
     } finally {
@@ -114,15 +75,11 @@ export default function EmailLoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      {/* 상단 바 */}
       <TopBar title="" showBack />
-
-      {/* ToastContainer: 네트워크/기타 오류 알림 */}
       <ToastContainer
         position="top-center"
         autoClose={3000}
       />
-
       <form
         onSubmit={handleSubmit}
         className="flex flex-col flex-1 px-6 pt-10"
@@ -133,7 +90,6 @@ export default function EmailLoginPage() {
         </h1>
 
         <div className="flex flex-col">
-          {/* 이메일 입력 */}
           <div>
             <Input
               label="이메일"
@@ -154,7 +110,6 @@ export default function EmailLoginPage() {
             )}
           </div>
 
-          {/* 비밀번호 입력 */}
           <div className="mt-4">
             <Input
               label="비밀번호"
@@ -170,7 +125,6 @@ export default function EmailLoginPage() {
           </div>
         </div>
 
-        {/* 로그인 실패 메시지 */}
         {loginError && (
           <div className="mt-[6px]">
             <p className="text-[12px] text-[#EB5757]">
@@ -179,7 +133,6 @@ export default function EmailLoginPage() {
           </div>
         )}
 
-        {/* 로그인 버튼 */}
         <Button
           type="submit"
           fullWidth
@@ -191,7 +144,6 @@ export default function EmailLoginPage() {
           {loading ? '처리 중...' : '로그인'}
         </Button>
 
-        {/* 회원가입 버튼 */}
         <button
           type="button"
           onClick={() => navigate(ROUTES.JOIN)}

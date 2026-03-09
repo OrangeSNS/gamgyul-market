@@ -39,14 +39,12 @@ export default function JoinProfilePage() {
   const [formError, setFormError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  /*  email / password 없으면 접근 차단 */
   useEffect(() => {
     if (!email || !password) {
       navigate(ROUTES.LOGIN, { replace: true })
     }
   }, [email, password, navigate])
 
-  /* 이미지 변경 */
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -56,7 +54,6 @@ export default function JoinProfilePage() {
     setImageError('')
     e.target.value = ''
   }
-
   const handleResetImage = () => {
     setImageFile(null)
     setImagePreview(DEFAULT_AVATAR)
@@ -65,8 +62,6 @@ export default function JoinProfilePage() {
       fileInputRef.current.value = ''
     }
   }
-
-  /*  username 검증 */
   const handleUsernameBlur = () => {
     setUsernameError(validateUsername(username))
   }
@@ -79,13 +74,9 @@ export default function JoinProfilePage() {
       setAccountnameError(localErr)
       return
     }
-
     const requestId = ++accountCheckRef.current
-
     try {
       const res = await checkAccountName(accountname)
-
-      // 최신 요청이 아니면 무시
       if (requestId !== accountCheckRef.current) return
 
       if (res.message.includes('이미')) {
@@ -99,14 +90,10 @@ export default function JoinProfilePage() {
     }
   }
 
-  /* 유효성 검사  */
   const isValid = username && accountname && !usernameError && !accountnameError && !imageError
 
-  /* 제출 */
   const handleSubmit = async () => {
     if (loading) return
-
-    // 에러 초기화
     setUsernameError('')
     setAccountnameError('')
     setImageError('')
@@ -171,7 +158,6 @@ export default function JoinProfilePage() {
     }
   }
 
-  /* UI */
   return (
     <div className="flex flex-col min-h-screen">
       <TopBar showBack />
@@ -180,7 +166,6 @@ export default function JoinProfilePage() {
         <h1 className="text-[24px] font-medium text-center">프로필 설정</h1>
         <p className="text-[14px] text-[#767676] text-center mt-[12px]">나중에 언제든지 변경할 수 있습니다.</p>
 
-        {/* 아바타 */}
         <button type="button" onClick={() => fileInputRef.current?.click()} aria-label="프로필 이미지 선택하기" className="relative mt-[30px]">
           <img src={imagePreview} alt="프로필 이미지" className="w-24 h-24 rounded-full object-cover bg-gray-100" />
           <span className="absolute bottom-0 right-0 w-8 h-8 bg-brand rounded-full flex items-center justify-center shadow-md">
@@ -189,7 +174,6 @@ export default function JoinProfilePage() {
           <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
         </button>
 
-        {/* 입력 영역 */}
         <div className="w-full flex flex-col mt-[30px]">
           <Input
             label="사용자 이름"
@@ -228,7 +212,6 @@ export default function JoinProfilePage() {
               underline
             />
 
-            {/* 에러 또는 버튼 영역 */}
             {(imageError || formError || imageFile) && (
               <div className="flex justify-between items-center mt-[6px]">
                 <p className="text-[12px] text-[#EB5757]">{(imageError || formError) && `*${imageError || formError}`}</p>

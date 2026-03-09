@@ -26,7 +26,6 @@ export default function TopBar({
         transparent ? 'bg-transparent' : 'bg-white border-b border-gray-200',
       ].join(' ')}
     >
-      {/* 왼쪽 */}
       <div className="flex w-10 items-center justify-start">
         {showBack && (
           <button
@@ -43,8 +42,6 @@ export default function TopBar({
           </button>
         )}
       </div>
-
-      {/* 가운데 */}
       {titleAlign === 'left' ? (
         <h1 className="ml-0.5 flex-1 truncate text-base font-semibold text-gray-900 text-left">
           {title}
@@ -58,8 +55,6 @@ export default function TopBar({
           ) : null}
         </div>
       )}
-
-      {/* 오른쪽 */}
       <div className="flex items-center justify-end">
         {rightSlot}
       </div>
