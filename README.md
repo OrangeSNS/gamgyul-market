@@ -1,6 +1,23 @@
-#  감귤마켓 (Gamgyul Market)
+<div align="center">
 
-> 일상을 공유하고, 상품을 홍보하고, 실시간으로 소통하는 SNS 기반 상품 홍보 플랫폼
+<img src="./public/icons/full-logo.svg" width="180" alt="감귤마켓 로고">
+
+<h2>감귤마켓 (Gamgyul Market)</h2>
+
+<p>일상을 공유하고, 상품을 홍보하고, 실시간으로 소통하는<br>SNS 기반 상품 홍보 플랫폼</p>
+
+<br>
+
+<a href="https://gamgyul-market.netlify.app">
+  <img src="https://img.shields.io/badge/배포-Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" alt="Netlify">
+</a>
+<img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React">
+<img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+<img src="https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite">
+<img src="https://img.shields.io/badge/Firebase-Firestore-FFCA28?style=flat-square&logo=firebase&logoColor=black" alt="Firebase">
+<img src="https://img.shields.io/badge/TailwindCSS-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="TailwindCSS">
+
+</div>
 
 <br>
 
