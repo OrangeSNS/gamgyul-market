@@ -98,7 +98,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 | | 팀장 | 팀원 | 팀원 | 팀원 | 팀원 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
+| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/Sunnysoojin.png)" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
 | **이름** | 정준서 | 강지연 | 강명주 | 김수진 | 한태영 |
 | **GitHub** | [@아이디](https://github.com) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@아이디](https://github.com) | [@Sunnysoojin](https://github.com/Sunnysoojin) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
 
