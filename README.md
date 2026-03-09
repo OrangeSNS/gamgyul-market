@@ -83,7 +83,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> |
 | **이름** | 정준서 | 강지연 | 강명주 | 김수진 | 한태영 |
-| **GitHub** | [@아이디](https://github.com) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@아이디](https://github.com) | [@아이디](https://github.com) | [@아이디](https://github.com) |
+| **GitHub** | [@아이디](https://github.com) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@아이디](https://github.com) | [@아이디](https://github.com) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
 
 <br>
 
@@ -869,26 +869,61 @@ if (response.status === 401 && path !== '/user/login') {
 
 ---
 
-### 2. [팀원 이름] — 담당 페이지
+### 2. 한태영 — AI 글 생성 (API 응답 파싱 오류)
 
 **문제**
+AI 글 생성 기능을 구현했는데 실제로 실행하면 항상 빈 문자열이 반환되었습니다.
+
+**원인**
+API 응답 구조를 정확히 확인하지 않고 `data.content` 또는 `data.message`로 임의 추정하여 파싱했습니다.
+실제 응답은 OpenAI 표준 형식인 `choices[0].message.content` 구조였습니다.
 
 **해결**
+응답 JSON을 직접 확인한 후 올바른 경로로 수정했습니다.
 
-```tsx
-// 핵심 코드 스니펫
+```ts
+// Before — 응답 구조 추정
+return data?.content ?? data?.message ?? ''
+
+// After — 실제 응답 구조 반영
+return data?.choices?.[0]?.message?.content ?? ''
 ```
 
 ---
 
-### 3. [팀원 이름] — 담당 페이지
+### 3. 한태영 — 채팅 이미지 전송 (UX 개선)
 
 **문제**
+채팅방에서 이미지를 갤러리에서 선택하는 순간 즉시 전송되어, 실수로 선택한 경우 취소할 방법이 없었습니다.
+
+**원인**
+이미지 선택 → 업로드 → 전송을 하나의 흐름으로 묶어 구현했습니다.
+선택과 동시에 `sendImage()`가 호출되는 구조여서 사용자 확인 단계가 없었습니다.
 
 **해결**
+`pendingImageUrl` · `pendingImagePreview` 상태를 추가하여 선택 후 미리보기를 먼저 보여주고,
+전송 버튼을 눌렀을 때 실제로 전송되는 2단계 플로우로 변경했습니다.
 
-```tsx
-// 핵심 코드 스니펫
+```ts
+// Before — 선택 즉시 전송
+const url = await uploadImage(file)
+await sendImage(url)
+
+// After — 미리보기 후 전송 버튼으로 확정
+const preview = URL.createObjectURL(file)
+const url = await uploadImage(file)
+setPendingImagePreview(preview)
+setPendingImageUrl(url)
+// 이후 전송 버튼 클릭 시
+async function handleSend() {
+  if (pendingImageUrl) {
+    await sendImage(pendingImageUrl)
+    setPendingImageUrl(null)
+    setPendingImagePreview(null)
+    return
+  }
+  // ...텍스트 전송
+}
 ```
 
 ---
