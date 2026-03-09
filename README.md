@@ -99,7 +99,7 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
 ```
 
-Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wiki](../../wiki)를 참고하세요.
+Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wiki](https://github.com/OrangeSNS/gamgyul-market/wiki/Firebase-%EC%84%A4%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C-(%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%8A%A5))를 참고하세요.
 
 <br>
 
@@ -124,10 +124,10 @@ Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wi
 | 담당자 | 담당 영역 | 주요 기능 | Route | CRUD |
 |:------:|-----------|-----------|-------|:----:|
 | 강지연 | Login · 404 · 회의록 작성 | 로그인 메인 · 이메일 로그인 화면 전환 · 입력값 검증 · 로그인 실패 메시지 · 404 페이지 · 데일리 스크럼 기록 | `/login/*` `/404` | - |
-| 강명주 | Home Feed | 팔로우 유무에 따른 피드 분기 · 피드 목록 렌더링 · 게시글 카드 컴포넌트 · 검색 페이지 이동 | `/home` | Read |
+| 강명주 | Home Feed · 주석 정리 | 팔로우 유무에 따른 피드 분기 · 피드 목록 렌더링 · 게시글 카드 컴포넌트 · 검색 페이지 이동 · 불필요한 주석 전체 제거 | `/home` | Read |
 | 김수진 | Upload · Post Detail | 게시글 작성 · 이미지 업로드 (최대 3장) · Create/Update 컴포넌트 재사용 · 게시글 상세 · 좋아요 토글 · 액션 모달 | `/post/*` | Create / Read / Update / Delete |
-| 정준서 | 개인 프로필 · 총괄리팩토링 · 배포 | 프로필 상세 · 팔로워/팔로잉 목록 · 목록형/앨범형 전환 · 상품 CRUD · 코드 리팩토링 · Netlify 배포 | `/profile/*` `/product/*` | Create / Read / Update / Delete |
-| 한태영 | Splash · Join · Chat | 스플래시 로그인 분기 · 2단계 회원가입 폼 · 계정ID 검증 · Firebase 실시간 채팅 (`onSnapshot`) | `/` `/join/*` `/chat/*` | Create / Read |
+| 정준서 | 개인 프로필 · 총괄 리팩토링 · 배포 | 프로필 상세 · 팔로워/팔로잉 목록 · 목록형/앨범형 전환 · 상품 CRUD · 코드 리팩토링 · API constants 정리 · API 명세 문서화(`Docs/API-spec.md`) · Netlify 배포 | `/profile/*` `/product/*` | Create / Read / Update / Delete |
+| 한태영 | Splash · Join · Chat · 코드 구조 개선 | 스플래시 로그인 분기 · 2단계 회원가입 폼 · 계정ID 검증 · Firebase 실시간 채팅 (`onSnapshot`) · AI 프롬프트 분리 · API URL 환경변수화 · JSDoc 주석 작성 | `/` `/join/*` `/chat/*` | Create / Read |
 
 <br>
 
@@ -358,19 +358,19 @@ gantt
 ### 서비스 전체 구조
 ```mermaid
 graph TD
-    User[" 사용자 (브라우저)"]
+    User["사용자 (브라우저)"]
 
     subgraph FE["Frontend — React + TypeScript (Netlify)"]
-        Router["react-router-dom v6\nProtectedRoute"]
-        Auth["AuthProvider\nContext + localStorage"]
-        Features["features/\n각 기능 모듈"]
-        SharedAPI["shared/api\nfetch 기반 커스텀 클라이언트"]
-        SharedFB["shared/firebase\nauth.ts · firebase.ts · firestore.ts"]
+        Router["react-router-dom v6<br/>ProtectedRoute"]
+        Auth["AuthProvider<br/>Context + localStorage"]
+        Features["features/<br/>각 기능 모듈"]
+        SharedAPI["shared/api<br/>fetch 기반 커스텀 클라이언트"]
+        SharedFB["shared/firebase<br/>auth.ts · firebase.ts · firestore.ts"]
     end
 
     subgraph External["외부 서비스"]
-        REST["REST API\nwenivops"]
-        FS["Firebase Firestore\n실시간 채팅 DB"]
+        REST["REST API<br/>wenivops"]
+        FS["Firebase Firestore<br/>실시간 채팅 DB"]
         FAAuth["Firebase Anonymous Auth"]
     end
 
@@ -408,11 +408,11 @@ sequenceDiagram
 ### 인증 흐름
 ```mermaid
 flowchart LR
-    A([페이지 진입]) --> B{ProtectedRoute\n인증 확인}
+    A([페이지 진입]) --> B{"ProtectedRoute<br/>인증 확인"}
     B -->|localStorage 토큰 있음| C[페이지 렌더링]
     B -->|토큰 없음| D[/login 리다이렉트]
     D --> E[로그인 성공]
-    E --> F[토큰 저장\nContext 업데이트]
+    E --> F["토큰 저장<br/>Context 업데이트"]
     F --> C
 ```
 
@@ -575,9 +575,12 @@ src/
 |:----------:|:------------:|:-----------:|
 | ![메인 로그인](./docs/login.gif) | ![이메일 로그인](./docs/login-email.gif) | ![로그인 실패](./docs/login-error.gif) |
 
-- 이메일 기반 로그인 · 한 라우트 내 화면 전환 처리
-- 입력값 충족 시 버튼 활성/비활성
-- 로그인 실패 시 Toast 에러 메시지 표시
+- 소셜 로그인 버튼 UI · 클릭 시 안내 모달 표시 (UI만 구현)
+- 이메일 · 비밀번호 모두 입력 시 로그인 버튼 활성화 (한 쪽만 입력 시 비활성)
+- 에러 메시지 표시 시 로그인 버튼 비활성화
+- 로그인 버튼 클릭 시 이메일 형식 검증
+- 로그인 실패 시 인라인 에러 메시지 · 네트워크 에러 시 Toast 알림
+- 로그인 성공 시 토큰 저장 후 홈으로 이동
 - `ProtectedRoute`를 통한 미인증 사용자 접근 차단
 
 ---
@@ -642,6 +645,16 @@ src/
 - Firebase Firestore 기반 **1:1 실시간 채팅**
 - `onSnapshot`으로 메시지 실시간 동기화 (서버 폴링 없음 · 별도 백엔드 불필요)
 - 채팅 알림 기능
+---
+
+###  404 페이지(강지연)
+
+| 404 |
+|:---:|
+| ![404](./docs/404페이지화면.gif) |
+
+- 존재하지 않는 경로 접근 시 표시되는 페이지
+- '이전 페이지' 버튼으로 자연스럽게 이동 유도
 
 <br>
 
