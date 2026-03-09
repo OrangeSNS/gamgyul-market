@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./public/icons/full-logo.svg" width="180" alt="감귤마켓 로고">
+<img src="./public/icons/symbol-logo-O.svg" width="120" alt="감귤마켓 로고">
 
 <h2>감귤마켓 (Gamgyul Market)</h2>
 
