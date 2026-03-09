@@ -356,16 +356,17 @@ graph TD
 ```mermaid
 flowchart TD
     A([앱 시작]) --> B[AuthProvider 마운트]
-    B --> C{localStorage에\n토큰 존재?}
-    C -->|없음| D[비로그인 상태\nisLoading = false]
-    C -->|있음| E["GET /user/myinfo\n토큰 유효성 검증"]
-    E -->|성공| F[user 정보 Context에 저장\nisLoading = false]
-    E -->|실패 401| G[토큰 삭제\n비로그인 상태로 전환]
-    D & G --> H{ProtectedRoute\n접근 시도?}
-    H -->|토큰 없음| I[/login 리다이렉트]
+    B --> C{localStorage에 토큰 존재?}
+    C -->|없음| D[비로그인 상태]
+    C -->|있음| E["GET /user/myinfo 토큰 유효성 검증"]
+    E -->|성공| F[user 정보 Context에 저장]
+    E -->|실패 401| G[토큰 삭제 · 비로그인 상태로 전환]
+    D --> H{ProtectedRoute 접근 시도?}
+    G --> H
+    H -->|토큰 없음| I["로그인 페이지로 리다이렉트"]
     H -->|토큰 있음| J[페이지 렌더링]
     I --> K[로그인 성공]
-    K --> L[토큰 localStorage 저장\nContext 업데이트]
+    K --> L[토큰 localStorage 저장 · Context 업데이트]
     L --> J
 ```
 
