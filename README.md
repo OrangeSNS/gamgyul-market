@@ -1,6 +1,23 @@
-#  감귤마켓 (Gamgyul Market)
+<div align="center">
 
-> 일상을 공유하고, 상품을 홍보하고, 실시간으로 소통하는 SNS 기반 상품 홍보 플랫폼
+<img src="./public/icons/symbol-logo-O.svg" width="120" alt="감귤마켓 로고">
+
+<h2>감귤마켓 (Gamgyul Market)</h2>
+
+<p>일상을 공유하고, 상품을 홍보하고, 실시간으로 소통하는<br>SNS 기반 상품 홍보 플랫폼</p>
+
+<br>
+
+<a href="https://gamgyul-market.netlify.app">
+  <img src="https://img.shields.io/badge/배포-Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" alt="Netlify">
+</a>
+<img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React">
+<img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+<img src="https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite">
+<img src="https://img.shields.io/badge/Firebase-Firestore-FFCA28?style=flat-square&logo=firebase&logoColor=black" alt="Firebase">
+<img src="https://img.shields.io/badge/TailwindCSS-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="TailwindCSS">
+
+</div>
 
 <br>
 
@@ -11,18 +28,19 @@
 1. [프로젝트 소개](#프로젝트-소개)
 2. [팀원 소개 및 역할](#팀원-소개-및-역할)
 3. [협업 프로세스](#협업-프로세스)
-4. [개발 규칙](#개발-규칙)
-5. [개발 일정 WBS](#개발-일정-wbs)
-6. [기술 스택](#기술-스택)
-7. [아키텍처](#아키텍처)
+4. [개발 일정 WBS](#개발-일정-wbs)
+5. [기술 스택](#기술-스택)
+6. [아키텍처](#아키텍처)
+7. [화면 흐름 / 사용자 시나리오](#화면-흐름--사용자-시나리오)
 8. [URL 구조](#url-구조)
 9. [폴더 구조](#폴더-구조)
 10. [화면 설계](#화면-설계)
 11. [구현 범위](#구현-범위)
 12. [주요 기능](#주요-기능)
 13. [코드 품질 관리](#코드-품질-관리)
-14. [트러블슈팅](#트러블슈팅)
-15. [추후 개선 사항](#추후-개선-사항)
+14. [실행 방법](#실행-방법)
+15. [트러블슈팅](#트러블슈팅)
+16. [추후 개선 사항](#추후-개선-사항)
 
 <br>
 
@@ -40,7 +58,7 @@
 |------|------|
 |  개발 기간 | 2026.02.24 (화) ~ 2026.03.07 (토) · 총 12일 |
 |  팀 구성 | 5인 |
-| 배포 URL | https://gamgyul-market.netlify.app |
+|  배포 URL | https://gamgyul-market.netlify.app |
 |  기술 스택 | React 18 · TypeScript 5 · TailwindCSS 3 · Vite 5 · Firebase |
 
 <br>
@@ -72,37 +90,6 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 <br>
 
-###  실행 방법
-
-```bash
-# 의존성 설치
-npm install
-
-# 개발 서버 실행
-npm run dev
-# → http://localhost:5173
-
-# 프로덕션 빌드
-npm run build
-```
-
-`.env.example`을 복사하여 `.env` 파일을 생성하세요.
-
-```env
-VITE_API_BASE_URL=https://dev.wenivops.co.kr/services/mandarin
-
-VITE_FIREBASE_API_KEY=
-VITE_FIREBASE_AUTH_DOMAIN=
-VITE_FIREBASE_PROJECT_ID=
-VITE_FIREBASE_STORAGE_BUCKET=
-VITE_FIREBASE_MESSAGING_SENDER_ID=
-VITE_FIREBASE_APP_ID=
-```
-
-Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wiki](https://github.com/OrangeSNS/gamgyul-market/wiki/Firebase-%EC%84%A4%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C-(%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%8A%A5))를 참고하세요.
-
-<br>
-
 ---
 
 ##  팀원 소개 및 역할
@@ -111,9 +98,9 @@ Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wi
 
 | | 팀장 | 팀원 | 팀원 | 팀원 | 팀원 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> |
+| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
 | **이름** | 정준서 | 강지연 | 강명주 | 김수진 | 한태영 |
-| **GitHub** | [@아이디](https://github.com) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@아이디](https://github.com) | [@아이디](https://github.com) | [@아이디](https://github.com) |
+| **GitHub** | [@아이디](https://github.com) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@아이디](https://github.com) | [@아이디](https://github.com) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
 
 <br>
 
@@ -127,7 +114,7 @@ Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wi
 | 강명주 | Home Feed · 주석 정리 | 팔로우 유무에 따른 피드 분기 · 피드 목록 렌더링 · 게시글 카드 컴포넌트 · 검색 페이지 이동 · 불필요한 주석 전체 제거 | `/home` | Read |
 | 김수진 | Upload · Post Detail | 게시글 작성 · 이미지 업로드 (최대 3장) · Create/Update 컴포넌트 재사용 · 게시글 상세 · 좋아요 토글 · 액션 모달 | `/post/*` | Create / Read / Update / Delete |
 | 정준서 | 개인 프로필 · 총괄 리팩토링 · 배포 | 프로필 상세 · 팔로워/팔로잉 목록 · 목록형/앨범형 전환 · 상품 CRUD · 코드 리팩토링 · API constants 정리 · API 명세 문서화(`Docs/API-spec.md`) · Netlify 배포 | `/profile/*` `/product/*` | Create / Read / Update / Delete |
-| 한태영 | Splash · Join · Chat · 코드 구조 개선 | 스플래시 로그인 분기 · 2단계 회원가입 폼 · 계정ID 검증 · Firebase 실시간 채팅 (`onSnapshot`) · AI 프롬프트 분리 · API URL 환경변수화 · JSDoc 주석 작성 | `/` `/join/*` `/chat/*` | Create / Read |
+| 한태영 | Splash · Join · Chat · 코드 구조 개선 | 스플래시 로그인 분기 · 2단계 회원가입 폼 · 계정ID 검증 · Firebase 실시간 채팅 (`onSnapshot`) · AI 글 생성 기능 · API URL 환경변수화 · JSDoc 주석 작성 | `/` `/join/*` `/chat/*` | Create / Read |
 
 <br>
 
@@ -135,8 +122,8 @@ Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wi
 
 ##  협업 프로세스
 
-> 협업 규칙을 GitHub Wiki에 명문화하고, Issues · Projects · Discussion을 적극 활용하여 일관된 코드 품질과 팀 커뮤니케이션을 유지했습니다.  
-> → [ GitHub Wiki 전체 규칙 바로가기](../../wiki)
+> 협업 규칙을 GitHub Wiki에 명문화하고, Issues · Projects · Discussion을 적극 활용하여 일관된 코드 품질과 팀 커뮤니케이션을 유지했습니다.
+> → [GitHub Wiki 전체 규칙 바로가기](../../wiki)
 
 ### 브랜치 전략
 
@@ -146,7 +133,7 @@ main          ← 배포/릴리즈 브랜치 (직접 push 금지)
     ├── feat/#이슈번호-설명    ← 기능 개발
     ├── fix/#이슈번호-설명     ← 버그 수정
     ├── refactor/#이슈번호-설명
-    └── chore/#이슈번호-설명
+    └── docs/#이슈번호-설명
 ```
 
 ```
@@ -177,6 +164,17 @@ refactor(post): split PostCard component
 | `perf` | 성능 개선 |
 | `revert` | 되돌리기 |
 
+### 파일 확장자 규칙 (.ts vs .tsx)
+
+TypeScript는 JSX 문법이 있는 파일만 `.tsx`로 작성합니다.
+
+| 확장자 | 사용 기준 | 예시 |
+|:------:|-----------|------|
+| `.ts` | JSX 없음 — API 함수, 유틸, 타입 정의, 훅 (반환값이 JSX가 아닌 경우) | `client.ts`, `useDebounce.ts`, `validateEmail.ts` |
+| `.tsx` | `return <JSX />` 가 있는 컴포넌트 | `PostWritePage.tsx`, `Button.tsx` |
+
+> 훅(hook)은 JSX를 반환하지 않으면 `.ts`로 작성합니다.
+
 ### GitHub Issues — 이슈 관리
 
 모든 작업은 이슈로 시작했습니다. 이슈 템플릿을 통해 기능 설명과 할 일 목록을 구조화하여 작업 범위를 명확히 했습니다.
@@ -185,7 +183,7 @@ refactor(post): split PostCard component
 
 ### GitHub Projects — 칸반 보드
 
-`Todo` → `In Progress` → `Review(PR)` → `Done` 4단계로 작업 흐름을 관리했습니다.  
+`Todo` → `In Progress` → `Review(PR)` → `Done` 4단계로 작업 흐름을 관리했습니다.
 PR을 열면 이슈를 **Review(PR)** 로 이동, 머지되면 **Done** 으로 자동 처리했습니다.
 
 <img src="./docs/프로젝트이미지.jpg" width="800">
@@ -206,7 +204,7 @@ fix(upload): revoke object url on unmount (#23)
 
 ### GitHub Discussion — 데일리 스크럼
 
-GitHub Discussion을 데일리 회의록으로 활용했습니다.  
+GitHub Discussion을 데일리 회의록으로 활용했습니다.
 매일 작업 내용 · 에러 및 해결 여부 · 작업 스크린샷 · 팀장 회의 코멘트를 기록하여 비동기 상황에서도 팀 전체가 맥락을 파악할 수 있도록 했습니다.
 
 <img src="./docs/회의록 이미지.jpg" width="400">
@@ -224,26 +222,9 @@ GitHub Discussion을 데일리 회의록으로 활용했습니다.
 
 ---
 
-##  개발 규칙
-
-### 파일 확장자 규칙 (.ts vs .tsx)
-
-TypeScript는 JSX 문법이 있는 파일만 `.tsx`로 작성합니다.
-
-| 확장자 | 사용 기준 | 예시 |
-|:------:|-----------|------|
-| `.ts` | JSX 없음 — API 함수, 유틸, 타입 정의, 훅 (반환값이 JSX가 아닌 경우) | `client.ts`, `useDebounce.ts`, `validateEmail.ts` |
-| `.tsx` | `return <JSX />` 가 있는 컴포넌트 | `PostWritePage.tsx`, `Button.tsx` |
-
-> 훅(hook)은 JSX를 반환하지 않으면 `.ts`로 작성합니다.
-
-<br>
-
----
-
 ##  개발 일정 WBS
 
-> **기간**: 2026.02.25 (수) ~ 2026.03.07 (토) · 총 11일  
+> **기간**: 2026.02.25 (수) ~ 2026.03.07 (토) · 총 11일
 > **근무일**: 월~토 / **휴무**: 3/1 (일) · 3/2 (삼일절 대체공휴일)
 
 ```mermaid
@@ -340,7 +321,7 @@ gantt
 
 ### 상태관리 라이브러리 미사용 근거
 
-전역 상태의 복잡도가 낮아 Redux · Zustand 등의 외부 라이브러리를 도입하지 않았습니다.  
+전역 상태의 복잡도가 낮아 Redux · Zustand 등의 외부 라이브러리를 도입하지 않았습니다.
 인증 상태는 **React Context API + localStorage** 조합으로 충분히 관리 가능했으며, 불필요한 의존성을 줄이고 팀 학습 비용을 낮추는 것이 전체 생산성에 유리하다는 팀 결정이었습니다.
 
 ### 배포
@@ -356,6 +337,7 @@ gantt
 ##  아키텍처
 
 ### 서비스 전체 구조
+
 ```mermaid
 graph TD
     User["사용자 (브라우저)"]
@@ -384,7 +366,39 @@ graph TD
     SharedFB --> FAAuth
 ```
 
+### 인증 흐름
+
+앱 전체 인증은 REST API 토큰 기반으로 동작합니다. Firebase Auth는 채팅 기능의 Firestore 보안 규칙 적용을 위해서만 별도로 사용합니다.
+
+```mermaid
+flowchart TD
+    A([앱 시작]) --> B[AuthProvider 마운트]
+    B --> C{localStorage에 토큰 존재?}
+    C -->|없음| D[비로그인 상태]
+    C -->|있음| E["GET /user/myinfo 토큰 유효성 검증"]
+    E -->|성공| F[user 정보 Context에 저장]
+    E -->|실패 401| G[토큰 삭제 · 비로그인 상태로 전환]
+    D --> H{ProtectedRoute 접근 시도?}
+    G --> H
+    H -->|토큰 없음| I["로그인 페이지로 리다이렉트"]
+    H -->|토큰 있음| J[페이지 렌더링]
+    I --> K[로그인 성공]
+    K --> L[토큰 localStorage 저장 · Context 업데이트]
+    L --> J
+```
+
+**인증 구현 포인트**
+
+| 항목 | 구현 방식 |
+|------|-----------|
+| 토큰 저장 | `localStorage` — 새로고침 후에도 로그인 유지 |
+| 토큰 검증 | 앱 마운트 시 `/user/myinfo` 호출로 서버 측 유효성 확인 |
+| 만료 처리 | 401 응답 → 토큰 삭제 → `/login` 리다이렉트 (공통 API 클라이언트에서 일괄 처리) |
+| 로딩 처리 | 토큰 검증 중 `isLoading = true` → 스피너 표시 후 라우팅 결정 |
+| 로그아웃 | localStorage 토큰/유저 정보 삭제 → Context 초기화 |
+
 ### 실시간 채팅 데이터 흐름
+
 ```mermaid
 sequenceDiagram
     participant U as 사용자
@@ -405,15 +419,40 @@ sequenceDiagram
     App-->>U: 실시간 메시지 반영
 ```
 
-### 인증 흐름
+<br>
+
+---
+
+##  화면 흐름 / 사용자 시나리오
+
+서비스 접속부터 주요 기능 이용까지의 전체 흐름입니다.
+
 ```mermaid
-flowchart LR
-    A([페이지 진입]) --> B{"ProtectedRoute<br/>인증 확인"}
-    B -->|localStorage 토큰 있음| C[페이지 렌더링]
-    B -->|토큰 없음| D[/login 리다이렉트]
-    D --> E[로그인 성공]
-    E --> F["토큰 저장<br/>Context 업데이트"]
-    F --> C
+flowchart TD
+    A([서비스 접속]) --> B[Splash]
+    B --> C{로그인 여부}
+    C -->|비로그인| D[로그인 페이지]
+    C -->|로그인| H
+
+    D --> E{선택}
+    E -->|이메일 로그인| F[이메일 입력 → 로그인]
+    E -->|신규 가입| G[회원가입 step1\n이메일·비밀번호]
+    G --> G2[회원가입 step2\n프로필 설정]
+    F & G2 --> H[홈 피드]
+
+    H --> I[게시글 카드 클릭]
+    H --> J[게시글 작성]
+    H --> K[검색]
+    H --> L[채팅 목록]
+    H --> M[프로필]
+
+    I --> I1[게시글 상세\n좋아요 · 댓글]
+    J --> J1[이미지 업로드\nAI 글 생성]
+    K --> K1[사용자 검색 결과\n프로필 이동]
+    L --> L1[채팅방\n실시간 메시지]
+    M --> M1[팔로워 / 팔로잉]
+    M --> M2[상품 등록 · 수정 · 삭제]
+    M --> M3[프로필 수정]
 ```
 
 <br>
@@ -427,20 +466,22 @@ flowchart LR
 | `/` | Splash | X | 한태영 |
 | `/login` | 로그인 | X | 강지연 |
 | `/404` | 404 | X | 강지연 |
-| `/join` | 회원가입 (step 1 / 2) | X | 한태영 |
+| `/join` | 회원가입 step 1 (이메일·비밀번호) | X | 한태영 |
+| `/join/profile` | 회원가입 step 2 (프로필 설정) | X | 한태영 |
 | `/home` | 홈 피드 | O | 강명주 |
-| `/post/upload` | 게시글 작성 | O | 김수진 |
+| `/post/new` | 게시글 작성 | O | 김수진 |
 | `/post/:id` | 게시글 상세 | O | 김수진 |
 | `/post/:id/edit` | 게시글 수정 | O | 김수진 |
-| `/profile/:id` | 프로필 | O | 정준서 |
-| `/profile/:id/edit` | 프로필 수정 | O | 정준서 |
-| `/profile/:id/followers` | 팔로워 목록 | O | 정준서 |
-| `/profile/:id/following` | 팔로잉 목록 | O | 정준서 |
-| `/product/upload` | 상품 등록 | O | 정준서 |
-| `/product/:id/edit` | 상품 수정 | O | 정준서 |
+| `/post/:id/comments` | 댓글 목록 | O | 김수진 |
+| `/profile/:accountName` | 프로필 | O | 정준서 |
+| `/profile/edit` | 프로필 수정 | O | 정준서 |
+| `/profile/:accountName/followers` | 팔로워 목록 | O | 정준서 |
+| `/profile/:accountName/following` | 팔로잉 목록 | O | 정준서 |
+| `/product/new` | 상품 등록 | O | 정준서 |
+| `/product/:productId/edit` | 상품 수정 | O | 정준서 |
 | `/search` | 사용자 검색 | O | 강명주 |
 | `/chat` | 채팅 목록 | O | 한태영 |
-| `/chat/:id` | 채팅방 | O | 한태영 |
+| `/chat/:targetAccountName` | 채팅방 | O | 한태영 |
 
 <br>
 
@@ -470,12 +511,14 @@ src/
 │   └── chat/           # Firebase 실시간 채팅
 │
 ├── shared/             # 여러 feature에서 공유하는 모듈
-│   ├── api/            # fetch 기반 커스텀 API 클라이언트
+│   ├── api/            # fetch 기반 커스텀 클라이언트 · AI API 호출
 │   ├── components/     # Button, Input, Modal, BottomSheet, TabBar
 │   ├── constants/      # 라우트 상수, 정규식, 스토리지 키
-│   ├── hooks/          # useDebounce
+│   ├── firebase/       # Firebase 초기화 · 익명 인증 · Firestore CRUD
+│   ├── hooks/          # useDebounce, useAIGenerate, useModal 등
+│   ├── prompts/        # AI 글 생성 프롬프트 (postPrompt, productPrompt)
 │   ├── types/          # User, Post, Comment, Product 공통 타입
-│   └── utils/          # formatPrice, validateEmail 등
+│   └── utils/          # formatPrice, formatChatTime 등
 │
 └── pages/
     ├── SplashPage.tsx   # 스플래시
@@ -497,32 +540,32 @@ src/
 
 ### 실제 구현 화면
 
-**인증**(강지연·한태영)
+**인증** (강지연 · 한태영)
 | Splash | 로그인 | 이메일 로그인 | 회원가입 | 프로필 설정 |
 |:------:|:------:|:------------:|:-------:|:-----------:|
 | <img src="./docs/splash화면.jpg" width="200"> | <img src="./docs/메인로그인페이지화면.jpg" width="200"> | <img src="./docs/이메일로그인화면.jpg" width="200"> | <img src="./docs/회원가입페이지화면.jpg" width="200"> | <img src="./docs/프로필설정페이지화면.jpg" width="200"> |
 
-**홈 · 검색**(강명주)
+**홈 · 검색** (강명주)
 | 홈 (팔로우 O) | 홈 (팔로우 X) | 검색 |
 |:------------:|:------------:|:----:|
 | <img src="./docs/홈(팔로워O)화면.jpg" width="200"> | <img src="./docs/홈(팔로워X)화면.jpg" width="200"> | <img src="./docs/검색화면.jpg" width="200"> |
 
-**프로필**(정준서)
+**프로필** (정준서)
 | 내 프로필 | 다른 사람 프로필 | 상품 등록 |
 |:---------:|:--------------:|:---------:|
 | <img src="./docs/내프로필화면.jpg" width="200"> | <img src="./docs/다른사람프로필화면.jpg" width="200"> | <img src="./docs/상품등록화면.jpg" width="200"> |
 
-**게시글**(김수진)
+**게시글** (김수진)
 | 게시글 상세 | 업로드 |
 |:----------:|:------:|
 | <img src="./docs/게시물상세화면.jpg" width="200"> | <img src="./docs/게시물업로드화면.jpg" width="200"> |
 
-**채팅**(한태영)
+**채팅** (한태영)
 | 채팅 목록 | 채팅방 |
 |:---------:|:------:|
 | <img src="./docs/채팅목록화면.jpg" width="200"> | <img src="./docs/채팅룸화면.jpg" width="200"> |
 
-**기타**(강지연)
+**기타** (강지연)
 | 404 |
 |:---:|
 | <img src="./docs/404페이지화면.jpg" width="200"> |
@@ -544,6 +587,13 @@ src/
 - 바텀시트 + 확인 모달
 - 하단 탭바, 404 페이지, 보호 라우트
 
+### 추가 구현
+
+- Firebase Firestore 기반 실시간 1:1 채팅
+- AI 글 자동 생성 (게시글 · 상품 설명 초안 생성)
+- 공통 API 클라이언트 (`shared/api/client.ts`) — 토큰 주입 · 에러 처리 중앙화
+- 환경변수 분리 (`.env` · `.env.example`)
+
 ### 마크업만 (서버 기능 없음)
 
 - SNS 로그인 버튼 (UI만)
@@ -556,7 +606,7 @@ src/
 
 ---
 
-###  Splash(한태영)
+###  Splash (한태영)
 
 | Splash |
 |:------:|
@@ -569,7 +619,7 @@ src/
 
 ---
 
-###  로그인(강지연)
+###  로그인 (강지연)
 
 | 메인 로그인 | 이메일 로그인 | 로그인 실패 |
 |:----------:|:------------:|:-----------:|
@@ -585,19 +635,19 @@ src/
 
 ---
 
-###  회원가입(한태영)
+###  회원가입 (한태영)
 
 | 회원가입 1단계 | 회원가입 2단계 |
 |:-------------:|:-------------:|
 | ![회원가입 1단계](./docs/join-1.gif) | ![회원가입 2단계](./docs/join-2.gif) |
 
 - 이메일/비밀번호 포커스 아웃 시 즉시 유효성 검증
-- 2단계 회원가입 폼 (동일 라우트 내 step 분기 처리)
+- 2단계 회원가입 폼 (step 1: 이메일·비밀번호 / step 2: 프로필 사진·이름·계정ID·소개)
 - 계정ID 형식 검증 및 중복 확인 API 연동
 
 ---
 
-###  홈 피드(강명주)
+###  홈 피드 (강명주)
 
 | 피드 | 팔로우 없을 때 |
 |:----:|:-------------:|
@@ -609,7 +659,7 @@ src/
 
 ---
 
-###  게시글(김수진)
+###  게시글 (김수진)
 
 | 작성 | 상세 · 좋아요 · 댓글 |
 |:----:|:--------------------:|
@@ -622,21 +672,41 @@ src/
 
 ---
 
-###  개인 프로필(정준서)
+###  AI 글 생성 (한태영)
+
+| AI 글 생성 |
+|:----------:|
+| `TODO: 시연 GIF 추가` |
+
+- 게시글 작성 · 상품 등록 화면에서 AI가 초안 텍스트를 자동으로 생성합니다.
+- 업로드된 이미지나 입력 중인 내용을 기반으로 프롬프트를 구성합니다.
+- **관심사 분리 3-레이어 구조**로 설계되어 각 레이어가 독립적으로 유지보수됩니다.
+
+```
+shared/
+├── api/ai.ts              # 통신 레이어 — API 호출 방식
+├── hooks/useAIGenerate.ts # UX 레이어  — 로딩 · 덮어쓰기 모달 흐름
+└── prompts/               # 도메인 레이어 — AI 지시문
+    ├── postPrompt.ts
+    └── productPrompt.ts
+```
+
+---
+
+###  개인 프로필 (정준서)
 
 | 목록형 | 앨범형 |
 |:------:|:------:|
 | ![프로필목록](./docs/profile-list.png) | ![프로필앨범](./docs/profile-album.png) |
 
 - 사용자 이름 · 계정ID · 소개 · 팔로워/팔로잉 수 · 판매 상품 · 게시글 확인
-- 팔로우 버튼 토글 (UI만 · 팔로우 기능 미구현)
 - 팔로워/팔로잉 목록 · 게시글 **목록형/앨범형 전환**
 - 본인 프로필일 경우: 프로필 수정 버튼 · 상품 등록 버튼 노출
 - 상품 등록/수정/삭제 (상품명 2~15자 · 가격 원단위 자동 변환)
 
 ---
 
-###  실시간 채팅(한태영)
+###  실시간 채팅 (한태영)
 
 | 채팅 목록 | 채팅방 |
 |:---------:|:------:|
@@ -644,14 +714,16 @@ src/
 
 - Firebase Firestore 기반 **1:1 실시간 채팅**
 - `onSnapshot`으로 메시지 실시간 동기화 (서버 폴링 없음 · 별도 백엔드 불필요)
-- 채팅 알림 기능
+- 읽지 않은 메시지 알림 (`unreadBy` 배열로 수신자 추적)
+- 텍스트 · 이미지 메시지 전송 지원
+
 ---
 
-###  404 페이지(강지연)
+###  404 페이지 (강지연)
 
 | 404 |
 |:---:|
-| ![404](./docs/404페이지화면.gif) |
+| <img src="./docs/404페이지화면.jpg" width="200"> |
 
 - 존재하지 않는 경로 접근 시 표시되는 페이지
 - '이전 페이지' 버튼으로 자연스럽게 이동 유도
@@ -664,8 +736,9 @@ src/
 
 ### TypeScript 타입 안정성
 
-`any` 사용을 최소화하고, 공통 타입을 `shared/types/index.ts`에 통합하여 관리했습니다.  
+`any` 사용을 최소화하고, 공통 타입을 `shared/types/index.ts`에 통합하여 관리했습니다.
 타입 정의를 한 곳에서 관리함으로써 협업 시 타입 불일치로 인한 런타임 오류를 사전에 방지했습니다.
+
 ```ts
 // shared/types/index.ts
 export interface Post {
@@ -683,8 +756,9 @@ export interface Post {
 
 ### 공통 API 클라이언트
 
-모든 API 호출을 `shared/api/client.ts` 한 곳에서 관리하여 인증 토큰 주입과 에러 처리를 중앙화했습니다.  
+모든 API 호출을 `shared/api/client.ts` 한 곳에서 관리하여 인증 토큰 주입과 에러 처리를 중앙화했습니다.
 401 응답 시 자동으로 토큰을 제거하고 로그인 페이지로 리다이렉트하는 흐름도 이 계층에서 일괄 처리합니다.
+
 ```ts
 // shared/api/client.ts
 export async function request<T>(
@@ -724,17 +798,52 @@ export async function request<T>(
 
 ---
 
+##  실행 방법
+
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
+npm run dev
+# → http://localhost:5173
+
+# 프로덕션 빌드
+npm run build
+```
+
+### 환경변수 설정
+
+`.env.example`을 복사하여 `.env` 파일을 생성하세요.
+
+```env
+VITE_API_BASE_URL=https://dev.wenivops.co.kr/services/mandarin
+
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+> Firebase 설정 방법, Netlify 환경변수 등록, 보안 규칙은 [GitHub Wiki](https://github.com/OrangeSNS/gamgyul-market/wiki/Firebase-%EC%84%A4%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C-(%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%8A%A5))를 참고하세요.
+
+<br>
+
+---
+
 ##  트러블슈팅
 
 ### 1. 강지연 — Login
 
-**문제**  
-공통 `request` 모듈은 401 에러 발생 시 전역에서 `/login`으로 강제 리다이렉트하는 로직이 있었습니다.  
+**문제**
+공통 `request` 모듈은 401 에러 발생 시 전역에서 `/login`으로 강제 리다이렉트하는 로직이 있었습니다.
 로그인 페이지에서 이 모듈을 그대로 사용하면 로그인 실패 시 페이지가 이동되어 사용자에게 에러 메시지를 표시할 수 없었습니다.
 
-**1차 해결 (임시방편)**  
-로그인 페이지에서만 공통 모듈 대신 `fetch`를 직접 호출하도록 분리했습니다.  
-응답 객체의 `response.status` · `response.ok`를 기준으로 직접 분기 처리했습니다.
+**1차 해결 (임시방편)**
+로그인 페이지에서만 공통 모듈 대신 `fetch`를 직접 호출하도록 분리했습니다.
+
 ```ts
 // 1차 해결 — fetch 직접 호출
 const response = await fetch(`${API_BASE_URL}/user/login`, {
@@ -748,9 +857,10 @@ if (!response.ok || res.message) {
 }
 ```
 
-**2차 해결 (근본 해결)**  
-`request` 모듈의 401 처리 로직에 `/user/login` 예외 조건을 추가하여 로그인 페이지에서는 리다이렉트가 발생하지 않도록 수정했습니다.  
-이후 공통 모듈을 그대로 사용하면서 `ApiError` 타입으로 에러를 분기하여 401/422는 인라인 에러 메시지로, 네트워크 에러는 Toast로 표시하도록 개선했습니다.
+**2차 해결 (근본 해결)**
+`request` 모듈의 401 처리 로직에 `/user/login` 예외 조건을 추가하여 로그인 페이지에서는 리다이렉트가 발생하지 않도록 수정했습니다.
+`ApiError` 타입으로 에러를 분기하여 401/422는 인라인 에러 메시지로, 네트워크 에러는 Toast로 표시하도록 개선했습니다.
+
 ```ts
 // 2차 해결 — request 모듈 예외 조건 추가
 if (response.status === 401 && path !== '/user/login') {
@@ -759,6 +869,7 @@ if (response.status === 401 && path !== '/user/login') {
   throw new ApiError(401, '인증이 만료되었습니다. 다시 로그인해주세요.')
 }
 ```
+
 ```ts
 // 2차 해결 — ApiError 분기 처리
 } catch (err) {
@@ -776,26 +887,61 @@ if (response.status === 401 && path !== '/user/login') {
 
 ---
 
-### 2. [팀원 이름] — 담당 페이지
+### 2. 한태영 — AI 글 생성 · 채팅
+
+**1) AI API 응답 파싱 오류**
 
 **문제**
+AI 글 생성 기능을 구현했는데 실제로 실행하면 항상 빈 문자열이 반환되었습니다.
+
+**원인**
+API 응답 구조를 정확히 확인하지 않고 `data.content` 또는 `data.message`로 임의 추정하여 파싱했습니다.
+실제 응답은 OpenAI 표준 형식인 `choices[0].message.content` 구조였습니다.
 
 **해결**
+응답 JSON을 직접 확인한 후 올바른 경로로 수정했습니다.
 
-```tsx
-// 핵심 코드 스니펫
+```ts
+// Before — 응답 구조 추정
+return data?.content ?? data?.message ?? ''
+
+// After — 실제 응답 구조 반영
+return data?.choices?.[0]?.message?.content ?? ''
 ```
 
----
-
-### 3. [팀원 이름] — 담당 페이지
+**2) 채팅 이미지 전송 UX 개선**
 
 **문제**
+채팅방에서 이미지를 갤러리에서 선택하는 순간 즉시 전송되어, 실수로 선택한 경우 취소할 방법이 없었습니다.
+
+**원인**
+이미지 선택 → 업로드 → 전송을 하나의 흐름으로 묶어 구현했습니다.
+선택과 동시에 `sendImage()`가 호출되는 구조여서 사용자 확인 단계가 없었습니다.
 
 **해결**
+`pendingImageUrl` · `pendingImagePreview` 상태를 추가하여 선택 후 미리보기를 먼저 보여주고,
+전송 버튼을 눌렀을 때 실제로 전송되는 2단계 플로우로 변경했습니다.
 
-```tsx
-// 핵심 코드 스니펫
+```ts
+// Before — 선택 즉시 전송
+const url = await uploadImage(file)
+await sendImage(url)
+
+// After — 미리보기 후 전송 버튼으로 확정
+const preview = URL.createObjectURL(file)
+const url = await uploadImage(file)
+setPendingImagePreview(preview)
+setPendingImageUrl(url)
+// 이후 전송 버튼 클릭 시
+async function handleSend() {
+  if (pendingImageUrl) {
+    await sendImage(pendingImageUrl)
+    setPendingImageUrl(null)
+    setPendingImagePreview(null)
+    return
+  }
+  // ...텍스트 전송
+}
 ```
 
 ---
@@ -818,3 +964,5 @@ if (response.status === 401 && path !== '/user/login') {
 
 - Firebase Anonymous Auth → Custom Token 방식 전환 (실사용자 인증 연동)
 - 카카오 · 구글 SNS 로그인 연동
+- 접근성(a11y) 보완 — 키보드 탐색 · 스크린 리더 대응
+- 핵심 기능 단위 테스트 코드 추가
