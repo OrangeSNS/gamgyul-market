@@ -81,7 +81,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 | | 팀장 | 팀원 | 팀원 | 팀원 | 팀원 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> |
+| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
 | **이름** | 정준서 | 강지연 | 강명주 | 김수진 | 한태영 |
 | **GitHub** | [@아이디](https://github.com) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@아이디](https://github.com) | [@아이디](https://github.com) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
 
@@ -869,7 +869,9 @@ if (response.status === 401 && path !== '/user/login') {
 
 ---
 
-### 2. 한태영 — AI 글 생성 (API 응답 파싱 오류)
+### 2. 한태영 — AI 글 생성 · 채팅
+
+**1) AI API 응답 파싱 오류**
 
 **문제**
 AI 글 생성 기능을 구현했는데 실제로 실행하면 항상 빈 문자열이 반환되었습니다.
@@ -889,9 +891,7 @@ return data?.content ?? data?.message ?? ''
 return data?.choices?.[0]?.message?.content ?? ''
 ```
 
----
-
-### 3. 한태영 — 채팅 이미지 전송 (UX 개선)
+**2) 채팅 이미지 전송 UX 개선**
 
 **문제**
 채팅방에서 이미지를 갤러리에서 선택하는 순간 즉시 전송되어, 실수로 선택한 경우 취소할 방법이 없었습니다.
