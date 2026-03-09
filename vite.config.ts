@@ -4,6 +4,16 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          firebase: ['firebase/app', 'firebase/firestore', 'firebase/auth'],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       '@app': path.resolve(__dirname, './src/app'),
