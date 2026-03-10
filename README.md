@@ -100,7 +100,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 | | 팀장 | 팀원 | 팀원 | 팀원 | 팀원 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="https://github.com/gsbymsui83-commits/my-assets/blob/main/%EC%A6%9D%EB%AA%85.jpg?raw=true" width="70" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
+| **프로필** | <img src="https://github.com/user-attachments/assets/bcd44b25-d8a9-4a9c-b62d-17cbac31b66f" width="60" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="https://github.com/gsbymsui83-commits/my-assets/blob/main/%EC%A6%9D%EB%AA%85.jpg?raw=true" width="70" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
 | **이름** | 정준서 | 강지연 | 강명주 | 김수진 | 한태영 |
 | **GitHub** | [@HeyJunN](https://github.com/HeyJunN) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@gsbymsui83-commits](https://github.com/gsbymsui83-commits) | [@SunnySoojin](https://github.com/SunnySoojin) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
 
@@ -707,7 +707,7 @@ shared/
 
 | 목록형 | 앨범형 |
 |:------:|:------:|
-| ![프로필목록](./docs/profile-list.png) | ![프로필앨범](./docs/profile-album.png) |
+| <img width="200" alt="image" src="https://github.com/user-attachments/assets/ac0eb489-8962-483f-affb-656d228af91e" /> | <img width="200" alt="image" src="https://github.com/user-attachments/assets/84d93ac4-c076-4640-b108-a9b9ade4abb4" /> |
 
 - 사용자 이름 · 계정ID · 소개 · 팔로워/팔로잉 수 · 판매 상품 · 게시글 확인
 - 팔로워/팔로잉 목록 · 게시글 **목록형/앨범형 전환**
@@ -1069,15 +1069,59 @@ const handleLike = async (e: React.MouseEvent) => {
 
 ### 5. 정준서 — Profile
 
-**1) 프로필 이미지 URL 혼재로 인한 깨짐 현상**
+**1) 팔로워/팔로잉 목록 미노출 (404 에러)**
 
 **문제**
-일부 유저의 프로필 사진이 엑박(broken image)으로 표시되는 현상이 발생했습니다.
+팔로워나 팔로잉이 없는 유저 조회 시, API가 빈 배열 대신 404를 반환하여 앱 전체 로직이 중단되었습니다.
+
+**해결**
+`ApiError` 클래스를 활용해 404 응답만 안전하게 빈 배열로 처리하고, 그 외 에러는 그대로 상위로 전파했습니다.
+```ts
+// src/features/profile/api/index.ts
+export async function getFollowers(accountname: string): Promise<User[]> {
+  try {
+    return await request<User[]>(`/profile/${accountname}/follower`)
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 404) return []
+    throw err
+  }
+}
+```
+
+---
+
+**2) 페이지 이동·새로고침 시 팔로우 상태 초기화 현상**
+
+**문제**
+팔로우 버튼을 누른 후 다른 페이지로 이동하거나 새로고침하면 팔로우 상태가 초기화되고, 팔로워/팔로잉 카운트가 즉시 반영되지 않았습니다.
+
+**해결**
+`Context API`와 `localStorage`를 결합한 `FollowProvider`를 구현하여 세션 간 상태를 영속화했습니다. 팔로우 버튼 클릭 즉시 UI에 선반영(Optimistic Update)하고, 로그아웃 시 자동 초기화하도록 설계했습니다.
+```ts
+// src/app/providers/FollowProvider.tsx (핵심 흐름)
+const FOLLOW_STORAGE_KEY = 'gamgyul_following'
+
+// 로그아웃 시 모든 상태 자동 초기화
+useEffect(() => {
+  if (!user) {
+    setFollowingSet(new Set())
+    setFollowingDelta(0)
+    setFollowerCountDeltas(new Map())
+    localStorage.removeItem(FOLLOW_STORAGE_KEY)
+  }
+}, [user])
+```
+
+---
+
+**3) 프로필 이미지 URL 혼재로 인한 깨짐 현상**
+
+**문제**
+일부 유저의 프로필 사진이 엑박(broken image)으로 표시되었습니다.
 API가 반환하는 이미지 URL 형식이 '전체 URL' · '파일명만' · '루트 경로' 등 3가지로 혼재되어 있었습니다.
 
 **해결**
-`resolveImageUrl` 정규화 함수를 직접 제작하여 모든 이미지 URL 형식을 표준화하고,
-`Avatar` 컴포넌트에 일괄 적용하여 앱 전체의 이미지 깨짐 현상을 해결했습니다.
+`resolveImageUrl` 정규화 함수를 직접 제작하여 렌더링 전 단계에서 잘못된 주소를 미리 필터링(Pre-filtering)하고, 폴백 이미지를 로컬 SVG 에셋으로 교체해 네트워크 지연 없이 즉시 노출되도록 했습니다.
 ```ts
 export function resolveImageUrl(url?: string | null): string | undefined {
   if (!url || url.trim() === '' || url === 'undefined' || url === 'null') return undefined
@@ -1088,6 +1132,31 @@ export function resolveImageUrl(url?: string | null): string | undefined {
   if (url.startsWith('/')) return undefined
   if (SERVER_DEFAULT_IMAGE_FILENAMES.includes(url)) return undefined
   return `${API_BASE_URL}/${url}`
+}
+```
+
+---
+
+**4) 페이지 간 좋아요 상태 불일치 및 느린 응답**
+
+**문제**
+게시물 리스트(`PostCard`)와 상세 페이지(`PostDetailPage`)의 좋아요 처리 방식이 달라, 페이지 이동 시 데이터가 어긋나 보이고 체감 반응 속도가 느렸습니다.
+
+**해결**
+서버 응답 전에 UI를 먼저 업데이트하는 **낙관적 업데이트(Optimistic Update)** 패턴을 두 곳에 동일하게 적용하고, 통신 실패 시 자동 롤백되도록 구현했습니다.
+```ts
+// src/shared/components/PostCard.tsx
+const handleLike = async (e: React.MouseEvent) => {
+  e.stopPropagation()
+  const next = !isLiked
+  setIsLiked(next)                              // 즉시 선반영
+  setHeartCount((c) => (next ? c + 1 : c - 1))
+  try {
+    next ? await postLike(post.id) : await deleteLike(post.id)
+  } catch {
+    setIsLiked(!next)                           // 실패 시 롤백
+    setHeartCount((c) => (next ? c - 1 : c + 1))
+  }
 }
 ```
 
