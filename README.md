@@ -358,6 +358,7 @@ graph TD
 
     subgraph External["외부 서비스"]
         REST["REST API<br/>wenivops"]
+        AI["OpenAI API<br/>wenivops (AI 글 생성)"]
         FS["Firebase Firestore<br/>실시간 채팅 DB"]
         FAAuth["Firebase Anonymous Auth"]
     end
@@ -368,6 +369,7 @@ graph TD
     Features --> SharedAPI
     Features --> SharedFB
     SharedAPI --> REST
+    SharedAPI --> AI
     SharedFB --> FS
     SharedFB --> FAAuth
 ```
@@ -877,6 +879,7 @@ npm run build
 
 ```env
 VITE_API_BASE_URL=https://dev.wenivops.co.kr/services/mandarin
+VITE_AI_API_URL=https://dev.wenivops.co.kr/services/openai-api
 
 VITE_FIREBASE_API_KEY=
 VITE_FIREBASE_AUTH_DOMAIN=
