@@ -37,10 +37,12 @@
 10. [화면 설계](#화면-설계)
 11. [구현 범위](#구현-범위)
 12. [주요 기능](#주요-기능)
-13. [코드 품질 관리](#코드-품질-관리)
-14. [실행 방법](#실행-방법)
-15. [트러블슈팅](#트러블슈팅)
-16. [추후 개선 사항](#추후-개선-사항)
+13. [전체 시연](#전체-시연)
+14. [코드 품질 관리](#코드-품질-관리)
+15. [Lighthouse 성능 측정](#lighthouse-성능-측정)
+16. [실행 방법](#실행-방법)
+17. [트러블슈팅](#트러블슈팅)
+18. [추후 개선 사항](#추후-개선-사항)
 
 <br>
 
@@ -59,6 +61,7 @@
 |  개발 기간 | 2026.02.24 (화) ~ 2026.03.07 (토) · 총 12일 |
 |  팀 구성 | 5인 |
 |  배포 URL | https://gamgyul-market.netlify.app |
+|  QR | <img src="./docs/감귤마켓qr.jpg" width="100"> |
 |  기술 스택 | React 18 · TypeScript 5 · TailwindCSS 3 · Vite 5 · Firebase |
 
 <br>
@@ -98,9 +101,9 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 | | 팀장 | 팀원 | 팀원 | 팀원 | 팀원 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
+| **프로필** | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="https://github.com/gsbymsui83-commits/my-assets/blob/main/%EC%A6%9D%EB%AA%85.jpg?raw=true" width="70" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
 | **이름** | 정준서 | 강지연 | 강명주 | 김수진 | 한태영 |
-| **GitHub** | [@아이디](https://github.com) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@아이디](https://github.com) | [@아이디](https://github.com) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
+| **GitHub** | [@HeyJunN](https://github.com/HeyJunN) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@gsbymsui83-commits](https://github.com/gsbymsui83-commits) | [@SunnySoojin](https://github.com/SunnySoojin) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
 
 <br>
 
@@ -111,7 +114,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 | 담당자 | 담당 영역 | 주요 기능 | Route | CRUD |
 |:------:|-----------|-----------|-------|:----:|
 | 강지연 | Login · 404 · 회의록 작성 | 로그인 메인 · 이메일 로그인 화면 전환 · 입력값 검증 · 로그인 실패 메시지 · 404 페이지 · 데일리 스크럼 기록 | `/login/*` `/404` | - |
-| 강명주 | Home Feed · 주석 정리 | 팔로우 유무에 따른 피드 분기 · 피드 목록 렌더링 · 게시글 카드 컴포넌트 · 검색 페이지 이동 · 불필요한 주석 전체 제거 | `/home` | Read |
+| 강명주 |  Home Feed · Search | 팔로우 유무에 따른 피드 분기 · Intersection Observer 무한 스크롤 · 검색 키워드 하이라이트 · 좋아요 낙관적 업데이트 · PostCard 공통 컴포넌트화  | `/home` | Read |
 | 김수진 | Upload · Post Detail | 게시글 작성 · 이미지 업로드 (최대 3장) · Create/Update 컴포넌트 재사용 · 게시글 상세 · 좋아요 토글 · 액션 모달 | `/post/*` | Create / Read / Update / Delete |
 | 정준서 | 개인 프로필 · 총괄 리팩토링 · 배포 | 프로필 상세 · 팔로워/팔로잉 목록 · 목록형/앨범형 전환 · 상품 CRUD · 코드 리팩토링 · API constants 정리 · API 명세 문서화(`Docs/API-spec.md`) · Netlify 배포 | `/profile/*` `/product/*` | Create / Read / Update / Delete |
 | 한태영 | Splash · Join · Chat · 코드 구조 개선 | 스플래시 로그인 분기 · 2단계 회원가입 폼 · 계정ID 검증 · Firebase 실시간 채팅 (`onSnapshot`) · AI 글 생성 기능 · API URL 환경변수화 · JSDoc 주석 작성 | `/` `/join/*` `/chat/*` | Create / Read |
@@ -216,7 +219,7 @@ GitHub Discussion을 데일리 회의록으로 활용했습니다.
 | 이슈 해결 | 기술적 문제 · 원인 · 해결 방법 기록 |
 | 팀장 코멘트 | 오전/오후 회의 피드백 정리 |
 
-→ [전체 데일리 회의록 보러가기](GitHub Discussion 링크)
+→ [전체 데일리 회의록 보러가기](https://github.com/OrangeSNS/gamgyul-market/discussions)
 
 <br>
 
@@ -224,7 +227,7 @@ GitHub Discussion을 데일리 회의록으로 활용했습니다.
 
 ##  개발 일정 WBS
 
-> **기간**: 2026.02.25 (수) ~ 2026.03.07 (토) · 총 11일
+> **기간**: 2026.02.24 (화) ~ 2026.03.07 (토) · 총 12일
 > **근무일**: 월~토 / **휴무**: 3/1 (일) · 3/2 (삼일절 대체공휴일)
 
 ```mermaid
@@ -234,8 +237,9 @@ gantt
     excludes 2026-03-01, 2026-03-02
 
     section Phase 1 · 기반 정비
-    프로젝트 구조 설계       :p1-1, 2026-02-25, 1d
-    협업 환경 구축           :p1-2, 2026-02-25, 1d
+    프로젝트 초기 세팅       :p1-0, 2026-02-24, 1d
+    협업 환경 구축           :p1-1, 2026-02-24, 2d
+    프로젝트 구조 설계       :p1-2, 2026-02-24, 2d
     현황 이슈 목록화         :p1-3, 2026-02-26, 1d
     공용 컴포넌트 점검       :p1-4, 2026-02-26, 1d
 
@@ -258,14 +262,15 @@ gantt
     최종 QA 및 마무리        :p4-4, 2026-03-07, 1d
 ```
 
-### Phase 1. 기반 정비 `2/25 (수) ~ 2/26 (목)`
+### Phase 1. 기반 정비 `2/24 (화) ~ 2/26 (목)`
 
 | No. | 작업 항목 | 세부 내용 | 기간 |
 |:---:|-----------|-----------|------|
-| 1.1 | 프로젝트 구조 설계 확정 | Feature-based 구조 최종 확인, 폴더 규칙 정리, import alias 통일 | 2/25 |
-| 1.2 | 협업 환경 구축 | 브랜치 전략 재확인, PR 템플릿, 코드 리뷰 기준 문서화 | 2/25 |
-| 1.3 | 현황 이슈 목록화 | `home/api/index.ts` 코드 혼재, `getTestToken()` 방치, `BASE_URL` 하드코딩 등 이슈 정리 | 2/26 |
-| 1.4 | 공용 컴포넌트 분기 점검 | `shared/components` vs `features/*/components` 역할 분리 기준 정립, 중복 컴포넌트(`PostCard`) 통합 여부 결정 | 2/26 |
+| 1.0 | 프로젝트 초기 세팅 | 역할 분배 · GitHub 레포 생성 · 기술 스택 확정 · Wiki 초안 작성 | 2/24 |
+| 1.1 | 협업 환경 구축 | 브랜치 전략 수립 · PR 템플릿 작성 · 커밋 컨벤션 정의 · 네이밍 규칙 · GitHub Wiki 문서화 · Discussion 회의록 양식 · 이슈 템플릿 생성 | 2/24 ~ 2/25 |
+| 1.2 | 프로젝트 구조 설계 확정 | Feature-based 구조 최종 확인 · 폴더 규칙 정리 · import alias 통일 | 2/24 ~ 2/25 |
+| 1.3 | 현황 이슈 목록화 | `home/api/index.ts` 코드 혼재 · `getTestToken()` 방치 · `BASE_URL` 하드코딩 등 이슈 정리 | 2/26 |
+| 1.4 | 공용 컴포넌트 분기 점검 | `shared/components` vs `features/*/components` 역할 분리 기준 정립 · 중복 컴포넌트(`PostCard`) 통합 여부 결정 | 2/26 |
 
 ### Phase 2. 퍼블리싱 & API 연동 `2/27 (금) ~ 3/3 (화)`
 
@@ -647,15 +652,18 @@ src/
 
 ---
 
-###  홈 피드 (강명주)
+###  홈 피드 · 게시글 (강명주)
 
 | 피드 | 팔로우 없을 때 |
 |:----:|:-------------:|
 | ![홈피드](./docs/home.gif) | ![빈피드](./docs/home-empty.png) |
 
 - 팔로우한 사용자의 게시글 목록 최신순 표시
-- 팔로우 중인 사용자가 없을 때 **Empty State UI** + "검색하기" 버튼으로 자연스럽게 다음 행동을 유도
-- 게시글 카드 공통 UI (프로필 / 이미지 / 내용 / 좋아요 / 댓글 아이콘)
+- 팔로우 중인 사용자가 없을 때 Empty State UI + "검색하기" 버튼
+- Intersection Observer 기반 무한 스크롤 (10개 단위 추가 로드)
+- 검색 키워드 하이라이트 (일치 부분 브랜드 컬러 강조)
+- 게시글 카드 공통 UI → shared/components로 분리하여 서비스 전반 재사용
+- 좋아요 낙관적 업데이트로 즉각적인 UX 피드백 제공
 
 ---
 
@@ -732,6 +740,19 @@ shared/
 
 ---
 
+##  전체 시연
+
+> 아래 GIF는 미리보기입니다. 전체 영상은 링크를 클릭하세요!
+
+|  데스크탑 |  모바일 |
+|:-----------:|:--------:|
+| <img src="./docs/감귤마켓_시연영상미리보기(데스크탑).gif" width="300"> | <img src="./docs/감귤마켓_시연영상미리보기(모바일).gif" width="300"> |
+| [전체 영상 보기](https://drive.google.com/file/d/15LhXCBt863iZu_76B4xntFvLMLF1IMV3/view?usp=sharing) | [전체 영상 보기](https://drive.google.com/file/d/1gr85nqtGf7GIpmd0yAyHbqJhmDOioyxA/view?usp=sharing) |
+
+<br>
+
+---
+
 ##  코드 품질 관리
 
 ### TypeScript 타입 안정성
@@ -798,6 +819,25 @@ export async function request<T>(
 
 ---
 
+##  Lighthouse 성능 측정
+
+> 데스크탑 환경 기준 · 코드 최적화 전후 비교
+
+| 항목 | 최적화 전 | 최적화 후 |
+|:----:|:--------:|:--------:|
+| 성능 | 77 | **99** |
+| 접근성 | 86 | **88** |
+| 권장사항 | 77 | **96** |
+| SEO | 92 | **92** |
+
+| 최적화 전 | 최적화 후 |
+|:---------:|:---------:|
+| <img src="./docs/최적화전.webp" width="600"> | <img src="./docs/최적화후.png" width="600"> |
+
+<br>
+
+---
+
 ##  실행 방법
 
 ```bash
@@ -835,7 +875,11 @@ VITE_FIREBASE_APP_ID=
 
 ##  트러블슈팅
 
+> 핵심 트러블슈팅만 정리했습니다. 전체 이슈 및 해결 과정은 [GitHub Discussion](https://github.com/OrangeSNS/gamgyul-market/discussions) 에서 확인하실 수 있습니다.
+
 ### 1. 강지연 — Login
+
+**1) 로그인 401 충돌 및 에러 메시지 개선**
 
 **문제**
 공통 `request` 모듈은 401 에러 발생 시 전역에서 `/login`으로 강제 리다이렉트하는 로직이 있었습니다.
@@ -946,14 +990,73 @@ async function handleSend() {
 
 ---
 
-### 4. [팀원 이름] — 담당 페이지
+### 3. 강명주 — Home Feed · PostCard
+
+**1) 좋아요 상태 휘발**
 
 **문제**
+좋아요를 눌러도 새로고침 시 상태가 초기화되는 현상이 발생했습니다.
+상태를 `useState` 메모리에서만 관리하여 DB와 동기화되지 않았습니다.
 
 **해결**
+`postLike` · `deleteLike` API 연동으로 데이터 영속성 확보,
+낙관적 업데이트(Optimistic Update)로 서버 응답 전 UI 즉시 반영,
+실패 시 이전 상태로 롤백하여 데이터 무결성 유지
 
+**2) 이벤트 버블링**
+
+**문제**
+게시글 카드 클릭(상세 이동)과 좋아요 클릭 이벤트가 동시에 발생했습니다.
+
+**해결**
+`e.stopPropagation()`으로 이벤트 버블링 제어
 ```tsx
-// 핵심 코드 스니펫
+const handleLike = async (e: React.MouseEvent) => {
+  e.stopPropagation()
+  const next = !isLiked
+
+  // 1. UI 선반영 (낙관적 업데이트)
+  setIsLiked(next)
+  setHeartCount((c) => (next ? c + 1 : c - 1))
+
+  try {
+    // 2. 서버 데이터 동기화
+    if (next) {
+      await postLike(post.id)
+    } else {
+      await deleteLike(post.id)
+    }
+  } catch (error) {
+    // 3. 실패 시 롤백
+    setIsLiked(!next)
+    setHeartCount((c) => (next ? c - 1 : c + 1))
+  }
+}
+```
+---
+
+### 4. 김수진 — Upload ·Post
+
+**문제**
+문제 내용
+
+**해결**
+해결 내용
+```tsx
+// 코드 스니펫
+```
+
+---
+
+### 5. 정준서 — Profile
+
+**문제**
+문제 내용
+
+**해결**
+해결 내용
+```tsx
+// 코드 스니펫
 ```
 
 <br>
