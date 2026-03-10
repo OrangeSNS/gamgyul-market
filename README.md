@@ -57,6 +57,8 @@
 
 | 항목 | 내용 |
 |------|------|
+| 서비스명 | 감귤마켓 (Gamgyul Market) |
+| 타겟 사용자 | 일상을 공유하며 상품을 홍보하고 싶은 개인 판매자 · 구매자 |
 |  개발 기간 | 2026.02.24 (화) ~ 2026.03.07 (토) · 총 12일 |
 |  팀 구성 | 5인 |
 |  배포 URL | https://gamgyul-market.netlify.app |
@@ -819,9 +821,7 @@ export async function request<T>(
 }
 ```
 
-<br>
 
----
 
 ###  Lighthouse 성능 측정
 
@@ -838,9 +838,7 @@ export async function request<T>(
 |:---------:|:---------:|
 | <img src="./docs/최적화전.webp" width="600"> | <img src="./docs/최적화후.png" width="600"> |
 
-<br>
 
----
 
 ### SEO · 웹접근성(A11y)
 
@@ -849,6 +847,13 @@ export async function request<T>(
 - `<main>` 태그 중첩 제거 · `<h1>~<h2>` 계층 구조 재정립
 - Modal · BottomSheet에 `role="dialog"` · `aria-modal="true"` ARIA 속성 적용
 - 모든 버튼 · 입력 필드에 키보드 포커스(`focus-visible`) 인디케이터 적용
+
+### 프롬프트 관리 · 환경변수 · 문서화
+
+- AI 프롬프트를 `src/shared/prompts/`로 분리하여 수정 용이성 확보
+- 하드코딩된 API URL 전부 `.env` 환경변수로 분리
+- `ai.ts` · `useAIGenerate.ts` JSDoc 주석 추가
+- `Docs/API-spec.md` 생성 · API 명세 문서화 · `.gitignore` 등록으로 보안 강화
 
 ---
 
@@ -1096,5 +1101,4 @@ export function resolveImageUrl(url?: string | null): string | undefined {
 
 - Firebase Anonymous Auth → Custom Token 방식 전환 (실사용자 인증 연동)
 - 카카오 · 구글 SNS 로그인 연동
-- 접근성(a11y) 보완 — 키보드 탐색 · 스크린 리더 대응
 - 핵심 기능 단위 테스트 코드 추가
