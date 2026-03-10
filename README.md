@@ -39,10 +39,9 @@
 12. [주요 기능](#주요-기능)
 13. [전체 시연](#전체-시연)
 14. [코드 품질 관리](#코드-품질-관리)
-15. [Lighthouse 성능 측정](#lighthouse-성능-측정)
-16. [실행 방법](#실행-방법)
-17. [트러블슈팅](#트러블슈팅)
-18. [추후 개선 사항](#추후-개선-사항)
+15. [실행 방법](#실행-방법)
+16. [트러블슈팅](#트러블슈팅)
+17. [추후 개선 사항](#추후-개선-사항)
 
 <br>
 
@@ -114,9 +113,9 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 | 담당자 | 담당 영역 | 주요 기능 | Route | CRUD |
 |:------:|-----------|-----------|-------|:----:|
 | 강지연 | Login · 404 · 회의록 작성 | 로그인 메인 · 이메일 로그인 화면 전환 · 입력값 검증 · 로그인 실패 메시지 · 404 페이지 · 데일리 스크럼 기록 | `/login/*` `/404` | - |
-| 강명주 |  Home Feed · Search | 팔로우 유무에 따른 피드 분기 · Intersection Observer 무한 스크롤 · 검색 키워드 하이라이트 · 좋아요 낙관적 업데이트 · PostCard 공통 컴포넌트화  | `/home` | Read |
-| 김수진 | Upload · Post Detail | 게시글 작성 · 이미지 업로드 (최대 3장) · Create/Update 컴포넌트 재사용 · 게시글 상세 · 좋아요 토글 · 액션 모달 | `/post/*` | Create / Read / Update / Delete |
-| 정준서 | 개인 프로필 · 총괄 리팩토링 · 배포 | 프로필 상세 · 팔로워/팔로잉 목록 · 목록형/앨범형 전환 · 상품 CRUD · 코드 리팩토링 · API constants 정리 · API 명세 문서화(`Docs/API-spec.md`) · Netlify 배포 | `/profile/*` `/product/*` | Create / Read / Update / Delete |
+| 강명주 |  Home Feed · Search | 팔로우 유무에 따른 피드 분기 · Intersection Observer 무한 스크롤 · 검색 키워드 하이라이트 · 좋아요 낙관적 업데이트 · PostCard 공통 컴포넌트화  | `/home` `/search` | Read |
+| 김수진 | Upload · Post Detail | 게시글 작성 · 이미지 다중 업로드 (최대 3장) · 슬라이드 UI · Create/Update 컴포넌트 재사용 · 게시글 상세 · 좋아요 토글 · 액션 모달 · 모바일 키보드 레이아웃 보정 · 피그마 시안 정밀 구현 | `/post/*` | Create / Read / Update / Delete |
+| 정준서 | 개인 프로필 · 총괄 리팩토링 · 배포 | 프로필 상세 · 팔로워/팔로잉 목록 · 목록형/앨범형 전환 · 상품 CRUD · FollowProvider 전역 상태 관리 · resolveImageUrl 이미지 정규화 · 코드 리팩토링 · API constants 정리 · API 명세 문서화(`Docs/API-spec.md`) · Lighthouse 성능 최적화 · SEO/웹접근성 · Netlify 배포 | `/profile/*` `/product/*` | Create / Read / Update / Delete |
 | 한태영 | Splash · Join · Chat · 코드 구조 개선 | 스플래시 로그인 분기 · 2단계 회원가입 폼 · 계정ID 검증 · Firebase 실시간 채팅 (`onSnapshot`) · AI 글 생성 기능 · API URL 환경변수화 · JSDoc 주석 작성 | `/` `/join/*` `/chat/*` | Create / Read |
 
 <br>
@@ -674,9 +673,10 @@ src/
 | ![게시글작성](./docs/post-upload.gif) | ![게시글상세](./docs/post-detail.gif) |
 
 - 게시글 작성 · 수정 · 삭제 (작성/수정 **동일 컴포넌트 재사용**, prefill 방식으로 기존 데이터 자동 채움)
-- 이미지 기본 1장 업로드 (최대 3장)
+- 이미지 다중 업로드 (최대 3장) · 좌우 슬라이드 UI
 - 좋아요 토글 · 댓글 작성 및 삭제
 - 우측 상단 액션 모달 (수정 / 삭제 / 신고) · 확인 모달
+- 모바일 키보드 활성화 시 하단바 겹침 방지 레이아웃 보정
 
 ---
 
@@ -711,6 +711,8 @@ shared/
 - 팔로워/팔로잉 목록 · 게시글 **목록형/앨범형 전환**
 - 본인 프로필일 경우: 프로필 수정 버튼 · 상품 등록 버튼 노출
 - 상품 등록/수정/삭제 (상품명 2~15자 · 가격 원단위 자동 변환)
+- FollowProvider(Context API)로 팔로우 상태 전역 관리 · 새로고침 후에도 상태 유지
+- resolveImageUrl로 이미지 URL 정규화 · 이미지 깨짐 방지
 
 ---
 
@@ -754,6 +756,8 @@ shared/
 ---
 
 ##  코드 품질 관리
+
+> TypeScript 타입 안정성 · 공통 API 클라이언트 · Lighthouse 성능 최적화 · SEO/웹접근성까지 코드 품질 전반을 관리했습니다.
 
 ### TypeScript 타입 안정성
 
@@ -819,14 +823,14 @@ export async function request<T>(
 
 ---
 
-##  Lighthouse 성능 측정
+###  Lighthouse 성능 측정
 
 > 데스크탑 환경 기준 · 코드 최적화 전후 비교
 
 | 항목 | 최적화 전 | 최적화 후 |
 |:----:|:--------:|:--------:|
 | 성능 | 77 | **99** |
-| 접근성 | 86 | **88** |
+| 접근성 | 86 | **83** |
 | 권장사항 | 77 | **96** |
 | SEO | 92 | **92** |
 
@@ -835,6 +839,16 @@ export async function request<T>(
 | <img src="./docs/최적화전.webp" width="600"> | <img src="./docs/최적화후.png" width="600"> |
 
 <br>
+
+---
+
+### SEO · 웹접근성(A11y)
+
+- `index.html`에 Description · OpenGraph · Twitter Card 메타 태그 추가
+- `usePageTitle` 훅 제작 · 전 페이지 동적 타이틀 적용
+- `<main>` 태그 중첩 제거 · `<h1>~<h2>` 계층 구조 재정립
+- Modal · BottomSheet에 `role="dialog"` · `aria-modal="true"` ARIA 속성 적용
+- 모든 버튼 · 입력 필드에 키보드 포커스(`focus-visible`) 인디케이터 적용
 
 ---
 
@@ -1035,28 +1049,43 @@ const handleLike = async (e: React.MouseEvent) => {
 ```
 ---
 
-### 4. 김수진 — Upload ·Post
+### 4. 김수진 — Upload · Post Detail
+
+**1) Firebase 환경변수 오류 및 브랜치 충돌**
 
 **문제**
-문제 내용
+채팅 목록이 로딩되지 않고, dev 브랜치 병합 시 `PostWritePage` 등 파일 충돌이 발생했습니다.
+`.env` 환경변수가 Vite 형식(`VITE_` 접두사)으로 설정되지 않아 Firebase 설정값이 정상 주입되지 않았습니다.
 
 **해결**
-해결 내용
-```tsx
-// 코드 스니펫
-```
+- `.env.example`을 Vite 형식으로 정리하여 환경변수 정상 주입
+- `firebase.ts` 설정 수정으로 채팅 목록 정상화
+- 충돌 파일 수동 병합 및 `package-lock.json` 반영
 
 ---
 
 ### 5. 정준서 — Profile
 
+**1) 프로필 이미지 URL 혼재로 인한 깨짐 현상**
+
 **문제**
-문제 내용
+일부 유저의 프로필 사진이 엑박(broken image)으로 표시되는 현상이 발생했습니다.
+API가 반환하는 이미지 URL 형식이 '전체 URL' · '파일명만' · '루트 경로' 등 3가지로 혼재되어 있었습니다.
 
 **해결**
-해결 내용
-```tsx
-// 코드 스니펫
+`resolveImageUrl` 정규화 함수를 직접 제작하여 모든 이미지 URL 형식을 표준화하고,
+`Avatar` 컴포넌트에 일괄 적용하여 앱 전체의 이미지 깨짐 현상을 해결했습니다.
+```ts
+export function resolveImageUrl(url?: string | null): string | undefined {
+  if (!url || url.trim() === '' || url === 'undefined' || url === 'null') return undefined
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    if (SERVER_DEFAULT_IMAGE_FILENAMES.some((name) => url.endsWith(name))) return undefined
+    return url
+  }
+  if (url.startsWith('/')) return undefined
+  if (SERVER_DEFAULT_IMAGE_FILENAMES.includes(url)) return undefined
+  return `${API_BASE_URL}/${url}`
+}
 ```
 
 <br>
