@@ -102,7 +102,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 | | 팀장 | 팀원 | 팀원 | 팀원 | 팀원 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| **프로필** | <img src="https://github.com/user-attachments/assets/bcd44b25-d8a9-4a9c-b62d-17cbac31b66f" width="60" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="https://github.com/gsbymsui83-commits/my-assets/blob/main/%EC%A6%9D%EB%AA%85.jpg?raw=true" width="70" height="80"> | <img src="프로필이미지URL" width="80" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
+| **프로필** | <img src="https://github.com/user-attachments/assets/bcd44b25-d8a9-4a9c-b62d-17cbac31b66f" width="60" height="80"> | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Br-BZrPih1vBxXY3CYfqiZ0SksqzH261o9Jw0OfN5iu2GWTowzCbZA-sTqzxaCaoy33U5p8XpiZ2T40pIXF8SqaDfgHlj8XSjr6kBQ&s=10" width="80" height="80"> | <img src="https://github.com/gsbymsui83-commits/my-assets/blob/main/%EC%A6%9D%EB%AA%85.jpg?raw=true" width="70" height="80"> | <img src="https://cdn.discordapp.com/attachments/1475415210171961449/1480900095493804132/VideoCapture_20240326-211754.jpg?ex=69b15b30&is=69b009b0&hm=525d6b80ef9b4a42851832c32e287ee6b5b1e750fb5b503d14a3403ea877a9d8" width="90" height="80"> | <img src="https://github.com/TaeyeongHan2.png" width="80" height="80"> |
 | **이름** | 정준서 | 강지연 | 강명주 | 김수진 | 한태영 |
 | **GitHub** | [@HeyJunN](https://github.com/HeyJunN) | [@tndjqtlfh](https://github.com/tndjqtlfh) | [@gsbymsui83-commits](https://github.com/gsbymsui83-commits) | [@SunnySoojin](https://github.com/SunnySoojin) | [@TaeyeongHan2](https://github.com/TaeyeongHan2) |
 
@@ -631,7 +631,7 @@ src/
 
 | 메인 로그인 | 이메일 로그인 | 로그인 실패 |
 |:----------:|:------------:|:-----------:|
-| ![메인 로그인](./docs/login.gif) | ![이메일 로그인](./docs/login-email.gif) | ![로그인 실패](./docs/login-error.gif) |
+| <img src="./docs/메인화면움짤.gif" width="250"> | <img src="./docs/이메일로그인움짤.gif" width="250"> | <img src="./docs/로그인에러움짤.gif" width="250"> |
 
 - 소셜 로그인 버튼 UI · 클릭 시 안내 모달 표시 (UI만 구현)
 - 이메일 · 비밀번호 모두 입력 시 로그인 버튼 활성화 (한 쪽만 입력 시 비활성)
@@ -659,7 +659,7 @@ src/
 
 | 피드 | 팔로우 없을 때 |
 |:----:|:-------------:|
-| ![홈피드](./docs/home.gif) | ![빈피드](./docs/home-empty.png) |
+| ![홈피드](./docs/home.gif) | <img src="./docs/팔로우_없을_때_움짤.gif" width="250"> |
 
 - 팔로우한 사용자의 게시글 목록 최신순 표시
 - 팔로우 중인 사용자가 없을 때 Empty State UI + "검색하기" 버튼
@@ -707,9 +707,9 @@ shared/
 
 ###  개인 프로필 (정준서)
 
-| 목록형 | 앨범형 |
-|:------:|:------:|
-| <img width="200" alt="image" src="https://github.com/user-attachments/assets/ac0eb489-8962-483f-affb-656d228af91e" /> | <img width="200" alt="image" src="https://github.com/user-attachments/assets/84d93ac4-c076-4640-b108-a9b9ade4abb4" /> |
+| 목록형 · 앨범형 · 프로필 수정 | 상품 등록 · 수정 · 삭제 |
+|:---------------------------:|:----------------------:|
+| <img src="./docs/프로필1움짤.gif" width="250"> | <img src="./docs/프로필2움짤.gif" width="250"> |
 
 - 사용자 이름 · 계정ID · 소개 · 팔로워/팔로잉 수 · 판매 상품 · 게시글 확인
 - 팔로워/팔로잉 목록 · 게시글 **목록형/앨범형 전환**
@@ -724,7 +724,7 @@ shared/
 
 | 채팅 목록 | 채팅방 |
 |:---------:|:------:|
-| ![채팅목록](./docs/chat-list.png) | ![채팅방](./docs/chat.gif) |
+| <img src="./docs/채팅목록움짤.gif" width="250"> | <img src="./docs/채팅방움짤.gif" width="250"> |
 
 - Firebase Firestore 기반 **1:1 실시간 채팅**
 - `onSnapshot`으로 메시지 실시간 동기화 (서버 폴링 없음 · 별도 백엔드 불필요)
@@ -737,7 +737,7 @@ shared/
 
 | 404 |
 |:---:|
-| <img src="./docs/404페이지화면.jpg" width="200"> |
+| <img src="./docs/404움짤.gif" width="250"> |
 
 - 존재하지 않는 경로 접근 시 표시되는 페이지
 - '이전 페이지' 버튼으로 자연스럽게 이동 유도
