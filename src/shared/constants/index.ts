@@ -3,6 +3,16 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string
 export const TOKEN_KEY = 'gamgyul_token'
 export const USER_KEY = 'gamgyul_user'
 
+// API 요청 헤더 관련 상수
+export const CONTENT_TYPE_JSON = 'application/json'
+export const AUTH_HEADER_PREFIX = 'Bearer'
+
+// API 엔드포인트 경로 상수
+export const API_PATHS = {
+  LOGIN: '/user/login',
+  IMAGE_UPLOAD: '/image/uploadfile',
+} as const
+
 export const ROUTES = {
   SPLASH: '/splash',
   LOGIN: '/login',
