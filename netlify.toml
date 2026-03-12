@@ -20,4 +20,5 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# 배포관련 테스트
 NETLIFY_SKIP_SECRET_SCAN = "true"
