@@ -61,7 +61,7 @@
 | 타겟 사용자 | 일상을 공유하며 상품을 홍보하고 싶은 개인 판매자 · 구매자 |
 |  개발 기간 | 2026.02.24 (화) ~ 2026.03.07 (토) · 총 12일 |
 |  팀 구성 | 5인 |
-|  배포 URL | https://gamgyul-market.netlify.app |
+|  배포 URL | https://gamgyul-market-new.netlify.app |
 |  QR | <img src="./docs/감귤마켓qr.jpg" width="100"> |
 |  기술 스택 | React 18 · TypeScript 5 · TailwindCSS 3 · Vite 5 · Firebase |
 
@@ -90,7 +90,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 | ID | PW |
 |----|----|
-| test35@test.com | 20260305 |
+| kindpeople22@sample.com | 242455 |
 
 <br>
 
