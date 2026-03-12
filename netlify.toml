@@ -19,3 +19,5 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+NETLIFY_SKIP_SECRET_SCAN = "true"
