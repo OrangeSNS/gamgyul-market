@@ -473,6 +473,7 @@ flowchart TD
 |-----|--------|:---------:|:----:|
 | `/` | Splash | X | 한태영 |
 | `/login` | 로그인 | X | 강지연 |
+| `/login/email` | 이메일 로그인 | X | 강지연 |
 | `/404` | 404 | X | 강지연 |
 | `/join` | 회원가입 step 1 (이메일·비밀번호) | X | 한태영 |
 | `/join/profile` | 회원가입 step 2 (프로필 설정) | X | 한태영 |
@@ -652,6 +653,7 @@ src/
 - 이메일/비밀번호 포커스 아웃 시 즉시 유효성 검증
 - 2단계 회원가입 폼 (step 1: 이메일·비밀번호 / step 2: 프로필 사진·이름·계정ID·소개)
 - 계정ID 형식 검증 및 중복 확인 API 연동
+- 프로필 이미지 선택 후 기본 이미지로 되돌리기 가능
 
 ---
 
@@ -753,7 +755,7 @@ shared/
 |  데스크탑 |  모바일 |
 |:-----------:|:--------:|
 | <img src="./docs/감귤마켓_시연영상미리보기(데스크탑).gif" width="300"> | <img src="./docs/감귤마켓_시연영상미리보기(모바일).gif" width="300"> |
-| [전체 영상 보기](https://drive.google.com/file/d/15LhXCBt863iZu_76B4xntFvLMLF1IMV3/view?usp=sharing) | [전체 영상 보기](https://drive.google.com/file/d/1gr85nqtGf7GIpmd0yAyHbqJhmDOioyxA/view?usp=sharing) |
+| [전체 영상 보기](https://drive.google.com/file/d/15LhXCBt863iZu_76B4xntFvLMLF1IMV3/view?usp=sharing) | [전체 영상 보기](https://drive.google.com/file/d/1bh3R_TXyD_p6mTlWr_Xu4BsCYSYOmY-Q/view?usp=sharing) |
 
 <br>
 
