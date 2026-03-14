@@ -95,6 +95,7 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
           src={resolveImageUrl(author.image) ?? DEFAULT_AUTHOR_IMAGE}
           alt={`${author.username}님의 프로필`}
           className="w-[42px] h-[42px] rounded-full object-cover bg-gray-100 flex-shrink-0"
+          loading="lazy"
           onError={(e) => { (e.target as HTMLImageElement).src = DEFAULT_AUTHOR_IMAGE }}
         />
 
