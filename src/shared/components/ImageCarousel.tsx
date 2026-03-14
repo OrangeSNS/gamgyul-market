@@ -21,6 +21,15 @@ export default function ImageCarousel({
   const scrollerRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const [brokenImages, setBrokenImages] = useState<Set<number>>(new Set())
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set())
+
+const handleImageLoad = (idx: number) => {
+  setLoadedImages((prev) => {
+    const next = new Set(prev)
+    next.add(idx)
+    return next
+  })
+}
 
   const handleImageError = (idx: number) => {
     setBrokenImages((prev) => {
@@ -119,16 +128,24 @@ export default function ImageCarousel({
                   <span className="text-xs text-gray-400">이미지를 불러올 수 없습니다</span>
                 </div>
               ) : (
-                <img
-                  src={src}
-                  alt={`${idx + 1}번째 게시글 이미지 (총 ${count}개)`}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                  draggable={false}
-                  onError={() => handleImageError(idx)}
-                />
-              )}
+  <>
+    {!loadedImages.has(idx) && !brokenImages.has(idx) && (
+      <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+        <div className="w-6 h-6 border-2 border-gray-300 border-t-[#F28C45] rounded-full animate-spin" />
+      </div>
+    )}
+    <img
+      src={src}
+      alt={`${idx + 1}번째 게시글 이미지 (총 ${count}개)`}
+      className="h-full w-full object-cover"
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      onLoad={() => handleImageLoad(idx)}
+      onError={() => handleImageError(idx)}
+    />
+  </>
+)}
 
               {onRemove && (
                 <button
