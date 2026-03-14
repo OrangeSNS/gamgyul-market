@@ -1185,4 +1185,4 @@ const handleLike = async (e: React.MouseEvent) => {
 
 - Firebase Anonymous Auth → Custom Token 방식 전환 (실사용자 인증 연동)
 - 카카오 · 구글 SNS 로그인 연동
-- 핵심 기능 단위 테스트 코드 추가
+
