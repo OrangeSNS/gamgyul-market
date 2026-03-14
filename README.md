@@ -36,8 +36,8 @@
 9. [폴더 구조](#폴더-구조)
 10. [화면 설계](#화면-설계)
 11. [구현 범위](#구현-범위)
-12. [주요 기능](#주요-기능)
-13. [전체 시연](#전체-시연)
+12. [전체 시연](#전체-시연)
+13. [주요 기능](#주요-기능)
 14. [코드 품질 관리](#코드-품질-관리)
 15. [실행 방법](#실행-방법)
 16. [트러블슈팅](#트러블슈팅)
@@ -611,6 +611,20 @@ src/
 
 ---
 
+##  전체 시연
+
+> 아래 GIF는 미리보기입니다. 전체 영상은 링크를 클릭하세요!
+
+|  데스크탑 |  모바일 |
+|:-----------:|:--------:|
+| <img src="./docs/감귤마켓_시연영상미리보기(데스크탑).gif" width="300"> | <img src="./docs/감귤마켓_시연영상미리보기(모바일).gif" width="300"> |
+| [전체 영상 보기](https://drive.google.com/file/d/15LhXCBt863iZu_76B4xntFvLMLF1IMV3/view?usp=sharing) | [전체 영상 보기](https://drive.google.com/file/d/1bh3R_TXyD_p6mTlWr_Xu4BsCYSYOmY-Q/view?usp=sharing) |
+
+<br>
+
+---
+
+
 ##  주요 기능
 
 ---
@@ -744,21 +758,6 @@ shared/
 - 존재하지 않는 경로 접근 시 표시되는 페이지
 - '이전 페이지' 버튼으로 자연스럽게 이동 유도
 
-<br>
-
----
-
-##  전체 시연
-
-> 아래 GIF는 미리보기입니다. 전체 영상은 링크를 클릭하세요!
-
-|  데스크탑 |  모바일 |
-|:-----------:|:--------:|
-| <img src="./docs/감귤마켓_시연영상미리보기(데스크탑).gif" width="300"> | <img src="./docs/감귤마켓_시연영상미리보기(모바일).gif" width="300"> |
-| [전체 영상 보기](https://drive.google.com/file/d/15LhXCBt863iZu_76B4xntFvLMLF1IMV3/view?usp=sharing) | [전체 영상 보기](https://drive.google.com/file/d/1bh3R_TXyD_p6mTlWr_Xu4BsCYSYOmY-Q/view?usp=sharing) |
-
-<br>
-
 ---
 
 ##  코드 품질 관리
@@ -858,6 +857,17 @@ export async function request<T>(
 - 하드코딩된 API URL 전부 `.env` 환경변수로 분리
 - `ai.ts` · `useAIGenerate.ts` JSDoc 주석 추가
 - `Docs/API-spec.md` 생성 · API 명세 문서화 · `.gitignore` 등록으로 보안 강화
+
+### 단위 테스트
+
+Vitest를 활용해 핵심 유틸 함수 18개 테스트를 작성했습니다.
+
+<img src="./docs/테스트코드.jpg" width="600">
+
+로컬에서 테스트 실행:
+```bash
+npm test
+```
 
 ---
 
