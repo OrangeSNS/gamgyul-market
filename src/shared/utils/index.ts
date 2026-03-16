@@ -107,3 +107,34 @@ export function parsePostImages(image: string): string[] {
     .map((url) => resolveImageUrl(url))
     .filter((url): url is string => !!url)
 }
+
+/** 이미지 리사이징 (최대 1024px) */
+export const resizeImage = (file: File, maxSize = 1024): Promise<File> => {
+  return new Promise((resolve) => {
+    const img = new Image()
+    const objectUrl = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl)
+      const { width, height } = img
+      if (width <= maxSize && height <= maxSize) {
+        resolve(file)
+        return
+      }
+      const ratio = Math.min(maxSize / width, maxSize / height)
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.round(width * ratio)
+      canvas.height = Math.round(height * ratio)
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) { resolve(file); return }
+          resolve(new File([blob], file.name, { type: 'image/jpeg' }))
+        },
+        'image/jpeg',
+        0.85,
+      )
+    }
+    img.src = objectUrl
+  })
+}

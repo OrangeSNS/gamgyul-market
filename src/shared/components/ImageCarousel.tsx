@@ -150,7 +150,8 @@ const handleImageLoad = (idx: number) => {
               {onRemove && (
                 <button
                   type="button"
-                  onClick={() => onRemove(idx)}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => { e.stopPropagation(); onRemove(idx) }}
                   aria-label={`이미지 ${idx + 1} 삭제`}
                   className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/35 text-white"
                 >

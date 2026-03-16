@@ -5,7 +5,7 @@ import Button from '@shared/components/Button'
 import Input from '@shared/components/Input'
 import { ROUTES } from '@shared/constants'
 import { useAuth } from '@app/providers/AuthProvider'
-import { validateUsername, validateAccountName, isNetworkError } from '@shared/utils'
+import { validateUsername, validateAccountName, isNetworkError, resizeImage } from '@shared/utils'
 import { checkAccountName, signup } from '../api'
 import { uploadImage } from '@shared/api/client'
 import { User } from '@shared/types'
@@ -45,15 +45,16 @@ export default function JoinProfilePage() {
     }
   }, [email, password, navigate])
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0]
+  if (!file) return
 
-    setImageFile(file)
-    setImagePreview(URL.createObjectURL(file))
-    setImageError('')
-    e.target.value = ''
-  }
+  const resized = await resizeImage(file)
+  setImageFile(resized)
+  setImagePreview(URL.createObjectURL(resized))
+  setImageError('')
+  e.target.value = ''
+}
   const handleResetImage = () => {
     setImageFile(null)
     setImagePreview(DEFAULT_AVATAR)

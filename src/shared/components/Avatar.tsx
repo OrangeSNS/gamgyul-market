@@ -25,6 +25,7 @@ export default function Avatar({ src, alt = '', size = 'md', className = '' }: A
     <img
       src={resolvedSrc}
       alt={alt}
+      decoding="async"
       onError={(e) => {
         ;(e.target as HTMLImageElement).src = defaultAvatar
       }}

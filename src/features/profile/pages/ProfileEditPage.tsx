@@ -4,7 +4,7 @@ import TopBar from '@app/layouts/TopBar'
 import Button from '@shared/components/Button'
 import Input from '@shared/components/Input'
 import { useAuth } from '@app/providers/AuthProvider'
-import { validateUsername, validateAccountName } from '@shared/utils'
+import { validateUsername, validateAccountName, resizeImage } from '@shared/utils'
 import { checkAccountName, updateMyProfile } from '../api'
 import { uploadImage } from '@shared/api/client'
 import { usePageTitle } from '@shared/hooks/usePageTitle'
@@ -33,12 +33,13 @@ export default function ProfileEditPage() {
 
   const isValid = !usernameError && !accountnameError && username !== '' && accountname !== ''
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setImageFile(file)
-    setImagePreview(URL.createObjectURL(file))
-  }
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+  const resized = await resizeImage(file)
+  setImageFile(resized)
+  setImagePreview(URL.createObjectURL(resized))
+}
 
   const handleAccountnameBlur = async () => {
     const localErr = validateAccountName(accountname)
