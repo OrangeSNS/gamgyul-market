@@ -90,7 +90,7 @@ SNS의 소통 구조와 상품 홍보 기능을 하나의 플랫폼에서 제공
 
 | ID | PW |
 |----|----|
-| kindpeople22@sample.com | 242455 |
+| tmilover@sample.com | 555555 |
 
 <br>
 
