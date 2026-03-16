@@ -22,6 +22,7 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
   const navigate = useNavigate()
   const [isLiked, setIsLiked] = useState(post.hearted)
   const [heartCount, setHeartCount] = useState(post.heartCount)
+  const [moved, setMoved] = useState(false)
   const sheet = useBottomSheet()
   const deleteModal = useModal()
 
@@ -84,7 +85,9 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
   return (
     <>
       <article
-        onClick={() => navigate(ROUTES.POST_DETAIL(post.id))}
+        onMouseDown={() => setMoved(false)}
+        onMouseMove={() => setMoved(true)}
+        onClick={() => { if (!moved) navigate(ROUTES.POST_DETAIL(post.id)) }}
         className="w-full py-4 flex gap-3 border-b border-[#DBDBDB] last:border-none cursor-pointer px-4"
       >
         <img
@@ -96,6 +99,7 @@ export default function PostCard({ post, isMyPost = false, onDelete }: PostCardP
           alt={`${author.username}님의 프로필`}
           className="w-[42px] h-[42px] rounded-full object-cover bg-gray-100 flex-shrink-0"
           loading="lazy"
+          decoding="async"
           onError={(e) => { (e.target as HTMLImageElement).src = DEFAULT_AUTHOR_IMAGE }}
         />
 

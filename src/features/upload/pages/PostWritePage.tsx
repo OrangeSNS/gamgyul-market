@@ -9,7 +9,7 @@ import { buildPostPrompt } from '@shared/prompts'
 import { useKeyboardHeight } from '@shared/hooks/useKeyboardHeight'
 import { createPost, updatePost } from '../api'
 import { getPostDetail } from '@features/post/api'
-import { parsePostImages } from '@shared/utils'
+import { parsePostImages, resizeImage } from '@shared/utils'
 import ImageCarousel from '@shared/components/ImageCarousel'
 import TopBar from '@app/layouts/TopBar'
 import { usePageTitle } from '@shared/hooks/usePageTitle'
@@ -88,9 +88,10 @@ export default function PostWritePage() {
     try {
       const newImages = await Promise.all(
         toAdd.map(async (file) => {
-          const url = await uploadImage(file)
-          return { file, preview: URL.createObjectURL(file), url }
-        }),
+  const resized = await resizeImage(file)
+  const url = await uploadImage(resized)
+  return { file: resized, preview: URL.createObjectURL(resized), url }
+}),
       )
       setImages((prev) => [...prev, ...newImages])
     } catch {
